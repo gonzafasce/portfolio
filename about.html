@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About — Gonzalo Fasce</title>
+  <meta name="description" content="Product Designer con raíces en diseño gráfico y multimedial, especializado en productos digitales complejos: plataformas financieras, sistemas de diseño y experiencias enterprise.">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="About — Gonzalo Fasce">
+  <meta property="og:description" content="Diseño, estrategia y tecnología — en ese orden y al mismo tiempo.">
+  <meta property="og:image" content="https://gonzalofasce.com/assets/og-image.webp">
+  <meta property="og:url" content="https://gonzalofasce.com/about.html">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="About — Gonzalo Fasce">
+  <meta name="twitter:description" content="Diseño, estrategia y tecnología — en ese orden y al mismo tiempo.">
+  <meta name="twitter:image" content="https://gonzalofasce.com/assets/og-image.webp">
+
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    /* ─── Variables ─────────────────────────────────────────── */
+    :root {
+      --color-bg:      #F8F6F2;
+      --color-ink:     #0D0D0D;
+      --color-muted:   #6B6B6B;
+      --color-accent:  #2F6EEB;
+      --color-rule:    #E2DED8;
+
+      --font: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      --font-mono: 'IBM Plex Mono', 'SF Mono', monospace;
+
+      --space-xs:  8px;
+      --space-sm:  16px;
+      --space-md:  32px;
+      --space-lg:  64px;
+      --space-xl:  96px;
+      --space-xxl: 140px;
+
+      --content-width: 900px;
+      --nav-height:    60px;
+    }
+
+    /* ─── Reset ─────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; -webkit-font-smoothing: antialiased; }
+
+    body {
+      font-family: var(--font);
+      background: var(--color-bg);
+      color: var(--color-ink);
+      line-height: 1.65;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* ─── Nav ───────────────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: var(--nav-height);
+      background: var(--color-bg);
+      z-index: 100;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.2s ease;
+    }
+
+    nav.scrolled {
+      border-bottom-color: var(--color-rule);
+    }
+
+    .nav-inner {
+      max-width: var(--content-width);
+      margin: 0 auto;
+      padding: 0 24px;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-logo {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--color-ink);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--color-muted);
+      transition: color 0.15s ease, border-color 0.15s ease;
+      border-bottom: 1px solid transparent;
+      padding-bottom: 1px;
+    }
+
+    .nav-links a:hover {
+      color: var(--color-ink);
+    }
+
+    .nav-links a.active {
+      color: var(--color-ink);
+      border-bottom: 1px solid var(--color-accent);
+      padding-bottom: 1px;
+    }
+
+    .nav-links .nav-cv {
+      font-family: var(--font-mono);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--color-ink);
+      letter-spacing: 0.01em;
+      border-bottom: 1px solid var(--color-ink);
+      padding-bottom: 1px;
+      transition: color 0.15s ease, border-color 0.15s ease;
+    }
+
+    .nav-links .nav-cv:hover {
+      color: var(--color-accent);
+      border-color: var(--color-accent);
+    }
+
+    /* ─── Main content ──────────────────────────────────────── */
+    main {
+      max-width: var(--content-width);
+      margin: 0 auto;
+      padding: 0 24px;
+      padding-top: calc(var(--nav-height) + var(--space-xxl));
+      padding-bottom: var(--space-xxl);
+    }
+
+    /* ─── Page header ───────────────────────────────────────── */
+    .page-header {
+      margin-bottom: var(--space-xl);
+    }
+
+    .page-title {
+      font-size: clamp(48px, 7vw, 72px);
+      font-weight: 700;
+      line-height: 1.0;
+      letter-spacing: -0.03em;
+      color: var(--color-ink);
+      margin-bottom: var(--space-md);
+    }
+
+    .page-subtitle {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--color-muted);
+    }
+
+    /* ─── Divider ───────────────────────────────────────────── */
+    hr {
+      border: none;
+      border-top: 1px solid var(--color-rule);
+      margin: var(--space-xl) 0;
+    }
+
+    /* ─── Section label ─────────────────────────────────────── */
+    .section-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: var(--space-md);
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+      text-transform: uppercase;
+    }
+
+    .section-label .num {
+      color: var(--color-accent);
+    }
+
+    .section-label .dot {
+      color: var(--color-rule);
+    }
+
+    .section-label .name {
+      color: var(--color-muted);
+    }
+
+    /* ─── About layout ──────────────────────────────────────── */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: var(--space-lg);
+      align-items: start;
+    }
+
+    .about-meta {
+      position: sticky;
+      top: calc(var(--nav-height) + var(--space-md));
+    }
+
+    .about-photo {
+      display: block;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+      border: 1px solid var(--color-rule);
+      margin-bottom: var(--space-md);
+    }
+
+    .about-role {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--color-ink);
+      line-height: 1.6;
+      margin-bottom: var(--space-sm);
+    }
+
+    .about-location {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--color-muted);
+      margin-bottom: var(--space-md);
+    }
+
+    .about-links {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-xs);
+      list-style: none;
+    }
+
+    .about-links a {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--color-muted);
+      transition: color 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .about-links a:hover {
+      color: var(--color-accent);
+    }
+
+    .about-links .cv-link {
+      font-weight: 500;
+      color: var(--color-ink);
+      border-bottom: 1px solid var(--color-ink);
+      padding-bottom: 1px;
+      transition: color 0.15s ease, border-color 0.15s ease;
+    }
+
+    .about-links .cv-link:hover {
+      color: var(--color-accent);
+      border-color: var(--color-accent);
+    }
+
+    /* ─── Bio text ──────────────────────────────────────────── */
+    .bio {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-md);
+    }
+
+    .bio p {
+      font-size: 17px;
+      font-weight: 400;
+      color: var(--color-ink);
+      line-height: 1.75;
+      max-width: 600px;
+    }
+
+    .bio p strong {
+      font-weight: 600;
+    }
+
+    /* ─── Skills / herramientas ─────────────────────────────── */
+    .skills-section {
+      margin-top: var(--space-xl);
+    }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-sm);
+    }
+
+    .skill-group {
+      padding: var(--space-md);
+      border: 1px solid var(--color-rule);
+    }
+
+    .skill-group-title {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--color-muted);
+      margin-bottom: var(--space-sm);
+    }
+
+    .skill-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .skill-list li {
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--color-ink);
+      line-height: 1.4;
+    }
+
+    /* ─── Footer ────────────────────────────────────────────── */
+    footer {
+      max-width: var(--content-width);
+      margin: 0 auto;
+      padding: var(--space-xl) 24px var(--space-lg);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid var(--color-rule);
+    }
+
+    .footer-meta {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--color-muted);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: var(--space-md);
+      list-style: none;
+    }
+
+    .footer-links a {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--color-muted);
+      transition: color 0.15s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--color-ink);
+    }
+
+    /* ─── Animations ────────────────────────────────────────── */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+    }
+
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .fade-in { opacity: 1 !important; transform: none !important; }
+    }
+
+    /* ─── Responsive ────────────────────────────────────────── */
+    @media (max-width: 700px) {
+      main {
+        padding-top: calc(var(--nav-height) + var(--space-lg));
+      }
+
+      .nav-links .hide-mobile {
+        display: none;
+      }
+
+      .about-grid {
+        grid-template-columns: 1fr;
+        gap: var(--space-md);
+      }
+
+      .about-meta {
+        position: static;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        gap: var(--space-sm);
+      }
+
+      .about-photo {
+        width: 96px;
+        height: 96px;
+        margin-bottom: 0;
+      }
+
+      .about-links {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: var(--space-sm);
+      }
+
+      .skills-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .page-title {
+        font-size: clamp(36px, 10vw, 48px);
+      }
+
+      .bio p {
+        font-size: 16px;
+      }
+
+      .skills-grid {
+        grid-template-columns: 1fr;
+      }
+
+      footer {
+        flex-direction: column;
+        gap: var(--space-sm);
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Nav -->
+  <nav id="nav">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">Gonzalo Fasce</a>
+      <ul class="nav-links">
+        <li class="hide-mobile"><a href="casos/mob.html">MOB</a></li>
+        <li class="hide-mobile"><a href="casos/singular.html">Singular</a></li>
+        <li class="hide-mobile"><a href="casos/mis-resultados.html">Mis Resultados</a></li>
+        <li><a href="about.html" class="active">About</a></li>
+        <li><a href="cv.html" class="nav-cv">CV</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Main -->
+  <main>
+
+    <!-- Page header -->
+    <div class="page-header fade-in">
+      <h1 class="page-title">About</h1>
+      <p class="page-subtitle">Diseño, estrategia y tecnología — en ese orden y al mismo tiempo.</p>
+    </div>
+
+    <hr class="fade-in">
+
+    <!-- About grid -->
+    <div class="about-grid fade-in">
+
+      <!-- Meta sidebar -->
+      <aside class="about-meta">
+        <img src="assets/gonzalo-about-bw.webp" alt="Gonzalo Fasce" class="about-photo">
+        <p class="about-role">Product Designer</p>
+        <p class="about-location">Buenos Aires, Argentina</p>
+        <ul class="about-links">
+          <li>
+            <a href="cv-gonza-fasce.pdf" class="cv-link" download>↓ Descargar CV</a>
+          </li>
+          <li>
+            <a href="https://linkedin.com/in/gonzafasce" target="_blank" rel="noopener">LinkedIn ↗</a>
+          </li>
+          <li>
+            <a href="mailto:geefedesign@gmail.com">geefedesign@gmail.com</a>
+          </li>
+        </ul>
+      </aside>
+
+      <!-- Bio -->
+      <div class="bio">
+        <p>
+          Soy Product Designer con raíces en el diseño gráfico y multimedial, pero mi trabajo real ocurre en la intersección entre diseño, estrategia y tecnología. Me especialicé en <strong>productos digitales complejos</strong> — plataformas financieras, sistemas de diseño, experiencias enterprise — donde aprendí que diseñar bien no es solo hacer interfaces prolijas: es construir estructuras que los equipos puedan sostener y evolucionar en el tiempo.
+        </p>
+        <p>
+          Una parte importante de mi carrera la pasé trabajando directamente con liderazgo ejecutivo: conceptualizando productos desde cero, prototipando ideas para validarlas con clientes reales, y traduciendo oportunidades de negocio en propuestas claras y accionables. Ese contexto me enseñó a moverme con velocidad, a comunicar con precisión y a entender el diseño como una herramienta que <strong>reduce incertidumbre</strong> — no solo que hace las cosas más lindas.
+        </p>
+        <p>
+          Hoy me interesa especialmente cómo está cambiando el rol del diseño frente a la IA y las nuevas formas de construir productos. No como amenaza, sino como una oportunidad de redefinir qué significa aportar valor como designer. Creo que los mejores productos nacen cuando el diseño se sienta en la misma mesa que el negocio y la tecnología — y eso es exactamente donde me gusta estar.
+        </p>
+      </div>
+
+    </div>
+
+    <hr class="fade-in">
+
+    <!-- Skills -->
+    <div class="skills-section fade-in">
+      <div class="section-label">
+        <span class="num">01</span>
+        <span class="dot">·</span>
+        <span class="name">Stack y herramientas</span>
+      </div>
+
+      <div class="skills-grid">
+
+        <div class="skill-group">
+          <p class="skill-group-title">Diseño</p>
+          <ul class="skill-list">
+            <li>Figma</li>
+            <li>Sistemas de diseño</li>
+            <li>Prototipado</li>
+            <li>Design tokens</li>
+          </ul>
+        </div>
+
+        <div class="skill-group">
+          <p class="skill-group-title">IA generativa</p>
+          <ul class="skill-list">
+            <li>Claude / Claude Code</li>
+            <li>v0 · Lovable · Stitch</li>
+            <li>Midjourney</li>
+            <li>Prompting estructurado</li>
+          </ul>
+        </div>
+
+        <div class="skill-group">
+          <p class="skill-group-title">Proceso</p>
+          <ul class="skill-list">
+            <li>UX Research</li>
+            <li>Estrategia de producto</li>
+            <li>Facilitación</li>
+            <li>HTML / CSS</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="fade-in">
+    <span class="footer-meta">Buenos Aires · 2026</span>
+    <ul class="footer-links">
+      <li><a href="https://linkedin.com/in/gonzafasce" target="_blank" rel="noopener">LinkedIn</a></li>
+      <li><a href="mailto:geefedesign@gmail.com">Mail</a></li>
+      <li><a href="cv.html">CV</a></li>
+    </ul>
+  </footer>
+
+  <script>
+    // Nav border on scroll
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 10);
+    }, { passive: true });
+
+    // Fade-in on scroll
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (prefersReduced) {
+      document.querySelectorAll('.fade-in').forEach(el => el.classList.add('visible'));
+    } else {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.05, rootMargin: '0px 0px -30px 0px' });
+
+      document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+    }
+  </script>
+
+</body>
+</html>

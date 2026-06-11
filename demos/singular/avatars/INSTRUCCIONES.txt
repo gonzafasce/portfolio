@@ -1,0 +1,50 @@
+═══════════════════════════════════════════════════════════════
+  SINGULAR DEMO — CÓMO REEMPLAZAR LOS AVATARES
+═══════════════════════════════════════════════════════════════
+
+Colocá los archivos en esta carpeta (avatars/) con los nombres
+exactos que figuran abajo. La demo los cargará automáticamente.
+
+───────────────────────────────────────────────────────────────
+  COMANDANTE
+───────────────────────────────────────────────────────────────
+  commander.jpg     → Foto del comandante (cuadrada, mín 400×400 px)
+
+───────────────────────────────────────────────────────────────
+  AGENTES DE IA  (por cada agente: foto + video opcional)
+───────────────────────────────────────────────────────────────
+  nova.jpg          → Foto de Nova  (cuadrada, mín 300×300 px)
+  nova.mp4          → Video de Nova  (loop, sin audio — se reproduce en la vista detalle)
+  nova.gif          → Alternativa al .mp4 si preferís GIF
+
+  apolo.jpg         → Foto de Apolo
+  apolo.mp4         → Video de Apolo (loop, sin audio)
+
+  eva.jpg           → Foto de Eva
+  eva.mp4           → Video de Eva   (loop, sin audio)
+
+  ares.jpg          → Foto de Ares
+  ares.mp4          → Video de Ares  (loop, sin audio)
+
+  lara.jpg          → Foto de Lara
+  lara.mp4          → Video de Lara  (loop, sin audio)
+
+───────────────────────────────────────────────────────────────
+  COMPORTAMIENTO
+───────────────────────────────────────────────────────────────
+  • Si el archivo no existe → se muestra la inicial del agente (fallback automático)
+  • Si existe .jpg → reemplaza el placeholder de inicial
+  • Si existe .mp4 → en la vista home se reproduce al hacer hover
+                     en la vista detalle se reproduce en loop automático
+  • Imágenes: JPG o PNG (renombrá a .jpg si usás PNG)
+  • Videos: MP4 recomendado (H.264), también acepta WebM
+
+───────────────────────────────────────────────────────────────
+  CÓMO VER LA DEMO
+───────────────────────────────────────────────────────────────
+  1. Abrí index.html en Chrome o Safari
+  2. Para el mapa necesitás conexión a internet (tiles de OpenStreetMap)
+  3. Las fuentes también se cargan de Google Fonts (requiere internet)
+  4. Todo lo demás funciona offline
+
+═══════════════════════════════════════════════════════════════

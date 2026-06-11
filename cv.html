@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CV — Gonzalo Fasce · Product Designer</title>
+  <meta name="description" content="CV de Gonzalo Fasce, Product Designer con más de 7 años en fintech y productos digitales, especializado en sistemas de diseño e IA aplicada al producto.">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="profile">
+  <meta property="og:title" content="CV — Gonzalo Fasce · Product Designer">
+  <meta property="og:description" content="Más de 7 años en fintech y productos digitales. Sistemas de diseño, liderazgo de equipos e IA aplicada al producto.">
+  <meta property="og:image" content="https://gonzalofasce.com/assets/og-image.webp">
+  <meta property="og:url" content="https://gonzalofasce.com/cv.html">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="CV — Gonzalo Fasce · Product Designer">
+  <meta name="twitter:description" content="Más de 7 años en fintech y productos digitales. Sistemas de diseño, liderazgo de equipos e IA aplicada al producto.">
+  <meta name="twitter:image" content="https://gonzalofasce.com/assets/og-image.webp">
+
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    /* ─── Variables ─────────────────────────────────────────── */
+    :root {
+      --color-bg:      #F8F6F2;
+      --color-ink:     #0D0D0D;
+      --color-muted:   #6B6B6B;
+      --color-accent:  #2F6EEB;
+      --color-rule:    #E2DED8;
+
+      --font: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      --font-mono: 'IBM Plex Mono', 'SF Mono', monospace;
+
+      --nav-height: 60px;
+
+      --space-xs:  8px;
+      --space-sm:  16px;
+      --space-md:  32px;
+      --space-lg:  64px;
+
+      --content-width: 720px;
+    }
+
+    /* ─── Reset ─────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; -webkit-font-smoothing: antialiased; }
+
+    body {
+      font-family: var(--font);
+      background: var(--color-bg);
+      color: var(--color-ink);
+      line-height: 1.65;
+    }
+
+    a {
+      color: var(--color-accent);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    /* ─── Layout ─────────────────────────────────────────────── */
+    /* ─── Nav ───────────────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: var(--nav-height);
+      background: var(--color-bg);
+      z-index: 100;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.2s ease;
+    }
+
+    nav.scrolled {
+      border-bottom-color: var(--color-rule);
+    }
+
+    .nav-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 24px;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-logo {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--color-ink);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--color-muted);
+      transition: color 0.15s ease, border-color 0.15s ease;
+      border-bottom: 1px solid transparent;
+      padding-bottom: 1px;
+    }
+
+    .nav-links a:hover {
+      color: var(--color-ink);
+      text-decoration: none;
+    }
+
+    .nav-links a.active {
+      color: var(--color-ink);
+      border-bottom: 1px solid var(--color-accent);
+      padding-bottom: 1px;
+    }
+
+    .nav-links .nav-cv {
+      font-family: var(--font-mono);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--color-ink);
+      letter-spacing: 0.01em;
+      border-bottom: 1px solid var(--color-ink);
+      padding-bottom: 1px;
+      transition: color 0.15s ease, border-color 0.15s ease;
+    }
+
+    .nav-links .nav-cv:hover {
+      color: var(--color-accent);
+      border-color: var(--color-accent);
+    }
+
+    .nav-links .nav-cv.active {
+      border-color: var(--color-accent);
+    }
+
+    /* ─── Layout ─────────────────────────────────────────────── */
+    .page {
+      max-width: var(--content-width);
+      margin: 0 auto;
+      padding: var(--space-lg) 24px;
+      padding-top: calc(var(--nav-height) + var(--space-lg));
+    }
+
+    /* ─── Header ─────────────────────────────────────────────── */
+    .cv-header {
+      margin-bottom: var(--space-md);
+    }
+
+    .cv-name {
+      font-family: var(--font);
+      font-size: 42px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.05;
+      color: var(--color-ink);
+      margin-bottom: 10px;
+    }
+
+    .cv-title {
+      font-family: var(--font);
+      font-size: 16px;
+      font-weight: 400;
+      color: var(--color-muted);
+      margin-bottom: var(--space-sm);
+    }
+
+    .cv-contact {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px 20px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--color-muted);
+    }
+
+    .cv-contact a {
+      color: var(--color-muted);
+      transition: color 0.15s ease;
+    }
+
+    .cv-contact a:hover {
+      color: var(--color-accent);
+      text-decoration: none;
+    }
+
+    .cv-contact .sep {
+      color: var(--color-rule);
+    }
+
+    /* ─── Divider ─────────────────────────────────────────────── */
+    hr {
+      border: none;
+      border-top: 1px solid var(--color-rule);
+      margin: var(--space-md) 0;
+    }
+
+    /* ─── Section label ─────────────────────────────────────────── */
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--color-muted);
+      margin-bottom: var(--space-sm);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .section-label .num {
+      color: var(--color-accent);
+    }
+
+    /* ─── Sections ─────────────────────────────────────────────── */
+    .cv-section {
+      margin-bottom: var(--space-md);
+    }
+
+    /* ─── Summary ─────────────────────────────────────────────── */
+    .cv-summary {
+      font-size: 15px;
+      color: var(--color-ink);
+      line-height: 1.7;
+      max-width: 600px;
+    }
+
+    /* ─── Experience entry ─────────────────────────────────────── */
+    .exp-entry {
+      margin-bottom: 28px;
+    }
+
+    .exp-entry:last-child {
+      margin-bottom: 0;
+    }
+
+    .exp-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 2px;
+    }
+
+    .exp-company {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--color-ink);
+    }
+
+    .exp-dates {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 400;
+      color: var(--color-muted);
+      letter-spacing: 0.03em;
+      white-space: nowrap;
+    }
+
+    .exp-role {
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--color-muted);
+      margin-bottom: 10px;
+    }
+
+    .exp-items {
+      list-style: none;
+      padding: 0;
+    }
+
+    .exp-items li {
+      font-size: 14px;
+      color: var(--color-ink);
+      line-height: 1.6;
+      padding-left: 14px;
+      position: relative;
+      margin-bottom: 4px;
+    }
+
+    .exp-items li::before {
+      content: '·';
+      position: absolute;
+      left: 0;
+      color: var(--color-muted);
+    }
+
+    /* ─── Education ─────────────────────────────────────────────── */
+    .edu-entry {
+      margin-bottom: 16px;
+    }
+
+    .edu-entry:last-child {
+      margin-bottom: 0;
+    }
+
+    .edu-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+
+    .edu-institution {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--color-ink);
+    }
+
+    .edu-dates {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--color-muted);
+      letter-spacing: 0.03em;
+    }
+
+    .edu-degree {
+      font-size: 14px;
+      color: var(--color-muted);
+    }
+
+    /* ─── Skills grid ─────────────────────────────────────────── */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px 40px;
+    }
+
+    .skill-group {
+      /* nothing special */
+    }
+
+    .skill-group-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--color-muted);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .skill-group-items {
+      font-size: 14px;
+      color: var(--color-ink);
+      line-height: 1.6;
+    }
+
+    /* ─── Languages ─────────────────────────────────────────────── */
+    .lang-row {
+      display: flex;
+      gap: 40px;
+    }
+
+    .lang-item {
+      font-size: 14px;
+      color: var(--color-ink);
+    }
+
+    .lang-item span {
+      color: var(--color-muted);
+      font-size: 13px;
+      margin-left: 6px;
+    }
+
+    /* ─── Footer ─────────────────────────────────────────────────── */
+    .cv-footer {
+      margin-top: var(--space-md);
+      padding-top: var(--space-sm);
+      border-top: 1px solid var(--color-rule);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .cv-footer-note {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--color-muted);
+    }
+
+    .cv-footer-link a {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--color-muted);
+      transition: color 0.15s ease;
+    }
+
+    .cv-footer-link a:hover {
+      color: var(--color-accent);
+      text-decoration: none;
+    }
+
+    .print-btn {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--color-muted);
+      background: transparent;
+      border: 1px solid var(--color-rule);
+      padding: 6px 14px;
+      cursor: pointer;
+      transition: color 0.15s ease, border-color 0.15s ease;
+    }
+
+    .print-btn:hover {
+      color: var(--color-ink);
+      border-color: var(--color-ink);
+      text-decoration: none;
+    }
+
+    /* ─── Responsive ─────────────────────────────────────────── */
+    @media (max-width: 700px) {
+      .nav-links .hide-mobile {
+        display: none;
+      }
+    }
+
+    @media print {
+      body {
+        background: #fff;
+      }
+
+      nav, .print-btn {
+        display: none;
+      }
+
+      .page {
+        padding: 40px 32px;
+        padding-top: 40px;
+        max-width: 100%;
+      }
+
+      a {
+        color: var(--color-ink);
+        text-decoration: none;
+      }
+
+      .cv-contact a {
+        color: var(--color-muted);
+      }
+
+      .cv-footer-link a {
+        color: var(--color-muted);
+      }
+
+      /* Evitar cortes internos en secciones y entries */
+      .cv-section {
+        break-inside: avoid;
+        page-break-inside: avoid;
+      }
+
+      .exp-entry {
+        break-inside: avoid;
+        page-break-inside: avoid;
+      }
+
+      .edu-entry {
+        break-inside: avoid;
+        page-break-inside: avoid;
+      }
+
+      /* El label de sección no puede quedar solo al final de una página */
+      .section-label {
+        break-after: avoid;
+        page-break-after: avoid;
+      }
+
+      hr {
+        break-after: avoid;
+        page-break-after: avoid;
+      }
+    }
+
+    @page {
+      margin: 32px 40px;
+      size: A4;
+    }
+  </style>
+</head>
+
+<body>
+  <nav id="nav">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">Gonzalo Fasce</a>
+      <ul class="nav-links">
+        <li class="hide-mobile"><a href="casos/mob.html">MOB</a></li>
+        <li class="hide-mobile"><a href="casos/singular.html">Singular</a></li>
+        <li class="hide-mobile"><a href="casos/mis-resultados.html">Mis Resultados</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="cv.html" class="nav-cv active">CV</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="page">
+
+    <!-- ── Header ──────────────────────────────────────────────── -->
+    <header class="cv-header">
+      <h1 class="cv-name">Gonzalo Fasce</h1>
+      <p class="cv-title">Product Designer · UX/UI</p>
+      <div class="cv-contact">
+        <a href="mailto:geefedesign@gmail.com">geefedesign@gmail.com</a>
+        <span class="sep">·</span>
+        <span>Buenos Aires, ARG</span>
+        <span class="sep">·</span>
+        <a href="https://www.linkedin.com/in/gonzalo-fasce/" target="_blank">LinkedIn</a>
+        <span class="sep">·</span>
+        <a href="https://gonzalofasce.com" target="_blank">Portfolio</a>
+      </div>
+    </header>
+
+    <hr>
+
+    <!-- ── Resumen ─────────────────────────────────────────────── -->
+    <section class="cv-section">
+      <div class="section-label">
+        <span class="num">00</span>
+        <span>·</span>
+        <span>Perfil</span>
+      </div>
+      <p class="cv-summary">
+        Diseñador UX/UI con más de 7 años en fintech y productos digitales. Combino criterio creativo y pensamiento sistémico para resolver problemas complejos y escalar procesos de diseño. Especializado en sistemas de diseño, liderazgo de equipos e integración de IA aplicada al producto.
+      </p>
+    </section>
+
+    <hr>
+
+    <!-- ── Experiencia ─────────────────────────────────────────── -->
+    <section class="cv-section">
+      <div class="section-label">
+        <span class="num">01</span>
+        <span>·</span>
+        <span>Experiencia</span>
+      </div>
+
+      <div class="exp-entry">
+        <div class="exp-header">
+          <span class="exp-company">N5 Now</span>
+          <span class="exp-dates">2019 — Presente</span>
+        </div>
+        <div class="exp-role">Product Designer</div>
+        <ul class="exp-items">
+          <li>Lideré la creación del sistema de diseño MOB: arquitectura de componentes, tokens, documentación y metodología del equipo UX.</li>
+          <li>Rediseñé el CRM financiero y desarrollé funcionalidades nuevas en colaboración con producto, desarrollo y QA.</li>
+          <li>Diseñé los módulos de Campaign Management y Sistema de Incentivos para equipos de ventas bancarias.</li>
+          <li>Integré herramientas de IA en el flujo de diseño: prototipado, documentación y generación de ideas con Figma Make, ChatGPT y V0.</li>
+        </ul>
+      </div>
+
+      <div class="exp-entry">
+        <div class="exp-header">
+          <span class="exp-company">Consultor UX/UI Freelance</span>
+          <span class="exp-dates">2018 — 2022</span>
+        </div>
+        <div class="exp-role">Bistrosoft · BLKmarket · otros</div>
+        <ul class="exp-items">
+          <li>Consultoría de UX/UI para startups y productos en etapas tempranas.</li>
+          <li>Prototipado, conceptualización de nuevas funcionalidades y diseño de interfaces orientadas a objetivos de producto.</li>
+        </ul>
+      </div>
+    </section>
+
+    <hr>
+
+    <!-- ── Educación ────────────────────────────────────────────── -->
+    <section class="cv-section">
+      <div class="section-label">
+        <span class="num">02</span>
+        <span>·</span>
+        <span>Educación</span>
+      </div>
+
+      <div class="edu-entry">
+        <div class="edu-header">
+          <span class="edu-institution">Universidad de Morón</span>
+          <span class="edu-dates">2012 — 2014</span>
+        </div>
+        <div class="edu-degree">Licenciatura en Diseño Gráfico Multimedial</div>
+      </div>
+
+      <div class="edu-entry">
+        <div class="edu-header">
+          <span class="edu-institution">Universidad de Morón</span>
+          <span class="edu-dates">2007 — 2012</span>
+        </div>
+        <div class="edu-degree">Diseñador Gráfico</div>
+      </div>
+    </section>
+
+    <hr>
+
+    <!-- ── Habilidades ──────────────────────────────────────────── -->
+    <section class="cv-section">
+      <div class="section-label">
+        <span class="num">03</span>
+        <span>·</span>
+        <span>Habilidades</span>
+      </div>
+
+      <div class="skills-grid">
+        <div class="skill-group">
+          <div class="skill-group-label">Diseño</div>
+          <div class="skill-group-items">UX/UI Design · UX Writing<br>Product Thinking · Sistemas de diseño</div>
+        </div>
+        <div class="skill-group">
+          <div class="skill-group-label">Herramientas</div>
+          <div class="skill-group-items">Figma · FigJam · Adobe CC<br>Miro · Notion</div>
+        </div>
+        <div class="skill-group">
+          <div class="skill-group-label">IA aplicada</div>
+          <div class="skill-group-items">Claude · ChatGPT · MidJourney<br>Lovable · V0 · Stitch · Figma Make</div>
+        </div>
+        <div class="skill-group">
+          <div class="skill-group-label">Liderazgo</div>
+          <div class="skill-group-items">Gestión de equipos UX<br>Metodología y procesos de diseño</div>
+        </div>
+      </div>
+    </section>
+
+    <hr>
+
+    <!-- ── Idiomas ──────────────────────────────────────────────── -->
+    <section class="cv-section">
+      <div class="section-label">
+        <span class="num">04</span>
+        <span>·</span>
+        <span>Idiomas</span>
+      </div>
+      <div class="lang-row">
+        <div class="lang-item">Español <span>Nativo</span></div>
+        <div class="lang-item">Inglés <span>Avanzado — C2</span></div>
+      </div>
+    </section>
+
+    <!-- ── Footer ──────────────────────────────────────────────── -->
+    <div class="cv-footer">
+      <span class="cv-footer-note">Gonzalo Fasce · 2026</span>
+      <a href="#" class="print-btn" onclick="window.print(); return false;">↓ Exportar PDF</a>
+    </div>
+
+  </div>
+
+  <script>
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 10);
+    }, { passive: true });
+  </script>
+</body>
+</html>

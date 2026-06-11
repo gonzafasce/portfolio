@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Singular — Gonzalo Fasce</title>
+  <meta name="description" content="Caso de estudio: Singular, dirección visual estilo Bloomberg para una plataforma de IA financiera, más una demo concept para Fintech Americas.">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Singular — Caso de estudio | Gonzalo Fasce">
+  <meta property="og:description" content="IA + diseño en finanzas: dirección visual de máxima densidad de datos y una demo concept para Fintech Americas.">
+  <meta property="og:image" content="https://gonzalofasce.com/assets/og-image.webp">
+  <meta property="og:url" content="https://gonzalofasce.com/casos/singular.html">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Singular — Caso de estudio | Gonzalo Fasce">
+  <meta name="twitter:description" content="IA + diseño en finanzas: dirección visual de máxima densidad de datos y una demo concept para Fintech Americas.">
+  <meta name="twitter:image" content="https://gonzalofasce.com/assets/og-image.webp">
+
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-bg:     #F8F6F2;
+      --color-ink:    #0D0D0D;
+      --color-muted:  #6B6B6B;
+      --color-accent: #2F6EEB;
+      --color-rule:   #E2DED8;
+
+      --font:      'Helvetica Neue', Helvetica, Arial, sans-serif;
+      --font-mono: 'IBM Plex Mono', 'SF Mono', monospace;
+
+      --space-xs:  8px;
+      --space-sm:  16px;
+      --space-md:  32px;
+      --space-lg:  64px;
+      --space-xl:  96px;
+      --space-xxl: 140px;
+
+      --content-width: 760px;
+      --nav-height:    60px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+    body { font-family: var(--font); background: var(--color-bg); color: var(--color-ink); line-height: 1.65; }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; width: 100%; height: auto; }
+
+
+    /* ─── Nav ───────────────────────────────────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      height: var(--nav-height); background: var(--color-bg);
+      z-index: 100; border-bottom: 1px solid transparent;
+      transition: border-color 0.2s ease;
+    }
+    nav.scrolled { border-bottom-color: var(--color-rule); }
+    .nav-inner {
+      max-width: 900px; margin: 0 auto;
+      padding: 0 24px; height: 100%;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo {
+      font-family: var(--font-mono); font-size: 12px; font-weight: 500;
+      letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-ink);
+    }
+    .nav-links { display: flex; align-items: center; gap: var(--space-md); list-style: none; }
+    .nav-links a {
+      font-family: var(--font-mono); font-size: 12px; font-weight: 400;
+      color: var(--color-muted);
+      transition: color 0.15s ease, border-color 0.15s ease;
+      border-bottom: 1px solid transparent;
+      padding-bottom: 1px;
+    }
+    .nav-links a:hover { color: var(--color-ink); }
+    .nav-links a.active {
+      color: var(--color-ink);
+      border-bottom: 1px solid var(--color-accent);
+      padding-bottom: 1px;
+    }
+    .nav-links .nav-cv {
+      font-family: var(--font-mono); font-size: 14px; font-weight: 500;
+      color: var(--color-ink); letter-spacing: 0.01em;
+      border-bottom: 1px solid var(--color-ink);
+      padding-bottom: 1px; transition: color 0.15s ease, border-color 0.15s ease;
+    }
+    .nav-links .nav-cv:hover { color: var(--color-accent); border-color: var(--color-accent); }
+
+    /* ─── Main ──────────────────────────────────────────── */
+    main {
+      max-width: calc(var(--content-width) + 48px);
+      margin: 0 auto;
+      padding: 0 24px; padding-top: calc(var(--nav-height) + var(--space-xl));
+    }
+
+    /* ─── Images ────────────────────────────────────────── */
+    .img-full { width: 100%; border: 1px solid var(--color-rule); margin: var(--space-md) 0; }
+    .img-grid-2 {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: var(--space-sm); margin: var(--space-md) 0;
+    }
+    .img-grid-2 img { width: 100%; border: 1px solid var(--color-rule); }
+    .img-grid-3 {
+      display: grid; grid-template-columns: 1fr 1fr 1fr;
+      gap: var(--space-sm); margin: var(--space-md) 0;
+    }
+    .img-grid-3 img { width: 100%; border: 1px solid var(--color-rule); }
+    .img-caption,
+    .section .img-caption {
+      font-family: var(--font-mono); font-size: 14px;
+      color: var(--color-muted); margin-top: var(--space-xs); font-style: italic;
+    }
+
+
+    /* ─── Case intro (2-col hero) ───────────────────────── */
+    .case-intro {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-lg);
+      align-items: center;
+      min-height: 65vh;
+      margin-bottom: var(--space-xl);
+      width: calc(100% + 320px);
+      margin-left: -160px;
+    }
+
+    .case-intro-text {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-md);
+    }
+
+    .case-intro-image img {
+      width: 100%;
+      mix-blend-mode: multiply;
+      opacity: 0;
+      transition: opacity 0.8s ease;
+    }
+    .case-intro-image img.loaded {
+      opacity: 1;
+    }
+
+    @media (max-width: 700px) {
+      .case-intro { grid-template-columns: 1fr; min-height: auto; width: 100%; margin-left: 0; gap: var(--space-md); margin-bottom: var(--space-lg); }
+      .case-intro-image { order: -1; max-width: 280px; margin: 0 auto; }
+      .case-intro-text { gap: var(--space-sm); }
+      .case-subtitle { font-size: 15px; }
+    }
+
+    /* ─── Case meta / title / subtitle ─────────────────── */
+    .case-meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--color-muted);
+    }
+
+    .case-meta .num { color: var(--color-accent); }
+    .case-meta .dot { color: var(--color-rule); }
+
+    .case-title {
+      font-size: clamp(36px, 6vw, 54px);
+      font-weight: 700;
+      line-height: 1.05;
+      letter-spacing: -0.025em;
+      color: var(--color-ink);
+    }
+
+    .case-subtitle {
+      font-size: 17px;
+      font-weight: 400;
+      color: var(--color-muted);
+      line-height: 1.6;
+    }
+
+    /* ─── Sections ──────────────────────────────────────── */
+    .section-label {
+      display: flex; align-items: center; gap: 8px;
+      margin-bottom: var(--space-md);
+      font-family: var(--font-mono); font-size: 12px; font-weight: 500;
+      letter-spacing: 0.01em; text-transform: uppercase;
+    }
+    .section-label .num { color: var(--color-accent); }
+    .section-label .dot { color: var(--color-rule); }
+    .section-label .name { color: var(--color-muted); }
+    .section { margin-bottom: var(--space-xl); }
+    .section p {
+      font-size: 17px; font-weight: 400; color: var(--color-ink);
+      line-height: 1.7; max-width: 640px; margin-bottom: var(--space-sm);
+    }
+    .section p:last-child { margin-bottom: 0; }
+    .section strong { font-weight: 600; }
+    .section em { font-style: italic; }
+
+    /* ─── Tools table ───────────────────────────────────── */
+    .tools-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: var(--space-md) 0;
+      font-size: 14px;
+    }
+    .tools-table th {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--color-muted);
+      text-align: left;
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--color-rule);
+    }
+    .tools-table td {
+      padding: 12px;
+      border-bottom: 1px solid var(--color-rule);
+      color: var(--color-ink);
+      line-height: 1.5;
+      vertical-align: top;
+    }
+    .tools-table td:first-child {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--color-accent);
+      white-space: nowrap;
+    }
+    .tools-table tr:last-child td { border-bottom: none; }
+
+    /* ─── Variants grid ─────────────────────────────────── */
+    .variants-hero { width: 100%; border: 1px solid var(--color-rule); margin-bottom: var(--space-sm); }
+    .variant-label {
+      font-family: var(--font-mono); font-size: 12px; font-weight: 500;
+      color: var(--color-muted); margin-bottom: var(--space-md);
+    }
+    .variant-label span { color: var(--color-ink); }
+
+
+    /* ─── Metrics strip ─────────────────────────────────── */
+    .metrics-strip {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 0;
+      padding: var(--space-xl) 0;
+      margin: var(--space-xl) 0;
+      text-align: center;
+    }
+
+    .metric {
+      padding: 0 var(--space-md);
+    }
+
+    .metric-value {
+      display: block;
+      font-family: var(--font);
+      font-size: clamp(36px, 5vw, 60px);
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      color: var(--color-ink);
+      line-height: 1;
+      margin-bottom: 10px;
+    }
+
+    .metric-label {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 400;
+      color: var(--color-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      line-height: 1.4;
+    }
+
+    /* ─── Divider ───────────────────────────────────────── */
+    hr { border: none; border-top: 1px solid var(--color-rule); margin: var(--space-xl) 0; }
+
+    /* ─── Case nav ──────────────────────────────────────── */
+    .case-nav {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: var(--space-lg) 0 var(--space-xxl);
+    }
+    .case-nav a {
+      font-family: var(--font-mono); font-size: 13px; font-weight: 500;
+      color: var(--color-muted); transition: color 0.15s ease;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .case-nav a:hover { color: var(--color-ink); }
+
+    /* ─── Fade-in ───────────────────────────────────────── */
+    .fade-in { opacity: 0; transform: translateY(14px); transition: opacity 0.5s ease-out, transform 0.5s ease-out; }
+    .fade-in.visible { opacity: 1; transform: none; }
+    @media (prefers-reduced-motion: reduce) { .fade-in { opacity: 1 !important; transform: none !important; } }
+
+    @media (max-width: 600px) {
+      main { padding-top: calc(var(--nav-height) + var(--space-md)); }
+      .nav-links .hide-mobile { display: none; }
+      .img-grid-2, .img-grid-3 { grid-template-columns: 1fr; }
+      .case-nav { flex-direction: column; gap: var(--space-sm); align-items: flex-start; }
+      .section p { font-size: 16px; max-width: 100%; }
+      .section h2 { font-size: 22px; }
+      .metrics-strip { grid-template-columns: repeat(2, 1fr); gap: 1px; }
+      .case-table { font-size: 13px; }
+      footer { flex-direction: column; gap: var(--space-sm); align-items: flex-start; }
+    }
+
+
+    /* ─── Case intro (2-col hero) ───────────────────────── */
+    .case-intro {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-lg);
+      align-items: center;
+      min-height: 65vh;
+      margin-bottom: var(--space-xl);
+    }
+
+    .case-intro-text {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-md);
+    }
+
+    .case-intro-image {
+      position: relative;
+    }
+
+    .case-intro-image img {
+      width: 100%;
+      mix-blend-mode: multiply;
+      opacity: 0;
+      transition: opacity 0.8s ease;
+    }
+    .case-intro-image img.loaded {
+      opacity: 1;
+    }
+
+    @media (max-width: 700px) {
+      .case-intro {
+        grid-template-columns: 1fr;
+        min-height: auto;
+      }
+      .case-intro-image { order: -1; }
+    }
+
+  </style>
+</head>
+<body>
+
+  <!--
+  ═══════════════════════════════════════════════════
+  IMÁGENES DE ESTE CASO — para reemplazar, cambiá el
+  atributo src del <img> correspondiente o reemplazá
+  el archivo en la carpeta assets/caso-2-singular/
+  ═══════════════════════════════════════════════════
+
+  [HERO]         ../assets/caso-2-singular/ilus-admin_dash.png
+  [PROBLEMA]     ../assets/caso-2-singular/deck-singular-apertura.png
+  [SISTEMA 1]    ../assets/caso-2-singular/ilus-infografia-singular-solo.png
+  [SISTEMA 2]    ../assets/caso-2-singular/deck-singular--acto2.png
+  [VOZ]          ../assets/caso-2-singular/ilus-capturadechat.png
+  [VARIANTE A]   ../assets/caso-2-singular/1-MOB-light_ClaudeDesign.png
+  [VARIANTE B]   ../assets/caso-2-singular/2-MOB-dark_ClaudeDesign.png
+  [VARIANTE C]   ../assets/caso-2-singular/3-LiquidGlass_ClaudeCode.png
+  [VARIANTE D]   ../assets/caso-2-singular/4-BloombergStyle_Lovable.png
+  [VARIANTE E]   ../assets/caso-2-singular/5-BUGATTI_stitch.png
+  [VARIANTE F]   ../assets/caso-2-singular/6-LapizDark-v0.png
+
+  ═══════════════════════════════════════════════════
+  -->
+
+
+  <!-- Nav -->
+  <nav id="nav">
+    <div class="nav-inner">
+      <a href="../index.html" class="nav-logo">Gonzalo Fasce</a>
+      <ul class="nav-links">
+        <li class="hide-mobile"><a href="mob.html">MOB</a></li>
+        <li class="hide-mobile"><a href="singular.html" class="active">Singular</a></li>
+        <li class="hide-mobile"><a href="mis-resultados.html">Mis Resultados</a></li>
+        <li><a href="../about.html">About</a></li>
+        <li><a href="../cv.html" class="nav-cv">CV</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main id="content">
+
+    <!-- Hero intro -->
+    <div class="case-intro fade-in">
+      <div class="case-intro-text">
+        <div class="case-meta">
+          <span class="num">02</span>
+          <span class="dot">·</span>
+          <span>IA · Exploración visual · Metodología</span>
+        </div>
+        <h1 class="case-title">Singular: de cero a dos decks en una semana</h1>
+        <p class="case-subtitle">Cómo usé cinco herramientas de IA generativa en paralelo para explorar seis direcciones visuales — y cambiar el tipo de conversación con el stakeholder.</p>
+      </div>
+      <div class="case-intro-image">
+        <!-- [HERO] ../assets/caso-2-singular/ilus-admin_dash.png -->
+        <img src="../assets/hero/caso-2-singular.webp" alt="Singular — estrategia y operaciones">
+      </div>
+    </div>
+
+
+    <!-- 00 · El problema -->
+    <div class="section fade-in">
+      <div class="section-label">
+        <span class="num">00</span><span class="dot">·</span><span class="name">El problema</span>
+      </div>
+      <p>El CEO de N5 baja una visión: <strong>Singular</strong>, una plataforma B2B de customer engagement con IA para bancos. Hay arquitectura técnica, hay hipótesis comercial, hay intuición fuerte sobre el lugar en el mercado. Lo que no hay es un producto diseñado, una narrativa visual, ni una manera concreta de mostrarle al equipo y a clientes cómo se ve la cosa.</p>
+      <p>El encargo fue claro: en una semana, producir algo que sirviera tanto para alinear internamente como para vender. Sin más contexto que eso.</p>
+
+      <!-- [PROBLEMA] -->
+      <img class="img-full" src="../assets/caso-2-singular/deck-singular-apertura.webp" alt="Slide de apertura — Un chatbot habla con el cliente, tachado">
+      <p class="img-caption">El punto de partida: lo que Singular <em>no</em> es. La propuesta se entiende en un segundo.</p>
+    </div>
+
+    <hr class="fade-in">
+
+    <!-- 01 · El proceso -->
+    <div class="section fade-in">
+      <div class="section-label">
+        <span class="num">01</span><span class="dot">·</span><span class="name">El proceso</span>
+      </div>
+      <p>Lo primero que hice no fue abrir Figma. Fue entender el producto — y la primera decisión de diseño que tomé cambió todo lo que vino después: <strong>Singular no es un producto, son dos</strong>.</p>
+      <p>Un <strong>panel operativo</strong> para el CRM Manager del banco — alta densidad, dark mode, acciones en tiempo real. Y un <strong>panel directivo</strong> para el C-level — read-only, narrativa de arriba hacia abajo, síntesis estratégica. Tratarlos como una sola cosa habría comprometido a los dos. Separarlos fue el primer entregable de la semana, y fue conceptual: no había dibujado nada todavía.</p>
+      <p>A partir de ahí el trabajo corrió en dos carriles en paralelo.</p>
+      <p>El primero fue el <strong>deck de UX</strong> — la arquitectura de experiencia del sistema completo. Cómo funciona Singular como producto, sus tres capas (el cerebro que decide, la voz que ejecuta, el cliente que vive la consecuencia), los arquetipos de usuario, la lógica de canales.</p>
+
+      <!-- [SISTEMA 1] -->
+      <img class="img-full" src="../assets/caso-2-singular/ilus-infografia-singular-solo.webp" alt="Las tres capas de Singular — Estilo Lápiz">
+      <p class="img-caption">Las tres capas del sistema en Estilo Lápiz: el cerebro (HOPE), la voz (North Star), el cliente. Ilustración generada con Midjourney desde el prompt canónico del sistema visual.</p>
+
+      <!-- [SISTEMA 2] -->
+      <img class="img-full" src="../assets/caso-2-singular/deck-singular--acto2.webp" alt="El banco define el universo. North Star activa la versión correcta.">
+      <p class="img-caption">"El banco define el universo. North Star activa la versión correcta." — Slide del deck de UX.</p>
+
+      <!-- [VOZ] -->
+      <img class="img-full" src="../assets/caso-2-singular/ilus-capturadechat.webp" alt="Conversación WhatsApp con Valentina — la voz del producto">
+      <p class="img-caption">Valentina, la voz de North Star. Una conversación de WhatsApp como materialización concreta de la experiencia del cliente final.</p>
+
+      <p>El segundo carril fue la <strong>exploración visual del admin</strong>. En vez de proponer una dirección y defenderla, decidí mapear el espacio completo: cinco herramientas de IA generativa distintas, mismo brief para todas, seis variantes visuales en paralelo. No para mostrar que podía producir mucho, sino para que el CEO pudiera elegir con criterio real en vez de aprobar a ciegas.</p>
+    </div>
+
+    <hr class="fade-in">
+
+    <!-- 02 · La metodología -->
+    <div class="section fade-in">
+      <div class="section-label">
+        <span class="num">02</span><span class="dot">·</span><span class="name">La metodología</span>
+      </div>
+      <p>El insight que apareció en el proceso: <strong>cada herramienta de IA tiene una "voz por defecto"</strong> que tira hacia un estilo. Lovable tira a fintech limpio, v0 tira a Linear, Stitch tira a denso. Pelearle a esa voz desperdicia tiempo. Aprovecharla deliberadamente — usar cada herramienta para lo que mejor hace — es lo que permitió explorar seis direcciones en un día.</p>
+
+      <table class="tools-table">
+        <thead>
+          <tr>
+            <th>Variante</th>
+            <th>Dirección visual</th>
+            <th>Herramienta</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>A</td><td>MOB Light — sistema propio de N5, modo claro</td><td>Claude Design</td></tr>
+          <tr><td>B</td><td>MOB Dark — sistema propio de N5, modo oscuro</td><td>Claude Design</td></tr>
+          <tr><td>C</td><td>Liquid Glass — física de luz, visionOS aplicado</td><td>Claude Code</td></tr>
+          <tr><td>D</td><td>Bloomberg Style — máxima densidad de datos</td><td>Lovable</td></tr>
+          <tr><td>E</td><td>Bugatti — monocromático total, disciplina extrema</td><td>Stitch</td></tr>
+          <tr><td>F</td><td>Lápiz Dark — editorial cream en modo oscuro</td><td>v0</td></tr>
+        </tbody>
+      </table>
+
+      <p>Para cada variante se documentó qué herramienta se usó, qué prompt se le dio, qué tuvo que corregirse a mano, y qué tan rápido se pudo iterar. Esa documentación es parte del entregable.</p>
+
+      <!-- [VARIANTE D] — hero de la grilla -->
+      <img class="variants-hero" src="../assets/caso-2-singular/4-BloombergStyle_Lovable.webp" alt="Variante D — Bloomberg Style con Lovable">
+      <p class="variant-label">Variante D · <span>Bloomberg Style</span> — Lovable. Máxima densidad de datos, sin concesiones estéticas. La dirección más cercana al contexto bancario real.</p>
+
+      <!-- [VARIANTE A] — destacada -->
+      <img class="img-full" src="../assets/caso-2-singular/1-MOB-light_ClaudeDesign.webp" alt="Variante A — MOB Light con Claude Design">
+      <p class="img-caption">A · MOB Light — Claude Design. El sistema de diseño propio aplicado al producto. Coherencia total con N5 Now.</p>
+
+      <!-- [VARIANTE B + C] -->
+      <div class="img-grid-2">
+        <div>
+          <img src="../assets/caso-2-singular/2-MOB-dark_ClaudeDesign.webp" alt="Variante B — MOB Dark">
+          <p class="img-caption">B · MOB Dark — Claude Design</p>
+        </div>
+        <div>
+          <img src="../assets/caso-2-singular/3-LiquidGlass_ClaudeCode.webp" alt="Variante C — Liquid Glass">
+          <p class="img-caption">C · Liquid Glass — Claude Code</p>
+        </div>
+      </div>
+
+      <!-- [VARIANTE E + F] -->
+      <div class="img-grid-2">
+        <div>
+          <img src="../assets/caso-2-singular/5-BUGATTI_stitch.webp" alt="Variante E — Bugatti Style con Stitch">
+          <p class="img-caption">E · Bugatti Style — Stitch</p>
+        </div>
+        <div>
+          <img src="../assets/caso-2-singular/6-LapizDark-v0.webp" alt="Variante F — Lápiz Dark con v0">
+          <p class="img-caption">F · Lápiz Dark — v0</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Metrics -->
+    <div class="metrics-strip fade-in">
+      <div class="metric">
+        <span class="metric-value">7</span>
+        <span class="metric-label">días de trabajo</span>
+      </div>
+      <div class="metric">
+        <span class="metric-value">5</span>
+        <span class="metric-label">herramientas de IA</span>
+      </div>
+      <div class="metric">
+        <span class="metric-value">6</span>
+        <span class="metric-label">variantes visuales</span>
+      </div>
+      <div class="metric">
+        <span class="metric-value">2</span>
+        <span class="metric-label">decks entregados</span>
+      </div>
+    </div>
+
+    <!-- 03 · El resultado -->
+    <div class="section fade-in">
+      <div class="section-label">
+        <span class="num">03</span><span class="dot">·</span><span class="name">El resultado</span>
+      </div>
+      <p>Dos decks accionables al final de la semana. El de UX para alinear al equipo sobre qué se está construyendo. El visual para que el CEO tomara una decisión real sobre estética y dirección — con trazabilidad completa de por qué se consideró cada variante y por qué se descartó.</p>
+      <p>La tesis metodológica que guió todo: la IA como co-piloto, no como ejecutora. Cada decisión de diseño la tomé yo. Cada producción de assets pasó por al menos una herramienta de IA. El rol del designer no desaparece — se convierte en director, curador y crítico de output.</p>
+      <p>El CEO entró a la reunión final con una decisión real para tomar — y la tomó: <strong>Bloomberg Style</strong>, la dirección de máxima densidad de datos. La más cercana al contexto bancario real, y la más difícil de defender sin haberla explorado contra las otras cinco. Eso es lo que más me importa de este caso: no el volumen de lo que se produjo, sino el tipo de conversación que habilitó. En vez de <em>"te traigo lo que decidí"</em>, la dinámica fue <em>"te traigo el espacio para que decidas vos"</em>.</p>
+      <p>Y lo que quedó demostrado — al menos para mí — es que la velocidad bien usada no es un atajo. Es lo que te permite explorar el problema en lugar de resolver solo una versión de él.</p>
+    </div>
+
+    <hr class="fade-in">
+
+    <!-- Demo en vivo -->
+    <div class="section fade-in">
+      <div class="section-label">
+        <span class="num">04</span><span class="dot">·</span><span class="name">La demo</span>
+      </div>
+      <img class="img-full" src="../assets/caso-2-singular/demo-singular.webp" alt="Singular — concept demo Fintech Americas">
+      <p>Singular tiene un producto en desarrollo. Pero cuando el CEO necesita dar una keynote en <a href="https://www.fintechamericas.co/" target="_blank" style="color:var(--color-accent);border-bottom:1px solid var(--color-accent)">Fintech Americas</a>, slides no alcanzan. El encargo fue dar un volantazo: olvidar el producto por un momento y pensar como un show. Esta demo no es Singular — es el concept car del salón. Una pieza funcional para que la sala vea hacia dónde va el sistema antes de que exista.</p>
+      <a href="../demos/singular/index.html" target="_blank" style="display:inline-flex;align-items:center;gap:8px;margin-top:var(--space-sm);font-family:var(--font-mono);font-size:13px;font-weight:500;color:var(--color-ink);border-bottom:1px solid var(--color-ink);padding-bottom:2px;transition:color 0.15s,border-color 0.15s" onmouseover="this.style.color='var(--color-accent)';this.style.borderColor='var(--color-accent)'" onmouseout="this.style.color='var(--color-ink)';this.style.borderColor='var(--color-ink)'">Ver demo en vivo →</a>
+    </div>
+
+    <hr class="fade-in">
+
+    <!-- Case nav -->
+    <div class="case-nav fade-in">
+      <a href="mob.html">← MOB</a>
+      <a href="mis-resultados.html">Mis Resultados →</a>
+    </div>
+
+  </main>
+
+  <script>
+
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 10);
+    }, { passive: true });
+
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReduced) {
+      document.querySelectorAll('.fade-in').forEach(el => el.classList.add('visible'));
+    } else {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.05, rootMargin: '0px 0px -30px 0px' });
+      document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+    }
+
+    // Hero image — delay reveal so multiply is active before image appears
+    document.querySelectorAll('.case-intro-image img').forEach(img => {
+      const reveal = () => setTimeout(() => img.classList.add('loaded'), 300);
+      if (img.complete) reveal();
+      else img.addEventListener('load', reveal);
+    });
+
+  </script>
+
+</body>
+</html>

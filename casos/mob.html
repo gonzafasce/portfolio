@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MOB — Gonzalo Fasce</title>
+  <meta name="description" content="Caso de estudio: MOB, el sistema de diseño que pasó de iniciativa no pedida a estándar oficial adoptado por los 3 equipos de producto de N5 Now.">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="MOB — Caso de estudio | Gonzalo Fasce">
+  <meta property="og:description" content="De 4 equipos con criterios propios a un sistema de diseño único, adoptado por toda la compañía.">
+  <meta property="og:image" content="https://gonzalofasce.com/assets/og-image.webp">
+  <meta property="og:url" content="https://gonzalofasce.com/casos/mob.html">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="MOB — Caso de estudio | Gonzalo Fasce">
+  <meta name="twitter:description" content="De 4 equipos con criterios propios a un sistema de diseño único, adoptado por toda la compañía.">
+  <meta name="twitter:image" content="https://gonzalofasce.com/assets/og-image.webp">
+
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    /* ─── Variables ─────────────────────────────────────── */
+    :root {
+      --color-bg:     #F8F6F2;
+      --color-ink:    #0D0D0D;
+      --color-muted:  #6B6B6B;
+      --color-accent: #2F6EEB;
+      --color-rule:   #E2DED8;
+
+      --font:      'Helvetica Neue', Helvetica, Arial, sans-serif;
+      --font-mono: 'IBM Plex Mono', 'SF Mono', monospace;
+
+      --space-xs:  8px;
+      --space-sm:  16px;
+      --space-md:  32px;
+      --space-lg:  64px;
+      --space-xl:  96px;
+      --space-xxl: 140px;
+
+      --content-width: 760px;
+      --nav-height:    60px;
+    }
+
+    /* ─── Reset ─────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+    body { font-family: var(--font); background: var(--color-bg); color: var(--color-ink); line-height: 1.65; }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; width: 100%; height: auto; }
+
+
+    /* ─── Nav ───────────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: var(--nav-height);
+      background: var(--color-bg);
+      z-index: 100;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.2s ease;
+    }
+
+    nav.scrolled { border-bottom-color: var(--color-rule); }
+
+    .nav-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 24px;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-logo {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--color-ink);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--color-muted);
+      transition: color 0.15s ease, border-color 0.15s ease;
+      border-bottom: 1px solid transparent;
+      padding-bottom: 1px;
+    }
+
+    .nav-links a:hover { color: var(--color-ink); }
+
+    .nav-links a.active {
+      color: var(--color-ink);
+      border-bottom: 1px solid var(--color-accent);
+      padding-bottom: 1px;
+    }
+
+    .nav-links .nav-cv {
+      font-family: var(--font-mono);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--color-ink);
+      letter-spacing: 0.01em;
+      border-bottom: 1px solid var(--color-ink);
+      padding-bottom: 1px;
+      transition: color 0.15s ease, border-color 0.15s ease;
+    }
+
+    .nav-links .nav-cv:hover {
+      color: var(--color-accent);
+      border-color: var(--color-accent);
+    }
+
+    /* ─── Main ──────────────────────────────────────────── */
+    main {
+      max-width: calc(var(--content-width) + 48px);
+      margin: 0 auto;
+      padding: 0 24px;
+      padding-top: calc(var(--nav-height) + var(--space-xl));
+    }
+
+
+    /* ─── Case intro (2-col hero) ───────────────────────── */
+    .case-intro {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-lg);
+      align-items: center;
+      min-height: 65vh;
+      margin-bottom: var(--space-xl);
+      width: calc(100% + 320px);
+      margin-left: -160px;
+    }
+
+    .case-intro-text {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-md);
+    }
+
+    .case-intro-image img {
+      width: 100%;
+      mix-blend-mode: multiply;
+      opacity: 0;
+      transition: opacity 0.8s ease;
+    }
+    .case-intro-image img.loaded {
+      opacity: 1;
+    }
+
+    @media (max-width: 700px) {
+      .case-intro { grid-template-columns: 1fr; min-height: auto; width: 100%; margin-left: 0; }
+      .case-intro-image { order: -1; }
+    }
+
+    /* ─── Case meta / title / subtitle ─────────────────── */
+    .case-meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--color-muted);
+    }
+
+    .case-meta .num { color: var(--color-accent); }
+    .case-meta .dot { color: var(--color-rule); }
+
+    .case-title {
+      font-size: clamp(36px, 6vw, 54px);
+      font-weight: 700;
+      line-height: 1.05;
+      letter-spacing: -0.025em;
+      color: var(--color-ink);
+    }
+
+    .case-subtitle {
+      font-size: 17px;
+      font-weight: 400;
+      color: var(--color-muted);
+      line-height: 1.6;
+    }
+
+    /* ─── Section ───────────────────────────────────────── */
+    .section-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: var(--space-md);
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+      text-transform: uppercase;
+    }
+
+    .section-label .num { color: var(--color-accent); }
+    .section-label .dot { color: var(--color-rule); }
+    .section-label .name { color: var(--color-muted); }
+
+    .section {
+      margin-bottom: var(--space-xl);
+    }
+
+    .section h2 {
+      font-size: 28px;
+      font-weight: 700;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      color: var(--color-ink);
+      margin-bottom: var(--space-sm);
+    }
+
+    .section p {
+      font-size: 17px;
+      font-weight: 400;
+      color: var(--color-ink);
+      line-height: 1.7;
+      max-width: 640px;
+      margin-bottom: var(--space-sm);
+    }
+
+    .section p:last-child { margin-bottom: 0; }
+
+    .section strong { font-weight: 600; }
+
+    /* ─── Images ────────────────────────────────────────── */
+    .img-full {
+      width: 100%;
+      border: 1px solid var(--color-rule);
+      margin: var(--space-md) 0;
+    }
+
+    .img-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-sm);
+      margin: var(--space-md) 0;
+    }
+
+    .img-grid img {
+      width: 100%;
+      border: 1px solid var(--color-rule);
+    }
+
+    .img-grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: var(--space-sm);
+      margin: var(--space-md) 0;
+    }
+
+    .img-grid-3 img {
+      width: 100%;
+      border: 1px solid var(--color-rule);
+    }
+
+    @media (max-width: 700px) {
+      .img-grid-3 { grid-template-columns: 1fr; }
+      .img-grid-3.img-grid-phones { grid-template-columns: 1fr 1fr 1fr; gap: var(--space-xs, 8px); }
+    }
+
+    .img-caption,
+    .section .img-caption {
+      font-family: var(--font-mono);
+      font-size: 14px;
+      color: var(--color-muted);
+      margin-top: var(--space-xs);
+      font-style: italic;
+    }
+
+
+    /* ─── Metrics strip ─────────────────────────────────── */
+    .metrics-strip {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 0;
+      padding: var(--space-xl) 0;
+      margin: var(--space-xl) 0;
+      text-align: center;
+    }
+
+    .metric {
+      padding: 0 var(--space-md);
+    }
+
+    .metric-value {
+      display: block;
+      font-family: var(--font);
+      font-size: clamp(36px, 5vw, 60px);
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      color: var(--color-ink);
+      line-height: 1;
+      margin-bottom: 10px;
+    }
+
+    .metric-label {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 400;
+      color: var(--color-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      line-height: 1.4;
+    }
+
+    /* ─── Divider ───────────────────────────────────────── */
+    hr {
+      border: none;
+      border-top: 1px solid var(--color-rule);
+      margin: var(--space-xl) 0;
+    }
+
+    /* ─── Case nav ──────────────────────────────────────── */
+    .case-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: var(--space-lg) 0 var(--space-xxl);
+    }
+
+    .case-nav a {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--color-muted);
+      transition: color 0.15s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .case-nav a:hover { color: var(--color-ink); }
+
+    /* ─── Fade-in ───────────────────────────────────────── */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+    }
+
+    .fade-in.visible { opacity: 1; transform: none; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .fade-in { opacity: 1 !important; transform: none !important; }
+    }
+
+    /* ─── Responsive ────────────────────────────────────── */
+    @media (max-width: 600px) {
+      main { padding-top: calc(var(--nav-height) + var(--space-md)); }
+      .nav-links .hide-mobile { display: none; }
+      .img-grid { grid-template-columns: 1fr; }
+      .case-nav { flex-direction: column; gap: var(--space-sm); align-items: flex-start; }
+      .section p { font-size: 16px; max-width: 100%; }
+      .section h2 { font-size: 22px; }
+      .metrics-strip { grid-template-columns: repeat(2, 1fr); gap: 1px; }
+      footer { flex-direction: column; gap: var(--space-sm); align-items: flex-start; }
+    }
+
+    /* ─── Case intro (2-col hero) ───────────────────────── */
+    .case-intro {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-lg);
+      align-items: center;
+      min-height: 65vh;
+      margin-bottom: var(--space-xl);
+    }
+
+    .case-intro-text {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-md);
+    }
+
+    .case-intro-image {
+      position: relative;
+    }
+
+    .case-intro-image img {
+      width: 100%;
+      mix-blend-mode: multiply;
+      opacity: 0;
+      transition: opacity 0.8s ease;
+    }
+    .case-intro-image img.loaded {
+      opacity: 1;
+    }
+
+    @media (max-width: 700px) {
+      .case-intro {
+        grid-template-columns: 1fr;
+        min-height: auto;
+        gap: var(--space-md);
+        margin-bottom: var(--space-lg);
+      }
+      .case-intro-image {
+        order: -1;
+        max-width: 280px;
+        margin: 0 auto;
+      }
+      .case-intro-text { gap: var(--space-sm); }
+      .case-subtitle { font-size: 15px; }
+    }
+
+  </style>
+</head>
+<body>
+
+  <!--
+  ═══════════════════════════════════════════════════
+  IMÁGENES DE ESTE CASO — para reemplazar, cambiá el
+  atributo src del <img> correspondiente o reemplazá
+  el archivo en la carpeta assets/caso-1-mob/
+  ═══════════════════════════════════════════════════
+
+  [HERO]         ../assets/caso-1-mob/filosofia-1.jpg
+  [PROBLEMA 1]   ../assets/caso-1-mob/antes-campaigns.png
+  [PROBLEMA 2]   ../assets/caso-1-mob/antes-carteras.png
+  [PROBLEMA 3]   ../assets/caso-1-mob/antes-fmc.png
+  [PROCESO 1]    ../assets/caso-1-mob/filosofia-2.jpg
+  [PROCESO 2]    ../assets/caso-1-mob/figma-variables.png
+  [FILOSOFIA]    ../assets/caso-1-mob/filosofia-3.jpg
+  [RESULTADO 1]  ../assets/caso-1-mob/despues-campaigns.png
+  [RESULTADO 2]  ../assets/caso-1-mob/despues-carteras.png
+  [RESULTADO 3]  ../assets/caso-1-mob/despues-fmc.png
+  [MOBILE 1]     ../assets/caso-1-mob/crm-mobile1.png
+  [MOBILE 2]     ../assets/caso-1-mob/crm-mobile2.png
+  [MOBILE 3]     ../assets/caso-1-mob/crm-mobile3.png
+  [ESCALA 1]     ../assets/caso-1-mob/branding-itau.png
+  [ESCALA 2]     ../assets/caso-1-mob/branding-bv.png
+  [TOKENS]       ../assets/caso-1-mob/paleta-itau.png
+
+  ═══════════════════════════════════════════════════
+  -->
+
+
+  <!-- Nav -->
+  <nav id="nav">
+    <div class="nav-inner">
+      <a href="../index.html" class="nav-logo">Gonzalo Fasce</a>
+      <ul class="nav-links">
+        <li class="hide-mobile"><a href="mob.html" class="active">MOB</a></li>
+        <li class="hide-mobile"><a href="singular.html">Singular</a></li>
+        <li class="hide-mobile"><a href="mis-resultados.html">Mis Resultados</a></li>
+        <li><a href="../about.html">About</a></li>
+        <li><a href="../cv.html" class="nav-cv">CV</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Content -->
+  <main id="content">
+
+    <!-- Hero intro -->
+    <div class="case-intro fade-in">
+      <div class="case-intro-text">
+        <div class="case-meta">
+          <span class="num">01</span>
+          <span class="dot">·</span>
+          <span>Sistema de diseño · Enterprise · N5 Now</span>
+        </div>
+        <h1 class="case-title">MOB: Design System</h1>
+        <p class="case-subtitle">Cómo construí el sistema de diseño de N5 Now desde cero — sin que nadie lo hubiera pedido — y lo convertí en el estándar oficial de la compañía.</p>
+      </div>
+      <div class="case-intro-image">
+        <!-- [HERO] ../assets/caso-1-mob/filosofia-1.jpg -->
+        <img src="../assets/hero/caso-1-mob.webp" alt="MOB — sistema de diseño">
+      </div>
+    </div>
+
+    <hr class="fade-in">
+
+    <!-- El problema -->
+    <div class="section fade-in">
+      <div class="section-label">
+        <span class="num">00</span><span class="dot">·</span><span class="name">El problema</span>
+      </div>
+      <p>Cuando entré a N5 Now, el diseño era básicamente un caos descentralizado. Cada equipo hacía lo suyo. Un mismo componente podía verse y comportarse diferente dependiendo del módulo que abrías. No había criterio compartido, no había sistema, no había nadie que lo estuviera reclamando.</p>
+      <p>Yo había entrado para hacer diseño web, gráfico y audiovisual. Pero cuando me propusieron pasarme al área de UX — que en ese momento no existía — me pareció exactamente el tipo de problema que me interesaba atacar.</p>
+
+      <div class="img-grid-3">
+        <img src="../assets/caso-1-mob/antes-campaigns.webp" alt="Campañas antes de MOB">
+        <img src="../assets/caso-1-mob/antes-carteras.webp" alt="Carteras antes de MOB">
+        <img src="../assets/caso-1-mob/antes-fmc.webp" alt="FMC antes de MOB">
+      </div>
+      <p class="img-caption">Campañas, Carteras y FMC antes del sistema. Tres módulos, tres criterios distintos.</p>
+    </div>
+
+    <hr class="fade-in">
+
+    <!-- El proceso -->
+    <div class="section fade-in">
+      <div class="section-label">
+        <span class="num">01</span><span class="dot">·</span><span class="name">El proceso</span>
+      </div>
+      <p>No arranqué con una gran propuesta ni una presentación para convencer a nadie. Arranqué a ordenar lo que había. Con un desarrollador frontend empezamos a construir el sistema en paralelo, casi en secreto. Le pusimos <strong>MOB</strong> — <em>Methodology to Organise and Build</em> — pero entre nosotros lo llamábamos "la mafia", porque eso era: algo que crecía desde las sombras sin que nadie lo hubiera pedido oficialmente.</p>
+      <p>La base fue Material Design, adaptado sobre MUI. Primero lo desarrollamos en Adobe XD, después lo migramos a Figma en el momento justo. Esa migración fue clave para que el sistema pudiera crecer y ser adoptado por el equipo de diseño.</p>
+
+      <img class="img-full" src="../assets/caso-1-mob/filosofia-2.webp" alt="Slide MOB en presentación de filosofía">
+      <p class="img-caption">"Nuestro Sistema de Diseño: MOB" — slide de la presentación de filosofía al equipo.</p>
+
+      <p>Lo más difícil fue la evangelización. Los líderes no creían que esto era necesario — increíble pero real. Estuve meses convenciendo equipos, mostrando valor con cada módulo nuevo, mientras la estructura de la compañía cambiaba constantemente. No fue lineal para nada.</p>
+      <p>Pero de a poco fue tomando forma. Primero los componentes, después los patrones y los comportamientos, después la documentación dentro de Figma. Hasta que este año cerré el ciclo con una presentación de filosofía: <strong>Los 8 Mandamientos del Diseño de Producto en N5</strong>. Ya no era solo un sistema de componentes — era una forma de pensar el diseño que podía ser compartida con producto, tecnología y negocio.</p>
+
+      <img class="img-full" src="../assets/caso-1-mob/figma-variables.webp" alt="Variables de Figma — N5 vs Itaú">
+      <p class="img-caption">Variables de color en Figma: la misma pantalla con tokens de N5 y de Itaú Chile. La flexibilidad del sistema, visible.</p>
+    </div>
+
+    <hr class="fade-in">
+
+    <!-- La solución -->
+    <div class="section fade-in">
+      <div class="section-label">
+        <span class="num">02</span><span class="dot">·</span><span class="name">La filosofía</span>
+      </div>
+      <p>MOB es un sistema de diseño completo para una plataforma financiera enterprise. Componentes, patrones, principios de interacción, documentación. Pero lo que más me importa no es el inventario — es la lógica detrás.</p>
+      <p>La premisa central: los clientes pueden personalizar la identidad visual, pero sin tocar el esqueleto que sostiene el producto. <em>La marca del cliente se ve. La esencia de N5 se siente.</em></p>
+      <p>Los 8 mandamientos definen desde cómo usar el sistema hasta cómo tomar decisiones de diseño. No son solo reglas — son una cultura de trabajo que se extiende más allá del equipo de diseño.</p>
+
+      <img class="img-full" src="../assets/caso-1-mob/filosofia-3.webp" alt="El Padrino — Mandamiento 1">
+      <p class="img-caption">Mandamiento 1. MOB son las siglas de Methodology to Organise and Build. También son otra cosa.</p>
+    </div>
+
+    <!-- Metrics -->
+    <div class="metrics-strip fade-in">
+      <div class="metric">
+        <span class="metric-value">37</span>
+        <span class="metric-label">componentes</span>
+      </div>
+      <div class="metric">
+        <span class="metric-value">7</span>
+        <span class="metric-label">módulos del CRM</span>
+      </div>
+      <div class="metric">
+        <span class="metric-value">6</span>
+        <span class="metric-label">clientes bancarios</span>
+      </div>
+      <div class="metric">
+        <span class="metric-value">5</span>
+        <span class="metric-label">años de evolución</span>
+      </div>
+    </div>
+
+    <!-- El resultado -->
+    <div class="section fade-in">
+      <div class="section-label">
+        <span class="num">03</span><span class="dot">·</span><span class="name">El resultado</span>
+      </div>
+      <p>MOB pasó de ser una iniciativa que nadie había pedido a convertirse en el estándar oficial de diseño de N5 Now. El antes: 4 equipos con librerías y criterios propios, un producto distinto por cliente. El después: un único sistema adoptado por los 3 equipos de producto, con la identidad del cliente aplicada encima vía tokens — sin tocar el producto.</p>
+
+      <p>El impacto más concreto: el CRM mobile se diseñó en 3 días y se implementó en 2 semanas. La QA visual se redujo radicalmente — los componentes se reutilizan íntegramente y a veces alcanza con "agregá un botón primary acá". La customización por cliente pasó de trabajo manual componente a componente a minutos: los tokens se aplican en una variable, no en el código.</p>
+
+      <div class="img-grid-3">
+        <img src="../assets/caso-1-mob/despues-campaigns.webp" alt="Campañas después de MOB">
+        <img src="../assets/caso-1-mob/despues-carteras.webp" alt="Carteras después de MOB">
+        <img src="../assets/caso-1-mob/despues-fmc.webp" alt="FMC después de MOB">
+      </div>
+      <p class="img-caption">Los mismos tres módulos, después del sistema. Campañas, Carteras y FMC — un único criterio visual.</p>
+
+      <div class="img-grid-3 img-grid-phones">
+        <img src="../assets/caso-1-mob/crm-mobile1.webp" alt="CRM mobile — registro de reunión 1">
+        <img src="../assets/caso-1-mob/crm-mobile2.webp" alt="CRM mobile — registro de reunión 2">
+        <img src="../assets/caso-1-mob/crm-mobile3.webp" alt="CRM mobile — registro de reunión 3">
+      </div>
+      <p class="img-caption">El sistema escala a mobile. Feature de registro de visitas a clientes — crítica para banca privada. FMC — Ficha Mi Cliente.</p>
+
+      <p>Lo más importante fue lo que cambió en cómo la organización vio al diseño. De ser algo que "hacía las pantallas", pasó a ser algo que construía estructuras. Al cierre de año, el equipo completo — CEO y jefes de área incluidos — reconoció públicamente ese cambio. Eso no es menor.</p>
+    </div>
+
+    <hr class="fade-in">
+
+    <!-- Escala -->
+    <div class="section fade-in">
+      <div class="section-label">
+        <span class="num">04</span><span class="dot">·</span><span class="name">Escala multicliente</span>
+      </div>
+      <p>La prueba más concreta de que el sistema funciona: la misma pantalla con identidades distintas. Los tokens de color del cliente se aplican sobre el esqueleto de MOB sin tocar el código de producto.</p>
+
+      <div class="img-grid">
+        <div>
+          <img src="../assets/caso-1-mob/branding-itau.webp" alt="Branding Itaú Chile">
+          <p class="img-caption">Identidad Itaú Chile.</p>
+        </div>
+        <div>
+          <img src="../assets/caso-1-mob/branding-bv.webp" alt="Branding BV Brasil">
+          <p class="img-caption">Identidad BV Brasil.</p>
+        </div>
+      </div>
+
+      <img class="img-full" src="../assets/caso-1-mob/paleta-itau.webp" alt="Paleta de tokens Itaú">
+      <p class="img-caption">Tokens de color del cliente mapeados al sistema. La personalización opera a nivel de variable, no de componente.</p>
+    </div>
+
+    <hr class="fade-in">
+
+    <!-- Case nav -->
+    <div class="case-nav fade-in">
+      <a href="../index.html">← Volver al inicio</a>
+      <a href="singular.html">Singular →</a>
+    </div>
+
+  </main>
+
+  <script>
+
+    // ─── Nav scroll ─────────────────────────────────────────
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 10);
+    }, { passive: true });
+
+    // ─── Fade-in ─────────────────────────────────────────────
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReduced) {
+      document.querySelectorAll('.fade-in').forEach(el => el.classList.add('visible'));
+    } else {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.05, rootMargin: '0px 0px -30px 0px' });
+      document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+    }
+
+    // Hero image — delay reveal so multiply is active before image appears
+    document.querySelectorAll('.case-intro-image img').forEach(img => {
+      const reveal = () => setTimeout(() => img.classList.add('loaded'), 300);
+      if (img.complete) reveal();
+      else img.addEventListener('load', reveal);
+    });
+
+  </script>
+
+</body>
+</html>

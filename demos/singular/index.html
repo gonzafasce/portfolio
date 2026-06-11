@@ -1,0 +1,2904 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SINGULAR · AGENT COMMAND CENTER</title>
+<style>
+  /* System font fallback — offline (no Google Fonts) */
+  :root {
+    --font-inter: Inter, 'Helvetica Neue', Arial, sans-serif;
+    --font-grotesk: 'Space Grotesk', Inter, 'Helvetica Neue', Arial, sans-serif;
+  }
+</style>
+<link rel="stylesheet" href="leaflet.min.css"/>
+<script src="leaflet.min.js"></script>
+<style>
+
+/* ═══════════════════════════════════════════════
+   VARIABLES — dark (default) + light override
+═══════════════════════════════════════════════ */
+:root {
+  --bg:           #04060F;
+  --topbar-bg:    rgba(4,6,15,0.97);
+  --card-bg:      rgba(8,12,28,0.88);
+  --surface:      rgba(255,255,255,0.03);
+  --border:       rgba(0,212,255,0.14);
+  --cyan:         #00D4FF;
+  --text:         #DFF0FF;
+  --dim:          rgba(223,240,255,0.75);
+  --scanline:     rgba(0,0,0,0.038);
+  --grid-dot:     rgba(0,212,255,0.07);
+  --conn-line:    rgba(0,212,255,0.13);
+}
+
+body.light {
+  --bg:           #E8EFF8;
+  --topbar-bg:    rgba(232,239,248,0.98);
+  --card-bg:      rgba(255,255,255,0.95);
+  --surface:      rgba(0,0,0,0.05);
+  --border:       rgba(0,100,150,0.2);
+  --cyan:         #006FA6;
+  --text:         #07111F;
+  --dim:          rgba(7,17,31,0.58);
+  --scanline:     rgba(0,0,0,0.006);
+  --grid-dot:     rgba(0,100,150,0.09);
+  --conn-line:    rgba(0,100,150,0.22);
+}
+
+/* ── Light mode: kill all glows, go flat ── */
+body.light .agent-circle,
+body.light .agent-node:hover .agent-circle {
+  box-shadow: none !important;
+}
+body.light .agent-score {
+  box-shadow: none !important;
+}
+body.light .agent-node:hover .agent-name {
+  text-shadow: none !important;
+}
+body.light .live-dot {
+  box-shadow: none !important;
+}
+body.light .agent-convos {
+  border-color: rgba(0,140,70,0.4);
+  color: #1a7a40;
+}
+body.light .convos-dot {
+  background: #1a7a40;
+}
+body.light .live-badge {
+  color: #1a7a40;
+}
+body.light .live-dot {
+  background: #1a7a40;
+}
+body.light .widget::before,
+body.light .widget::after {
+  border-color: var(--cyan) !important;
+  opacity: .5;
+}
+body.light .widget-title {
+  color: var(--dim);
+}
+body.light .metas-pct {
+  text-shadow: none !important;
+}
+body.light .metas-delta {
+  color: #1a7a40;
+}
+body.light .compliance-val {
+  color: #1a7a40;
+}
+body.light .ccard {
+  border-color: rgba(0,0,0,0.08);
+  background: rgba(255,255,255,0.7);
+}
+body.light .ccard:hover {
+  background: rgba(0,100,150,0.04);
+}
+body.light .cmsg-txt {
+  color: rgba(7,17,31,0.72);
+}
+body.light .cmsg.agent .cmsg-txt {
+  color: rgba(7,17,31,0.92);
+}
+body.light .hero-name {
+  text-shadow: none !important;
+}
+body.light .hm::before {
+  opacity: .2;
+}
+body.light .cmd-name {
+  text-shadow: none !important;
+}
+body.light .cmd-badge {
+  box-shadow: none !important;
+}
+body.light .cmd-circle {
+  box-shadow: none !important;
+}
+/* accessible status colors in light */
+body.light .cstatus.active  { color: #1a7a40; border-color: rgba(26,122,64,.4); background: rgba(26,122,64,.06); }
+body.light .cstatus.active::before { background: #1a7a40; }
+body.light .cstatus.waiting { color: #996000; border-color: rgba(153,96,0,.4); background: rgba(153,96,0,.06); }
+body.light .cstatus.waiting::before { background: #996000; }
+body.light .dr-badge.active  { color: #1a7a40; border-color: rgba(26,122,64,.4); }
+body.light .dr-badge.waiting { color: #996000; border-color: rgba(153,96,0,.4); }
+body.light .wbar { opacity: .55 !important; }
+body.light .tstat .tv { color: var(--cyan); }
+body.light #clock { color: var(--dim); }
+
+/* ── Reset button ── */
+#resetBtn {
+  position: absolute;
+  bottom: 54px; right: 24px;
+  display: flex; align-items: center; gap: 7px;
+  font-family: 'Inter', sans-serif;
+  font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--dim);
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.08);
+  padding: 7px 13px;
+  cursor: pointer;
+  transition: color .2s, border-color .2s, opacity .2s;
+  z-index: 20;
+  opacity: .55;
+}
+#resetBtn:hover {
+  color: var(--text);
+  border-color: var(--border);
+  opacity: 1;
+}
+body.light #resetBtn {
+  border-color: rgba(0,0,0,0.1);
+}
+body.light #resetBtn:hover {
+  border-color: var(--cyan);
+  color: var(--text);
+}
+
+/* prevent hover scale during drag */
+.agent-node.dragging:hover    { transform: translate(-50%,-50%) scale(1.05) !important; }
+.commander-node.dragging:hover { transform: translate(-50%,-50%) scale(1.05) !important; }
+
+/* ═══════════════════════════════════════════════
+   BIG BANG INTRO
+═══════════════════════════════════════════════ */
+
+/* During intro: hide agents + widgets instantly as they're added to DOM */
+body.intro-active .agent-node,
+body.intro-active .widget {
+  opacity: 0 !important;
+  transform: translate(-50%,-50%) scale(0) !important;
+  animation: none !important;
+  transition: none !important;
+}
+body.intro-active .agent-float-inner,
+body.intro-active .cmd-float-inner { animation: none; }
+
+/* Commander in intro: bigger + centered glow */
+@keyframes introGlow {
+  0%,100% { box-shadow: 0 0 40px rgba(201,168,76,0.35), 0 0 80px rgba(201,168,76,0.12); }
+  50%      { box-shadow: 0 0 80px rgba(201,168,76,0.7),  0 0 160px rgba(201,168,76,0.25); }
+}
+
+.commander-node.intro-mode {
+  transform: translate(-50%,-50%) scale(1.55) !important;
+  transition: transform 0.55s cubic-bezier(0.34,1.3,0.64,1) !important;
+  cursor: pointer !important;
+  z-index: 40 !important;
+}
+.commander-node.intro-mode .cmd-circle {
+  animation: introGlow 2.2s ease-in-out infinite;
+}
+/* Intro hover: just subtle brightness, no scale change */
+.commander-node.intro-mode:hover {
+  transform: translate(-50%,-50%) scale(1.6) !important;
+  filter: brightness(1.15);
+}
+
+/* Tagline */
+#introTagline {
+  position: fixed;
+  left: 50%;
+  top: calc(50% + 158px);
+  transform: translateX(-50%);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 12px; letter-spacing: 5px; text-transform: uppercase;
+  color: rgba(201,168,76,0.65);
+  white-space: nowrap;
+  pointer-events: none; z-index: 40;
+  transition: opacity 0.3s ease;
+}
+#introCursor {
+  display: inline-block; width: 1.5px; height: 13px;
+  background: rgba(201,168,76,0.65);
+  margin-left: 1px; vertical-align: middle;
+  animation: cursorBlink 0.75s step-end infinite;
+}
+@keyframes cursorBlink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+/* Click hint under tagline */
+#introHint {
+  position: fixed;
+  left: 50%;
+  top: calc(50% + 184px);
+  transform: translateX(-50%);
+  font-size: 9px; letter-spacing: 3px; text-transform: uppercase;
+  color: rgba(201,168,76,0.3);
+  pointer-events: none; z-index: 40;
+  animation: hintPulse 2s ease-in-out infinite;
+  transition: opacity 0.3s;
+}
+@keyframes hintPulse { 0%,100%{opacity:0.4} 50%{opacity:1} }
+
+/* Flash overlay */
+#flashOverlay {
+  position: fixed; inset: 0; z-index: 300;
+  background: rgba(0,212,255,0.3);
+  pointer-events: none; opacity: 0;
+}
+
+/* ═══════════════════════════════════════════════
+   BASE
+═══════════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  width: 100%; height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  overflow: hidden;
+  user-select: none;
+  transition: background 0.4s, color 0.4s;
+}
+
+/* scanline removed */
+
+/* ═══════════════════════════════════════════════
+   CANVAS + SVG LAYERS
+═══════════════════════════════════════════════ */
+#bgCanvas { position:fixed; inset:0; z-index:0; }
+#connSvg  { position:fixed; inset:0; z-index:1; pointer-events:none; }
+
+/* ═══════════════════════════════════════════════
+   VIEWS
+═══════════════════════════════════════════════ */
+#homeView {
+  position: fixed; inset: 0; z-index: 10;
+}
+
+/* ═══════════════════════════════════════════════
+   TOPBAR
+═══════════════════════════════════════════════ */
+.topbar {
+  position: absolute; top:0; left:0; right:0; height:60px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 36px;
+  border-bottom: 1px solid var(--border);
+  background: var(--topbar-bg);
+  backdrop-filter: blur(12px);
+  z-index: 20;
+  transition: background 0.4s, border-color 0.4s;
+}
+
+.logo {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 16px; font-weight: 700; letter-spacing: 5px;
+  color: var(--cyan); text-transform: uppercase;
+}
+.logo em { font-style: normal; color: var(--dim); font-weight: 300; letter-spacing: 3px; font-size: 12px; margin-left: 8px; }
+
+.topbar-center { display: flex; align-items: center; gap: 36px; }
+
+.live-badge {
+  display: flex; align-items: center; gap: 7px;
+  font-size: 10px; letter-spacing: 2.5px; font-weight: 600;
+  color: #00FF88; text-transform: uppercase;
+}
+.live-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: #00FF88; box-shadow: 0 0 8px #00FF88;
+  animation: pulseLive 1.8s ease-in-out infinite;
+}
+@keyframes pulseLive { 0%,100%{transform:scale(1);opacity:1} 50%{transform:scale(1.6);opacity:.55} }
+
+.tstat { display:flex; flex-direction:column; align-items:center; gap:1px; }
+.tstat .tv {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 17px; font-weight: 600; color: var(--cyan); letter-spacing: 1px;
+}
+.tstat .tl { font-size: 8px; letter-spacing: 1.8px; color: var(--dim); text-transform: uppercase; }
+
+.topbar-right { display:flex; align-items:center; gap:16px; }
+
+#clock {
+  font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 300;
+  letter-spacing: 2px; color: var(--dim);
+}
+.date-label { font-size: 9px; letter-spacing: 1.5px; color: var(--dim); opacity:.6; text-transform: uppercase; }
+
+/* Mode toggle */
+#modeToggle {
+  width: 34px; height: 34px; border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--dim);
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: border-color .2s, color .2s, background .2s;
+  flex-shrink: 0;
+}
+#modeToggle:hover { border-color: var(--cyan); color: var(--cyan); background: rgba(0,212,255,.08); }
+
+/* ═══════════════════════════════════════════════
+   BOTTOM BAR
+═══════════════════════════════════════════════ */
+#bottomBar {
+  position: absolute; bottom:0; left:0; right:0; height:42px;
+  display: flex; align-items: center; justify-content: center; gap:52px;
+  border-top: 1px solid var(--border);
+  background: var(--topbar-bg);
+  backdrop-filter: blur(12px);
+  z-index: 20;
+  transition: background .4s, border-color .4s;
+}
+.bstat { font-size:10px; letter-spacing:1.6px; color:var(--dim); text-transform:uppercase; }
+.bstat strong { color:var(--text); font-weight:500; }
+
+#dragHint {
+  position: absolute; bottom: 52px; left:50%; transform:translateX(-50%);
+  font-size: 9px; letter-spacing: 2px; color: var(--dim); opacity:.4;
+  text-transform: uppercase; pointer-events: none; z-index:15;
+  transition: opacity 1.5s;
+}
+
+/* ═══════════════════════════════════════════════
+   DRAGGABLES LAYER
+═══════════════════════════════════════════════ */
+#draggablesLayer { position:absolute; inset:0; z-index:10; }
+
+/* ═══════════════════════════════════════════════
+   AGENT NODES
+═══════════════════════════════════════════════ */
+.agent-node {
+  position: absolute;
+  transform: translate(-50%, -50%) scale(1);
+  cursor: grab; z-index:10;
+  transition: transform .3s cubic-bezier(.34,1.56,.64,1), filter .25s;
+  animation: itemFadeIn .7s ease backwards;
+}
+.agent-node:hover { transform: translate(-50%, -50%) scale(1.1); z-index:15; }
+.agent-node:active { cursor: grabbing; }
+.agent-node.dragging { z-index:30; transform: translate(-50%,-50%) scale(1.05) !important; transition: filter .25s; }
+
+/* Float wrapper — independent of the outer transform/scale */
+@keyframes agentFloat {
+  0%, 100% { transform: translateY(0px);  }
+  50%       { transform: translateY(-8px); }
+}
+
+.agent-float-inner {
+  display: flex; flex-direction: column; align-items: center;
+  animation: agentFloat 3.6s ease-in-out infinite;
+}
+
+/* Pause float on hover and while dragging */
+.agent-node:hover   .agent-float-inner,
+.agent-node.dragging .agent-float-inner { animation-play-state: paused; }
+
+/* Commander float */
+@keyframes cmdFloat {
+  0%, 100% { transform: translateY(0px);  }
+  50%       { transform: translateY(-6px); }
+}
+
+.cmd-float-inner {
+  display: flex; flex-direction: column; align-items: center;
+  animation: cmdFloat 4.2s ease-in-out infinite;
+}
+
+.commander-node:hover    .cmd-float-inner,
+.commander-node.dragging .cmd-float-inner { animation-play-state: paused; }
+
+@keyframes itemFadeIn {
+  from { opacity:0; transform:translate(-50%,-42%) scale(.85); }
+  to   { opacity:1; transform:translate(-50%,-50%) scale(1); }
+}
+
+.agent-outer { position:relative; width:128px; height:128px; }
+
+.ring-spin {
+  position:absolute; inset:-10px; border-radius:50%;
+  border: 1.5px dashed rgba(255,255,255,.1);
+  animation: spinRing 22s linear infinite;
+  transition: border-color .35s;
+}
+.ring-spin-b {
+  position:absolute; inset:-5px; border-radius:50%;
+  border: 1px solid rgba(255,255,255,.05);
+  animation: spinRing 16s linear infinite reverse;
+}
+.agent-node:hover .ring-spin { animation-duration:5s; }
+@keyframes spinRing { from{transform:rotate(0)} to{transform:rotate(360deg)} }
+
+.agent-circle {
+  position:absolute; inset:0; border-radius:50%; overflow:hidden;
+  border: 2px solid rgba(255,255,255,.12);
+  transition: border-color .3s, box-shadow .3s;
+}
+.agent-node:hover .agent-circle {
+  border-color: var(--acolor, var(--cyan));
+  box-shadow: 0 0 22px var(--acolor, var(--cyan)), 0 0 0 1px var(--acolor, var(--cyan));
+}
+
+.agent-ph {
+  width:100%; height:100%;
+  display:flex; align-items:center; justify-content:center;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size:36px; font-weight:700;
+  transition: transform .3s;
+}
+.agent-node:hover .agent-ph { transform: scale(1.07); }
+
+/* Photo support */
+.agent-photo { width:100%; height:100%; object-fit:cover; display:block; transition:transform .3s; border-radius:50%; }
+.agent-node:hover .agent-photo { transform:scale(1.07); }
+
+/* Video overlay */
+.agent-video {
+  position:absolute; inset:0; width:100%; height:100%;
+  object-fit:cover; object-position: center top; border-radius:50%;
+  opacity:1; z-index:2;
+}
+
+.agent-score {
+  position:absolute; top:-3px; right:-3px;
+  width:32px; height:32px; border-radius:50%;
+  background: var(--bg); border: 1.5px solid var(--acolor, var(--cyan));
+  display:flex; align-items:center; justify-content:center;
+  font-family: 'Space Grotesk', sans-serif; font-size:11px; font-weight:700;
+  color: var(--acolor, var(--cyan));
+  box-shadow: 0 0 10px var(--acolor, var(--cyan));
+  z-index:5; transition: background .4s;
+}
+
+.agent-convos {
+  position:absolute; bottom:0px; left:50%; transform:translateX(-50%);
+  display:flex; align-items:center; gap:4px;
+  background: var(--card-bg); border: 1px solid rgba(0,255,136,.35);
+  padding: 2px 7px; border-radius:10px;
+  font-size:9px; color:#00FF88; letter-spacing:1px; font-weight:600;
+  z-index:5; white-space:nowrap; backdrop-filter:blur(8px);
+  transition: background .4s;
+}
+.convos-dot { width:5px; height:5px; border-radius:50%; background:#00FF88; animation:pulseLive 1.5s ease-in-out infinite; }
+
+.agent-label { text-align:center; margin-top:14px; pointer-events:none; }
+.agent-name {
+  font-family: 'Space Grotesk', sans-serif; font-size:12px; font-weight:600;
+  letter-spacing:2.5px; text-transform:uppercase; color:var(--text);
+  transition: color .3s, text-shadow .3s;
+}
+.agent-node:hover .agent-name { color:var(--acolor, var(--cyan)); text-shadow:0 0 14px var(--acolor, var(--cyan)); }
+.agent-role-txt { font-size:9px; letter-spacing:1px; color:var(--dim); text-transform:uppercase; margin-top:4px; }
+
+/* Tooltip */
+.agent-tip {
+  position:absolute; top:50%; left:calc(100% + 18px); transform:translateY(-50%);
+  background: var(--card-bg); border: 1px solid var(--border);
+  padding:12px 15px; min-width:155px;
+  opacity:0; pointer-events:none; transition:opacity .2s .12s;
+  backdrop-filter:blur(16px); box-shadow:0 8px 32px rgba(0,0,0,.4);
+}
+.agent-tip::before { content:''; position:absolute; top:-1px; left:-1px; width:8px; height:8px; border-top:1.5px solid var(--acolor,var(--cyan)); border-left:1.5px solid var(--acolor,var(--cyan)); }
+.agent-tip::after  { content:''; position:absolute; bottom:-1px; right:-1px; width:8px; height:8px; border-bottom:1.5px solid var(--acolor,var(--cyan)); border-right:1.5px solid var(--acolor,var(--cyan)); }
+.agent-node:hover .agent-tip { opacity:1; }
+.ttrow { display:flex; justify-content:space-between; align-items:center; padding:4px 0; border-bottom:1px solid rgba(255,255,255,.04); font-size:11px; }
+.ttrow:last-child { border-bottom:none; }
+.ttrow .k { color:var(--dim); letter-spacing:1px; text-transform:uppercase; font-size:9px; }
+.ttrow .v { font-family:'Space Grotesk',sans-serif; font-weight:600; color:var(--acolor,var(--cyan)); }
+
+/* ═══════════════════════════════════════════════
+   WIDGETS
+═══════════════════════════════════════════════ */
+.widget {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  cursor: grab; z-index:5;
+  width: 268px;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(18px);
+  transition: background .4s, border-color .4s;
+  animation: itemFadeIn .7s ease backwards;
+}
+.widget:active { cursor: grabbing; }
+.widget.dragging { z-index:25; }
+
+/* Corner brackets */
+.widget::before, .widget::after {
+  content:''; position:absolute; width:10px; height:10px; pointer-events:none;
+}
+.widget::before { top:-1px; left:-1px; border-top:1.5px solid var(--cyan); border-left:1.5px solid var(--cyan); }
+.widget::after  { bottom:-1px; right:-1px; border-bottom:1.5px solid var(--cyan); border-right:1.5px solid var(--cyan); }
+
+.widget-header {
+  display:flex; align-items:center; justify-content:space-between;
+  padding: 12px 14px 10px;
+  border-bottom: 1px solid var(--border);
+}
+.widget-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size:9px; font-weight:600; letter-spacing:3px;
+  text-transform:uppercase; color:var(--dim);
+}
+.widget-period { font-size:8px; letter-spacing:1px; color:var(--dim); opacity:.6; text-transform:uppercase; }
+
+.widget-body { padding: 14px; }
+
+/* ─── METAS WIDGET ─── */
+.metas-top {
+  display:flex; align-items:center; gap:16px; margin-bottom:14px;
+}
+.metas-donut { position:relative; width:76px; height:76px; flex-shrink:0; }
+.metas-donut svg { transform:rotate(-90deg); }
+.metas-donut-text {
+  position:absolute; inset:0; display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+}
+.metas-pct {
+  font-family:'Space Grotesk',sans-serif; font-size:18px; font-weight:700; color:var(--cyan);
+}
+.metas-delta { font-size:8px; color:#00FF88; letter-spacing:1px; margin-top:1px; }
+
+.metas-submetrics { flex:1; display:flex; flex-direction:column; gap:6px; }
+.smrow { display:flex; align-items:center; justify-content:space-between; font-size:9px; }
+.smrow .smk { color:var(--dim); letter-spacing:.5px; }
+.smrow .smv { font-family:'Space Grotesk',sans-serif; font-weight:600; color:var(--text); }
+
+.sm-minibar { display:flex; align-items:center; gap:6px; margin-top:2px; }
+.smbar { height:2px; border-radius:1px; transition:width .4s; }
+
+/* ─── COSTRACKER WIDGET ─── */
+.cost-top { display:flex; gap:6px; margin-bottom:12px; }
+.cost-big {
+  flex:1; background:var(--surface); border:1px solid var(--border);
+  padding: 10px 10px 8px; text-align:center;
+  transition: background .4s;
+}
+.cost-big .cbv {
+  font-family:'Space Grotesk',sans-serif; font-size:20px; font-weight:700; color:var(--cyan);
+}
+.cost-big .cbl { font-size:7px; letter-spacing:1.5px; color:var(--dim); text-transform:uppercase; margin-top:3px; }
+
+.cost-compliance {
+  display:flex; align-items:center; justify-content:space-between;
+  margin-bottom:12px; font-size:9px;
+}
+.compliance-label { color:var(--dim); letter-spacing:1px; text-transform:uppercase; }
+.compliance-val { font-family:'Space Grotesk',sans-serif; font-weight:600; color:#00FF88; }
+
+.compliance-bar-bg {
+  height:3px; background:rgba(255,255,255,.08); border-radius:2px; margin-bottom:12px;
+}
+.compliance-bar { height:100%; background:#00FF88; border-radius:2px; width:95%; }
+
+.cost-breakdown { display:flex; flex-direction:column; gap:6px; }
+.cbrow { display:flex; align-items:center; gap:8px; font-size:9px; }
+.cbrow .cbk { color:var(--dim); letter-spacing:.5px; width:88px; flex-shrink:0; }
+.cbrow .cbb { flex:1; height:2px; border-radius:1px; }
+.cbrow .cbpct { color:var(--dim); min-width:28px; text-align:right; font-family:'Space Grotesk',sans-serif; font-size:9px; }
+
+/* ─── COMMANDER NODE ─── */
+.commander-node {
+  position: absolute;
+  transform: translate(-50%, -50%) scale(1);
+  cursor: grab; z-index: 12;
+  display: flex; flex-direction: column; align-items: center;
+  transition: transform .3s cubic-bezier(.34,1.56,.64,1);
+  animation: itemFadeIn .9s ease .4s backwards;
+}
+.commander-node:hover { transform: translate(-50%, -50%) scale(1.1); z-index:16; }
+.commander-node:active { cursor: grabbing; }
+.commander-node.dragging { z-index: 35; transform: translate(-50%,-50%) scale(1.05) !important; transition: none; }
+
+.cmd-wrap { position: relative; width: 120px; height: 120px; }
+
+/* autonomy arc SVG */
+.cmd-arc {
+  position: absolute; inset: -14px; pointer-events: none;
+  animation: spinRing 40s linear infinite;
+}
+
+.cmd-circle {
+  width: 120px; height: 120px; border-radius: 50%; overflow: hidden;
+  border: 2.5px solid #C9A84C;
+  box-shadow: 0 0 28px rgba(201,168,76,0.4), 0 0 0 1px rgba(201,168,76,0.15);
+  position: relative;
+}
+
+.cmd-photo { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
+
+/* fallback placeholder */
+.cmd-ph {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(135deg, #1a1200, #0a0800);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 32px; font-weight: 700; color: #C9A84C;
+}
+
+.cmd-badge {
+  position: absolute; top: -4px; right: -4px;
+  width: 38px; height: 38px; border-radius: 50%;
+  background: var(--bg);
+  border: 1.5px solid #C9A84C;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 10px; font-weight: 700;
+  color: #C9A84C;
+  box-shadow: 0 0 10px rgba(201,168,76,0.5);
+  z-index: 5;
+  transition: background .4s;
+}
+
+.cmd-label { text-align: center; margin-top: 12px; pointer-events: none; }
+.cmd-name {
+  font-family: 'Space Grotesk', sans-serif; font-size: 12px; font-weight: 600;
+  letter-spacing: 2px; text-transform: uppercase; color: #C9A84C;
+  text-shadow: 0 0 12px rgba(201,168,76,0.5);
+}
+.cmd-title { font-size: 8px; letter-spacing: 2px; color: var(--dim); text-transform: uppercase; margin-top: 3px; }
+
+/* Commander goals popup */
+.cmd-popup {
+  position: absolute;
+  top: 50%; left: calc(100% + 20px);
+  transform: translateY(-50%) scale(0.92);
+  transform-origin: left center;
+  width: 380px;
+  background: var(--card-bg);
+  border: 1px solid rgba(201,168,76,0.25);
+  padding: 18px 18px 14px;
+  opacity: 0; pointer-events: none;
+  transition: opacity .28s ease, transform .28s cubic-bezier(.34,1.2,.64,1);
+  backdrop-filter: blur(18px);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  z-index: 50;
+}
+.cmd-popup.open {
+  opacity: 1; pointer-events: all;
+  transform: translateY(-50%) scale(1);
+}
+.cmd-popup::before {
+  content:''; position:absolute; top:-1px; left:-1px;
+  width:10px; height:10px;
+  border-top:1.5px solid #C9A84C; border-left:1.5px solid #C9A84C;
+}
+.cmd-popup::after {
+  content:''; position:absolute; bottom:-1px; right:-1px;
+  width:10px; height:10px;
+  border-bottom:1.5px solid #C9A84C; border-right:1.5px solid #C9A84C;
+}
+.cmd-popup-title {
+  font-size: 9px; letter-spacing: 3px; text-transform: uppercase;
+  color: #C9A84C; margin-bottom: 14px; font-weight: 600;
+}
+.cmd-goals-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 4px 20px;
+}
+.goal-item { display: flex; flex-direction: column; gap: 3px; padding: 5px 0; }
+.goal-meta { display: flex; justify-content: space-between; align-items: baseline; }
+.goal-label { font-size: 8px; letter-spacing: 1px; text-transform: uppercase; color: var(--dim); }
+.goal-pct   { font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 600; }
+.goal-track {
+  height: 3px; background: rgba(255,255,255,0.07); border-radius: 2px; overflow: hidden;
+}
+body.light .goal-track { background: rgba(0,0,0,0.08); }
+.goal-bar   { height: 100%; border-radius: 2px; width: 0; transition: width .6s ease; }
+.cmd-popup-avg {
+  margin-top: 12px; padding-top: 10px;
+  border-top: 1px solid rgba(201,168,76,0.15);
+  display: flex; justify-content: space-between; align-items: center;
+}
+.cmd-popup-avg-label { font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: var(--dim); }
+.cmd-popup-avg-val {
+  font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 700; color: #C9A84C;
+}
+
+/* ─── MAP WIDGET ─── */
+#leafletMap { border: none; outline: none; }
+
+/* Pulse animation for markers */
+@keyframes markerPulse {
+  0%,100% { transform: scale(1); opacity: 0.5; }
+  50%      { transform: scale(2.2); opacity: 0; }
+}
+.marker-pulse { animation: markerPulse 2s ease-in-out infinite; }
+
+/* Leaflet tooltip styled to match Singular */
+.map-leaflet-tip.leaflet-tooltip {
+  background: rgba(4,6,15,0.95) !important;
+  border: 1px solid rgba(0,212,255,0.25) !important;
+  border-radius: 0 !important;
+  color: #DFF0FF !important;
+  font-family: 'Inter', sans-serif !important;
+  font-size: 11px !important;
+  padding: 8px 11px !important;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.5) !important;
+  backdrop-filter: blur(10px);
+  white-space: nowrap;
+}
+.map-leaflet-tip.leaflet-tooltip::before { display:none !important; }
+body.light .map-leaflet-tip.leaflet-tooltip {
+  background: rgba(245,249,255,0.97) !important;
+  border-color: rgba(0,100,150,0.25) !important;
+  color: #07111F !important;
+}
+
+/* Override Leaflet zoom control */
+.leaflet-control-zoom a {
+  background: rgba(4,6,15,0.9) !important;
+  color: rgba(0,212,255,0.7) !important;
+  border-color: rgba(0,212,255,0.2) !important;
+  border-radius: 0 !important;
+  font-size: 16px !important;
+  line-height: 26px !important;
+  width: 26px !important; height: 26px !important;
+  transition: color .2s, border-color .2s !important;
+}
+.leaflet-control-zoom a:hover {
+  background: rgba(4,6,15,0.95) !important;
+  color: #00D4FF !important;
+  border-color: rgba(0,212,255,0.5) !important;
+}
+body.light .leaflet-control-zoom a {
+  background: rgba(245,249,255,0.95) !important;
+  color: rgba(0,80,140,0.7) !important;
+  border-color: rgba(0,80,140,0.2) !important;
+}
+.leaflet-control-zoom { border: none !important; box-shadow: none !important; }
+.leaflet-control-attribution { display: none !important; }
+
+/* Widget header as drag handle */
+.widget-drag-handle { cursor: grab; }
+.widget-drag-handle:active { cursor: grabbing; }
+
+/* ─── INTERVENCIONES WIDGET ─── */
+.interv-counts { display:flex; gap:8px; margin-bottom:14px; }
+.interv-big {
+  flex:1; background:var(--surface); border:1px solid var(--border);
+  padding:10px; text-align:center; transition:background .4s;
+}
+.interv-big .ibv {
+  font-family:'Space Grotesk',sans-serif; font-size:30px; font-weight:700;
+  line-height:1; color:var(--text);
+}
+.interv-big .ibl { font-size:8px; letter-spacing:2px; color:var(--dim); text-transform:uppercase; margin-top:4px; }
+
+.interv-chart { display:flex; align-items:flex-end; gap:3px; height:36px; }
+.ic-bar {
+  flex:1; border-radius:2px 2px 0 0;
+  transition: opacity .2s;
+}
+.ic-bar:hover { opacity:1 !important; }
+.interv-time-row {
+  display:flex; justify-content:space-between; font-size:7px;
+  color:var(--dim); margin-top:5px; letter-spacing:.5px; opacity:.7;
+}
+
+/* ═══════════════════════════════════════════════
+   AGENT MODAL
+═══════════════════════════════════════════════ */
+#agentModal {
+  position: fixed; inset: 0; z-index: 50;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.35s ease;
+}
+body.modal-open #agentModal { opacity: 1; pointer-events: all; }
+
+.modal-backdrop {
+  position: absolute; inset: 0;
+  background: rgba(4,6,15,0.84);
+  backdrop-filter: blur(7px);
+  cursor: pointer;
+}
+body.light .modal-backdrop { background: rgba(200,215,235,0.72); }
+
+.modal-panel {
+  position: relative;
+  width: min(1060px, 94vw);
+  height: min(700px, 88vh);
+  background: rgba(5,8,20,0.97);
+  border: 1px solid rgba(0,212,255,0.18);
+  display: grid;
+  grid-template-columns: 295px 1fr;
+  overflow: hidden;
+  transform: scale(0.91) translateY(22px);
+  transition: transform 0.42s cubic-bezier(0.34,1.15,0.64,1);
+  box-shadow: 0 48px 120px rgba(0,0,0,0.75);
+}
+body.light .modal-panel { background: rgba(245,249,255,0.98); box-shadow: 0 24px 80px rgba(0,0,0,0.18); }
+body.modal-open .modal-panel { transform: scale(1) translateY(0); }
+
+.modal-panel::before, .modal-panel::after {
+  content:''; position:absolute; width:14px; height:14px; pointer-events:none; z-index:10;
+}
+.modal-panel::before { top:-1px; left:-1px; border-top:2px solid var(--acolor,var(--cyan)); border-left:2px solid var(--acolor,var(--cyan)); }
+.modal-panel::after  { bottom:-1px; right:-1px; border-bottom:2px solid var(--acolor,var(--cyan)); border-right:2px solid var(--acolor,var(--cyan)); }
+
+.modal-close {
+  position:absolute; top:14px; right:14px; width:28px; height:28px;
+  border:1px solid var(--border); background:transparent; color:var(--dim);
+  cursor:pointer; z-index:20; display:flex; align-items:center; justify-content:center;
+  transition:border-color .2s, color .2s, background .2s;
+}
+.modal-close:hover { border-color:var(--cyan); color:var(--cyan); background:rgba(0,212,255,.08); }
+
+/* ─── LEFT PANEL ─── */
+.modal-left {
+  display:flex; flex-direction:column; align-items:center;
+  padding:28px 20px 20px; border-right:1px solid rgba(0,212,255,0.1);
+  gap:12px; overflow:hidden; position:relative;
+}
+body.light .modal-left { border-right-color: rgba(0,100,150,0.12); }
+
+/* ── Full-bleed avatar background for modal left ── */
+.modal-left-bg-media {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  z-index: 0;
+  border-radius: 0;
+}
+.modal-left-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    rgba(5,8,20,0.05) 0%,
+    rgba(5,8,20,0.30) 32%,
+    rgba(5,8,20,0.78) 60%,
+    rgba(5,8,20,0.97) 100%
+  );
+}
+body.light .modal-left-overlay {
+  background: linear-gradient(
+    180deg,
+    rgba(245,249,255,0.05) 0%,
+    rgba(245,249,255,0.40) 32%,
+    rgba(245,249,255,0.88) 60%,
+    rgba(245,249,255,0.97) 100%
+  );
+}
+
+/* Content above overlay */
+.modal-left.has-bg > *:not(.modal-left-bg-media):not(.modal-left-overlay) {
+  position: relative;
+  z-index: 2;
+}
+.modal-left.has-bg .modal-avatar-wrap { display: none; }
+.modal-left.has-bg .modal-hero-glow   { display: none; }
+
+.modal-hero-glow {
+  position:absolute; width:260px; height:260px; border-radius:50%;
+  top:15%; left:50%; transform:translateX(-50%);
+  opacity:.09; filter:blur(48px); pointer-events:none;
+}
+body.light .modal-hero-glow { opacity:.05; }
+
+.modal-avatar-wrap { position:relative; width:190px; height:190px; flex-shrink:0; }
+.modal-ring-a { position:absolute; inset:-12px; border-radius:50%; border:1.5px solid rgba(255,255,255,.07); animation:spinRing 10s linear infinite; }
+.modal-ring-b { position:absolute; inset:-5px; border-radius:50%; border:1px dashed rgba(255,255,255,.04); animation:spinRing 19s linear infinite reverse; }
+
+.modal-avatar-circle {
+  width:190px; height:190px; border-radius:50%; overflow:hidden; position:relative;
+  border:2.5px solid var(--acolor,var(--cyan));
+  box-shadow:0 0 36px rgba(0,0,0,.55);
+}
+body.light .modal-avatar-circle { box-shadow:none; }
+
+.modal-avatar-ph {
+  width:100%; height:100%;
+  display:flex; align-items:center; justify-content:center;
+  font-family:'Space Grotesk',sans-serif; font-size:66px; font-weight:700;
+}
+
+.modal-agent-name {
+  font-family:'Space Grotesk',sans-serif; font-size:20px; font-weight:700;
+  letter-spacing:4px; text-transform:uppercase; text-align:center;
+  text-shadow:0 0 16px var(--acolor,var(--cyan));
+}
+body.light .modal-agent-name { text-shadow:none; }
+
+.modal-agent-role {
+  font-size:9px; letter-spacing:2px; color:var(--dim);
+  text-transform:uppercase; text-align:center; margin-top:-6px;
+}
+
+/* Waveform */
+.modal-waveform { display:flex; align-items:center; gap:2px; height:22px; width:100%; justify-content:center; }
+.wbar { width:3px; border-radius:2px; animation:waveAnim 1.3s ease-in-out infinite; opacity:.65; }
+@keyframes waveAnim { 0%,100%{transform:scaleY(.2)} 50%{transform:scaleY(1)} }
+
+/* Metrics */
+.modal-metrics { display:grid; grid-template-columns:1fr 1fr; gap:6px; width:100%; margin-top:auto; }
+.hm {
+  background:var(--surface); border:1px solid var(--border); padding:10px;
+  position:relative; overflow:hidden; transition:background .4s, border-color .4s;
+}
+.hm::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:1px;
+  background:linear-gradient(to right,transparent,var(--acolor,var(--cyan)),transparent); opacity:.3;
+}
+.hm .hmv { font-family:'Space Grotesk',sans-serif; font-size:17px; font-weight:600; letter-spacing:.5px; }
+.hm .hml { font-size:7px; letter-spacing:1.4px; color:var(--dim); text-transform:uppercase; margin-top:3px; }
+.hm .hmd { font-size:8px; margin-top:4px; letter-spacing:.3px; }
+.hm .hmd.pos { color:#00FF88; }
+.hm .hmd.neg { color:#FF4D6A; }
+body.light .hm .hmd.pos { color:#1a7a40; }
+body.light .hm .hmd.neg { color:#cc2233; }
+
+/* ─── RIGHT PANEL ─── */
+.modal-right { display:flex; flex-direction:column; overflow:hidden; }
+
+.modal-right-header {
+  padding:18px 22px 14px; border-bottom:1px solid rgba(0,212,255,0.08);
+  display:flex; align-items:center; gap:8px; flex-shrink:0;
+  transition:border-color .4s;
+}
+body.light .modal-right-header { border-bottom-color:rgba(0,100,150,0.1); }
+
+.mstat { padding:4px 10px; border:1px solid; font-size:9px; letter-spacing:1.5px; text-transform:uppercase; }
+.mstat.active  { border-color:rgba(0,255,136,.35); color:#00FF88; background:rgba(0,255,136,.05); }
+.mstat.waiting { border-color:rgba(255,184,0,.35); color:#FFB800; background:rgba(255,184,0,.05); }
+.mstat.resolved { border-color:var(--border); color:var(--dim); }
+body.light .mstat.active  { border-color:rgba(26,122,64,.4); color:#1a7a40; }
+body.light .mstat.waiting { border-color:rgba(153,96,0,.4); color:#996000; }
+
+/* Emergency brake */
+.emergency-btn {
+  margin: 14px 22px 10px;
+  display:flex; align-items:center; justify-content:center; gap:8px;
+  padding:9px 16px; border:1px solid rgba(255,60,80,.3);
+  background:rgba(255,60,80,.04); color:rgba(255,100,120,.85);
+  font-family:'Inter',sans-serif; font-size:9px; letter-spacing:2px; text-transform:uppercase;
+  cursor:pointer; transition:all .2s; flex-shrink:0;
+}
+.emergency-btn:hover { border-color:rgba(255,60,80,.7); background:rgba(255,60,80,.1); color:#FF4D6A; }
+.emergency-btn.stopped { border-color:rgba(0,255,136,.4); background:rgba(0,255,136,.06); color:#00FF88; }
+body.light .emergency-btn.stopped { color:#1a7a40; border-color:rgba(26,122,64,.4); }
+
+/* Section label */
+.conv-section-title {
+  padding:0 22px 8px; font-size:9px; letter-spacing:3px;
+  color:var(--dim); text-transform:uppercase; flex-shrink:0;
+}
+
+/* Accordion */
+.conv-accordion {
+  flex:1; overflow-y:auto; padding:0 14px 14px;
+  display:flex; flex-direction:column; gap:5px;
+}
+.conv-accordion::-webkit-scrollbar { width:3px; }
+.conv-accordion::-webkit-scrollbar-track { background:transparent; }
+.conv-accordion::-webkit-scrollbar-thumb { background:rgba(0,212,255,.2); border-radius:2px; }
+
+@keyframes cardSlide { from{opacity:0;transform:translateX(8px)} to{opacity:1;transform:translateX(0)} }
+
+.ci {
+  border:1px solid rgba(255,255,255,.05); border-left:2px solid var(--acolor,var(--cyan));
+  background:var(--surface); overflow:hidden; transition:background .2s;
+  animation:cardSlide .3s ease backwards;
+}
+body.light .ci { border-color:rgba(0,0,0,.07); }
+.ci:hover { background:rgba(0,212,255,.025); }
+body.light .ci:hover { background:rgba(0,100,150,.04); }
+
+/* Level 1 — always visible header */
+.ci-header {
+  display:grid; grid-template-columns:10px 1fr auto auto 16px;
+  align-items:center; gap:10px; padding:10px 13px; cursor:pointer;
+}
+
+.ci-sdot { width:7px; height:7px; border-radius:50%; flex-shrink:0; }
+.ci-sdot.active  { background:#00FF88; animation:pulseLive 1.8s ease-in-out infinite; }
+.ci-sdot.waiting { background:#FFB800; }
+.ci-sdot.resolved { background:var(--dim); }
+body.light .ci-sdot.active { background:#1a7a40; }
+body.light .ci-sdot.waiting { background:#996000; }
+
+.ci-info { overflow:hidden; }
+.ci-client { font-size:12px; font-weight:500; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:block; }
+.ci-sub { display:flex; gap:8px; margin-top:2px; }
+.ci-id, .ci-time { font-size:8px; color:var(--dim); letter-spacing:.5px; }
+
+.ci-channel {
+  font-size:7px; letter-spacing:1.5px; text-transform:uppercase;
+  padding:2px 6px; border:1px solid var(--border); color:var(--cyan); white-space:nowrap;
+}
+body.light .ci-channel { border-color:rgba(0,100,150,.25); color:var(--cyan); }
+
+.ci-pill {
+  font-size:7px; letter-spacing:1px; text-transform:uppercase; padding:2px 6px; border:1px solid; white-space:nowrap;
+}
+.ci-pill.active  { border-color:rgba(0,255,136,.35); color:#00FF88; }
+.ci-pill.waiting { border-color:rgba(255,184,0,.35); color:#FFB800; }
+.ci-pill.resolved { border-color:var(--border); color:var(--dim); }
+body.light .ci-pill.active  { color:#1a7a40; border-color:rgba(26,122,64,.4); }
+body.light .ci-pill.waiting { color:#996000; border-color:rgba(153,96,0,.4); }
+
+.ci-chevron { color:var(--dim); transition:transform .25s ease, color .2s; }
+.ci.expanded .ci-chevron { transform:rotate(180deg); color:var(--cyan); }
+
+/* Level 2 — conversation body */
+.ci-body {
+  max-height:0; overflow:hidden;
+  transition:max-height .38s cubic-bezier(0.4,0,0.2,1);
+  border-top:0px solid var(--border);
+}
+.ci.expanded .ci-body { max-height:140px; overflow-y:auto; border-top:1px solid rgba(0,212,255,.07); }
+.ci.expanded .ci-body::-webkit-scrollbar { width:3px; }
+.ci.expanded .ci-body::-webkit-scrollbar-thumb { background:rgba(0,212,255,.15); border-radius:2px; }
+body.light .ci.expanded .ci-body { border-top-color:rgba(0,100,150,.1); }
+
+.ci-conversation { padding:12px 13px; display:flex; flex-direction:column; gap:6px; }
+
+.cmsg { display:grid; grid-template-columns:40px 1fr; gap:7px; align-items:baseline; }
+.cmsg-who { font-size:8px; letter-spacing:1px; text-transform:uppercase; color:var(--dim); }
+.cmsg.agent .cmsg-who { color:var(--acolor,var(--cyan)); }
+.cmsg-txt { font-size:11px; color:rgba(223,240,255,.68); line-height:1.55; }
+.cmsg.agent .cmsg-txt { color:rgba(223,240,255,.9); }
+body.light .cmsg-txt { color:rgba(7,17,31,.62); }
+body.light .cmsg.agent .cmsg-txt { color:rgba(7,17,31,.88); }
+
+.typing-ind { display:grid; grid-template-columns:40px 1fr; gap:7px; align-items:center; }
+.tdots { display:flex; gap:4px; align-items:center; }
+.tdots span { width:4px; height:4px; border-radius:50%; animation:tdot 1.4s ease-in-out infinite; }
+.tdots span:nth-child(2) { animation-delay:.2s; }
+.tdots span:nth-child(3) { animation-delay:.4s; }
+@keyframes tdot { 0%,60%,100%{transform:translateY(0);opacity:.3} 30%{transform:translateY(-4px);opacity:1} }
+
+@keyframes newMsg { 0%{background:rgba(0,212,255,.1)} 100%{background:var(--surface)} }
+.ci.flash { animation:newMsg 1.1s ease; }
+
+/* ─── PAGINATOR ─── */
+.conv-pager {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 18px 12px;
+  border-top: 1px solid rgba(0,212,255,0.07);
+  flex-shrink: 0;
+}
+body.light .conv-pager { border-top-color: rgba(0,100,150,0.1); }
+
+.pager-btn {
+  display: flex; align-items: center; justify-content: center;
+  width: 26px; height: 26px;
+  border: 1px solid var(--border); background: transparent;
+  color: var(--dim); cursor: pointer; transition: all .18s;
+}
+.pager-btn:hover:not(:disabled) { border-color: var(--cyan); color: var(--cyan); }
+.pager-btn:disabled { opacity: .25; cursor: not-allowed; }
+
+.pager-info {
+  font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--dim);
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+}
+.pager-page { font-family: 'Space Grotesk', sans-serif; font-size: 12px; font-weight: 600; color: var(--text); }
+.pager-total { font-size: 8px; letter-spacing: 1px; color: var(--dim); }
+
+/* Intervenir button */
+.ci-intervene-row { display:none; padding:8px 13px 10px; justify-content:flex-end; background:var(--card-bg); border-top:1px solid rgba(0,212,255,.07); }
+.ci.expanded .ci-intervene-row { display:flex; }
+body.light .ci-intervene-row { background:var(--card-bg); border-top-color:rgba(0,100,150,.1); }
+.intervene-btn {
+  display:flex; align-items:center; gap:6px; padding:6px 14px;
+  border:1px solid var(--acolor,var(--cyan)); background:rgba(0,212,255,.05);
+  color:var(--acolor,var(--cyan)); font-family:'Inter',sans-serif;
+  font-size:8px; letter-spacing:2px; text-transform:uppercase;
+  cursor:pointer; transition:all .2s;
+}
+.intervene-btn:hover { background:rgba(0,212,255,.12); }
+.intervene-btn.intervened { border-color:#FFB800; color:#FFB800; background:rgba(255,184,0,.07); }
+body.light .intervene-btn.intervened { color:#996000; border-color:rgba(153,96,0,.5); }
+
+/* ═══════════════════════════════════════════════
+   INTERVENTION PANEL
+═══════════════════════════════════════════════ */
+#interventionPanel {
+  display: none;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* Hide normal right-panel content during intervention */
+.modal-right.intervening .modal-right-header,
+.modal-right.intervening .emergency-btn,
+.modal-right.intervening .conv-section-title,
+.modal-right.intervening #convAccordion,
+.modal-right.intervening #convPager { display: none !important; }
+.modal-right.intervening #interventionPanel { display: flex; }
+
+/* Intervention header */
+.intrv-header {
+  padding: 14px 22px 12px;
+  border-bottom: 1px solid rgba(0,212,255,0.08);
+  display: flex; align-items: center; gap: 10px; flex-shrink: 0;
+}
+body.light .intrv-header { border-bottom-color: rgba(0,100,150,0.1); }
+.intrv-client-name { font-size: 13px; font-weight: 500; }
+.intrv-client-meta { font-size: 8px; letter-spacing: 1px; color: var(--dim); margin-top: 3px; }
+.intrv-badge {
+  margin-left: auto; flex-shrink: 0;
+  font-size: 7px; letter-spacing: 2px; text-transform: uppercase;
+  padding: 3px 9px; border: 1px solid rgba(255,255,255,0.15);
+  color: rgba(255,255,255,0.45);
+}
+body.light .intrv-badge { border-color: rgba(0,0,0,0.12); color: rgba(7,17,31,0.4); }
+
+/* Message list */
+.intrv-messages {
+  flex: 1; overflow-y: auto; padding: 14px 22px;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.intrv-messages::-webkit-scrollbar { width: 3px; }
+.intrv-messages::-webkit-scrollbar-thumb { background: rgba(0,212,255,.2); border-radius: 2px; }
+
+/* Operator messages */
+.cmsg.operator .cmsg-who { color: rgba(223,240,255,0.55); }
+.cmsg.operator .cmsg-txt  { color: rgba(223,240,255,0.85); }
+body.light .cmsg.operator .cmsg-who { color: rgba(7,17,31,0.45); }
+body.light .cmsg.operator .cmsg-txt  { color: rgba(7,17,31,0.82); }
+
+@keyframes msgSlideIn { from{opacity:0;transform:translateY(4px)} to{opacity:1;transform:translateY(0)} }
+.cmsg.new-msg { animation: msgSlideIn 0.22s ease; }
+
+/* Input area */
+.intrv-input-area {
+  display: flex; gap: 8px; padding: 10px 22px 12px;
+  border-top: 1px solid rgba(0,212,255,0.08); flex-shrink: 0;
+  align-items: flex-end;
+}
+body.light .intrv-input-area { border-top-color: rgba(0,100,150,0.1); }
+#intrvInput {
+  flex: 1; background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text); font-family: 'Inter', sans-serif; font-size: 12px;
+  padding: 9px 12px; resize: none; outline: none;
+  transition: border-color .2s;
+  min-height: 38px; max-height: 90px; line-height: 1.45;
+  overflow-y: auto;
+}
+#intrvInput::placeholder { color: var(--dim); opacity: .55; }
+#intrvInput:focus { border-color: var(--acolor, var(--cyan)); }
+#intrvSend {
+  height: 38px; padding: 0 16px;
+  background: var(--surface);
+  border: 1px solid var(--acolor, var(--cyan));
+  color: var(--acolor, var(--cyan));
+  font-family: 'Inter', sans-serif; font-size: 9px;
+  letter-spacing: 2px; text-transform: uppercase;
+  cursor: pointer; transition: background .2s; flex-shrink: 0;
+}
+#intrvSend:hover { background: rgba(0,212,255,.08); }
+
+/* Reactivate button */
+.intrv-reactivate {
+  margin: 0 22px 14px;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 9px 16px;
+  border: 1px solid rgba(201,168,76,0.3);
+  background: rgba(201,168,76,0.04);
+  color: rgba(201,168,76,0.75);
+  font-family: 'Inter', sans-serif; font-size: 9px;
+  letter-spacing: 2px; text-transform: uppercase;
+  cursor: pointer; transition: all .2s; flex-shrink: 0;
+}
+.intrv-reactivate:hover {
+  border-color: rgba(201,168,76,0.7);
+  background: rgba(201,168,76,0.1);
+  color: #C9A84C;
+}
+
+/* ═══════════════════════════════════════════════
+   LEFT PANEL — AGENT PAUSED STATE
+═══════════════════════════════════════════════ */
+.modal-left.agent-paused .modal-left-bg-media {
+  filter: grayscale(1) brightness(0.65);
+  transition: filter 0.5s ease;
+}
+.modal-left.agent-paused .modal-avatar-circle {
+  filter: grayscale(1);
+  transition: filter 0.5s ease;
+}
+.modal-left.agent-paused #mWave .wbar {
+  animation-play-state: paused;
+  opacity: 0.2;
+  transition: opacity 0.35s;
+}
+.modal-left.agent-paused #mMetrics { display: none; }
+.modal-left.agent-paused .modal-agent-name {
+  color: rgba(223,240,255,0.35) !important;
+  text-shadow: none !important;
+}
+body.light .modal-left.agent-paused .modal-agent-name { color: rgba(7,17,31,0.3) !important; }
+.modal-left.agent-paused .modal-agent-role { opacity: 0.4; }
+
+/* Pause legend */
+.agent-pause-legend {
+  display: none;
+  flex-direction: column; align-items: center;
+  gap: 7px; margin-top: auto; padding: 0 16px 8px;
+  text-align: center;
+}
+.modal-left.agent-paused .agent-pause-legend { display: flex; }
+.agent-pause-badge {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 9px; letter-spacing: 3.5px; font-weight: 600;
+  color: rgba(223,240,255,0.42);
+  text-transform: uppercase;
+  border: 1px solid rgba(255,255,255,0.1);
+  padding: 5px 14px;
+}
+body.light .agent-pause-badge { color: rgba(7,17,31,0.35); border-color: rgba(0,0,0,0.1); }
+.agent-pause-sub {
+  font-size: 8px; letter-spacing: 0.8px;
+  color: var(--dim); opacity: 0.6;
+  text-transform: uppercase; line-height: 1.5;
+}
+
+</style>
+</head>
+<body>
+
+<canvas id="bgCanvas"></canvas>
+<div id="flashOverlay"></div>
+<svg id="connSvg" xmlns="http://www.w3.org/2000/svg"></svg>
+
+<!-- ═══════════ HOME VIEW ═══════════ -->
+<div id="homeView">
+  <div class="topbar">
+    <div class="logo">SINGULAR <em>· AGENT COMMAND</em></div>
+
+    <div class="topbar-center">
+      <div class="live-badge"><div class="live-dot"></div>EN VIVO</div>
+      <div class="tstat">
+        <div class="tv" id="statInt">47,832</div>
+        <div class="tl">Sin intervención humana</div>
+      </div>
+      <div class="tstat">
+        <div class="tv">A+</div>
+        <div class="tl">NPS Singular</div>
+      </div>
+      <div class="tstat">
+        <div class="tv" id="statSat">96.2%</div>
+        <div class="tl">Satisfacción cliente</div>
+      </div>
+    </div>
+
+    <div class="topbar-right">
+      <div class="date-label" id="dateLabel"></div>
+      <div id="clock"></div>
+      <button id="modeToggle" title="Cambiar modo">
+        <svg id="modeIcon" width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M8 1v1M8 14v1M1 8h1M14 8h1M3.05 3.05l.71.71M12.24 12.24l.71.71M3.05 12.95l.71-.71M12.24 3.76l.71-.71M8 5a3 3 0 1 0 0 6 3 3 0 0 0 0-6z" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div id="draggablesLayer"></div>
+
+  <div id="dragHint">↔ arrastrá los agentes y widgets para reorganizar</div>
+
+  <button id="resetBtn" title="Volver al layout original">
+    <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+      <path d="M1.5 6A4.5 4.5 0 1 0 3 2.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+      <path d="M1.5 1.5v3h3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    Restablecer layout
+  </button>
+
+  <div id="bottomBar">
+    <div class="bstat"><strong id="bAgentes">5</strong> agentes activos</div>
+    <div class="bstat"><strong id="bConvos">872</strong> conversaciones activas</div>
+    <div class="bstat">Intervención humana <strong>12</strong> hoy</div>
+    <div class="bstat">Costo promedio <strong>USD 0.07</strong> / cliente</div>
+  </div>
+</div>
+
+<!-- ═══════════ AGENT MODAL ═══════════ -->
+<div id="agentModal">
+  <div class="modal-backdrop" id="modalBackdrop"></div>
+  <div class="modal-panel" id="modalPanel">
+    <button class="modal-close" id="modalClose">
+      <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+        <path d="M1 1l8 8M9 1l-8 8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+      </svg>
+    </button>
+
+    <!-- LEFT: avatar + metrics -->
+    <div class="modal-left">
+      <div class="modal-hero-glow" id="mHeroGlow"></div>
+
+      <div class="modal-avatar-wrap">
+        <div class="modal-ring-a" id="mRingA"></div>
+        <div class="modal-ring-b"></div>
+        <div class="modal-avatar-circle" id="mAvatarCircle">
+          <div class="modal-avatar-ph" id="mAvatarPh"></div>
+          <!--
+            FOTO: reemplazar modal-avatar-ph con:
+            <img style="width:100%;height:100%;object-fit:cover;display:block" src="agents/ID.jpg">
+
+            VIDEO (loop automático):
+            <video style="width:100%;height:100%;object-fit:cover;display:block" src="agents/ID.mp4" autoplay muted loop playsinline></video>
+          -->
+        </div>
+      </div>
+
+      <div class="modal-agent-name" id="mName"></div>
+      <div class="modal-agent-role" id="mRole"></div>
+      <div class="modal-waveform" id="mWave"></div>
+      <div class="modal-metrics" id="mMetrics"></div>
+      <div class="agent-pause-legend">
+        <div class="agent-pause-badge">AGENTE EN PAUSA</div>
+        <div class="agent-pause-sub">Estás gestionando esta<br>conversación manualmente</div>
+      </div>
+    </div>
+
+    <!-- RIGHT: stats + emergency + accordion -->
+    <div class="modal-right">
+      <div class="modal-right-header">
+        <div class="mstat active"  id="mStatA">—</div>
+        <div class="mstat waiting" id="mStatW">—</div>
+        <div class="mstat resolved" id="mStatR">—</div>
+      </div>
+
+      <button class="emergency-btn" id="emergencyBtn">
+        <svg width="11" height="11" viewBox="0 0 11 11" fill="none">
+          <rect x="1.5" y="1.5" width="8" height="8" rx="1" stroke="currentColor" stroke-width="1.3"/>
+        </svg>
+        Freno de emergencia
+      </button>
+
+      <div class="conv-section-title">Conversaciones activas</div>
+      <div class="conv-accordion" id="convAccordion"></div>
+
+      <div class="conv-pager" id="convPager">
+        <button class="pager-btn" id="pagerPrev" title="Anterior">
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+            <path d="M6.5 2L3.5 5l3 3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <div class="pager-info">
+          <span class="pager-page" id="pagerPage">1 / 9</span>
+          <span class="pager-total" id="pagerTotal">— conversaciones</span>
+        </div>
+        <button class="pager-btn" id="pagerNext" title="Siguiente">
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+            <path d="M3.5 2l3 3-3 3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- ═══ INTERVENTION PANEL ═══ -->
+      <div id="interventionPanel">
+        <div class="intrv-header">
+          <div>
+            <div class="intrv-client-name" id="intrvClientName"></div>
+            <div class="intrv-client-meta" id="intrvClientMeta"></div>
+          </div>
+          <span class="ci-channel" id="intrvChannel"></span>
+          <span class="intrv-badge">INTERVINIENDO</span>
+        </div>
+        <div class="intrv-messages" id="intrvMessages"></div>
+        <div class="intrv-input-area">
+          <textarea id="intrvInput" placeholder="Escribí un mensaje al cliente…" rows="1"></textarea>
+          <button id="intrvSend">Enviar</button>
+        </div>
+        <button class="intrv-reactivate" id="intrvReactivate">
+          <svg width="11" height="11" viewBox="0 0 11 11" fill="none">
+            <path d="M2 5.5a3.5 3.5 0 1 0 3.5-3.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+            <path d="M2 2.5v3h3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Reactivar agente
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+'use strict';
+
+// ═══════════════════════════════════════════════
+//  AGENT DATA
+// ═══════════════════════════════════════════════
+const AGENTS = [
+  {
+    id:'nova', name:'Nova', role:'Retención & Satisfacción',
+    color:'#00D4FF', grad:'linear-gradient(135deg,#00263d,#001120)',
+    score:94, convos:187,
+    tip:{ conv:187, score:94, nps:'92', cartera:'$42M' },
+    metrics:[
+      {l:'NPS promedio',       v:'92',    d:'+4.1%', pos:true},
+      {l:'Retención mensual',  v:'98.3%', d:'+1.2%', pos:true},
+      {l:'Tiempo respuesta',   v:'0:47s', d:'−12s',  pos:true},
+      {l:'Cartera gestionada', v:'$42M',  d:'+3.8%', pos:true},
+    ],
+    drA:187, drW:14, drR:412,
+    convList:[
+      { client:'María Gómez', id:'CLI-00872', ch:'WSP', time:'Hace 2 min', status:'active', typing:true,
+        msgs:[{w:'Cliente',t:'¿Por qué me bajó el límite de la tarjeta?'},{w:'Nova',t:'Hola María, estoy revisando tu cuenta ahora mismo. Hubo un ajuste preventivo el día 14, te explico...'},{w:'Nova',t:'El sistema redujo el límite un 20% de forma automática por actividad inusual en dos comercios. Es completamente reversible.'},{w:'Cliente',t:'Entiendo. ¿Cuándo me lo restauran?'},{w:'Nova',t:'Puedo iniciarlo ahora mismo. Toma 24hs hábiles. ¿Te genero la solicitud?'},{w:'Cliente',t:'Sí, por favor.'},{w:'Nova',t:'Listo María. Mañana a las 18hs tenés el límite original restaurado. Llegará confirmación a tu email.'}] },
+      { client:'Roberto Salas', id:'CLI-01134', ch:'TEL', time:'Hace 8 min', status:'waiting', typing:false,
+        msgs:[{w:'Cliente',t:'Fui a la sucursal y estuve 40 min esperando...'},{w:'Nova',t:'Roberto, entiendo la situación. ¿Qué gestión necesitabas hacer?'},{w:'Cliente',t:'Quería actualizar el domicilio fiscal.'},{w:'Nova',t:'Lo resuelvo desde acá en 2 minutos. ¿Me confirmás el nuevo domicilio?'},{w:'Cliente',t:'Av. Corrientes 1234, CABA.'},{w:'Nova',t:'Actualizado Roberto. Confirmación al email registrado en los próximos minutos.'}] },
+      { client:'Carla Méndez', id:'CLI-00391', ch:'VID', time:'Hace 15 min', status:'active', typing:false,
+        msgs:[{w:'Nova',t:'Tu reclamo fue procesado. El reintegro estará disponible en 24hs.'},{w:'Cliente',t:'¡Muchas gracias, fue muy rápido!'},{w:'Cliente',t:'¿El monto aparece en el próximo resumen?'},{w:'Nova',t:'Sí, figurará como "Ajuste por reclamo". ¿Puedo ayudarte con algo más?'},{w:'Cliente',t:'No, es todo. Excelente atención.'}] },
+      { client:'Pablo Fernández', id:'CLI-02241', ch:'MAIL', time:'Hace 31 min', status:'resolved', typing:false,
+        msgs:[{w:'Cliente',t:'Necesito actualizar mis datos de contacto.'},{w:'Nova',t:'Listo Pablo, actualicé tu email y teléfono. Ya recibiste confirmación.'}] },
+    ]
+  },
+  {
+    id:'apolo', name:'Apolo', role:'Crecimiento Comercial',
+    color:'#8B5CF6', grad:'linear-gradient(135deg,#1a0840,#0c0420)',
+    score:89, convos:203,
+    tip:{ conv:203, score:89, nps:'96', cartera:'$89M' },
+    metrics:[
+      {l:'Conversiones mes',  v:'1,847', d:'+18%', pos:true},
+      {l:'Revenue generado',  v:'$2.3M', d:'+22%', pos:true},
+      {l:'Ticket promedio',   v:'$48K',  d:'+9%',  pos:true},
+      {l:'Cartera activa',    v:'$89M',  d:'+14%', pos:true},
+    ],
+    drA:203, drW:31, drR:589,
+    convList:[
+      { client:'Grupo Astra SA', id:'EMP-00114', ch:'VID', time:'Hace 1 min', status:'active', typing:true,
+        msgs:[{w:'Cliente',t:'Evaluamos refinanciar el crédito de capital de trabajo.'},{w:'Apolo',t:'Perfecto timing. Tengo tres opciones preaprobadas con tasa preferencial por volumen. ¿Arrancamos?'},{w:'Cliente',t:'¿Cuál es la tasa para el tramo de $5M?'},{w:'Apolo',t:'TNA 38% fija a 36 meses. Si van por $8M baja a 35.5%. ¿Les envío la simulación completa?'},{w:'Cliente',t:'Sí, manden la simulación. La revisamos hoy.'},{w:'Apolo',t:'Enviado al mail registrado. Incluye tres escenarios de cuota. ¿Hablamos a las 17hs?'},{w:'Cliente',t:'A las 17hs estamos disponibles.'},{w:'Apolo',t:'Perfecto. Los llamo en punto.'}] },
+      { client:'Lucía Vargas', id:'CLI-00887', ch:'WSP', time:'Hace 5 min', status:'active', typing:false,
+        msgs:[{w:'Apolo',t:'Lucía, tenés préstamo personal preaprobado de $180,000 a 36 cuotas. TNA 44% fija.'},{w:'Cliente',t:'¿Me mandás el resumen al email?'},{w:'Apolo',t:'Ya lo envié. Cuota fija de $8,240. Sin gastos de apertura.'},{w:'Cliente',t:'¿Puedo cancelarlo antes sin penalidad?'},{w:'Apolo',t:'Cancelación anticipada sin cargo después del 6to mes.'},{w:'Cliente',t:'Bien. Lo reviso y confirmo mañana.'},{w:'Apolo',t:'Perfecto Lucía. La oferta tiene vigencia hasta el viernes.'}] },
+      { client:'Diego Torres', id:'CLI-01902', ch:'TEL', time:'Hace 19 min', status:'waiting', typing:false,
+        msgs:[{w:'Apolo',t:'Diego, la cuenta premium te da 3% cashback en supermercados y sin costo de mantenimiento.'},{w:'Cliente',t:'Lo evalúo y te confirmo.'},{w:'Apolo',t:'Diego, ¿pudiste revisar la propuesta?'},{w:'Cliente',t:'Sí. ¿El cashback aplica en nafta también?'},{w:'Apolo',t:'En YPF y Shell. 1.5% adicional los primeros 3 meses.'},{w:'Cliente',t:'Perfecto, entonces la activo.'}] },
+    ]
+  },
+  {
+    id:'eva', name:'Eva', role:'Inversiones & Patrimonio',
+    color:'#10B981', grad:'linear-gradient(135deg,#002818,#001008)',
+    score:91, convos:142,
+    tip:{ conv:142, score:91, nps:'95', cartera:'$218M' },
+    metrics:[
+      {l:'AUM gestionado',     v:'$218M',  d:'+11%', pos:true},
+      {l:'Nuevas inversiones', v:'934',    d:'+27%', pos:true},
+      {l:'Rendimiento prom.',  v:'31.4%',  d:'+6%',  pos:true},
+      {l:'Clientes activos',   v:'1,204',  d:'+8%',  pos:true},
+    ],
+    drA:142, drW:9, drR:318,
+    convList:[
+      { client:'Familia Rossi', id:'CLI-00033', ch:'VID', time:'Hace 3 min', status:'active', typing:true,
+        msgs:[{w:'Cliente',t:'Queremos revisar la distribución de nuestra cartera de fondos.'},{w:'Eva',t:'40% renta fija local, 35% Cedears, 25% money market. Con el contexto macro sugiero revisar la expo en Cedears...'},{w:'Cliente',t:'¿Qué Cedears recomendás reducir?'},{w:'Eva',t:'AAPL y AMZN tienen valuación estirada. Sugiero rotar a BRK.B y JNJ, más defensivos ante la volatilidad actual.'},{w:'Cliente',t:'¿Cuánto movemos?'},{w:'Eva',t:'15% del portfolio. Cedears actuales a money market transitoriamente, reasignamos el lunes.'},{w:'Cliente',t:'De acuerdo. Hacemos los cambios el lunes.'},{w:'Eva',t:'Perfecto. Les mando el borrador de operaciones el domingo a la noche para que lo revisen.'}] },
+      { client:'Ing. H. Blanco', id:'CLI-00781', ch:'MAIL', time:'Hace 11 min', status:'active', typing:false,
+        msgs:[{w:'Eva',t:'Le envié el análisis de la ON YPF 2027. Rinde 8.2% en dólares, baja duration.'},{w:'Cliente',t:'Muy bien Eva, lo reviso hoy y te confirmo.'},{w:'Cliente',t:'Revisé el análisis. ¿Cuál es el mínimo de suscripción?'},{w:'Eva',t:'USD 1.000 nominal. Precio actual 97.5% — buen punto de entrada.'},{w:'Cliente',t:'Suscribimos USD 15.000. ¿Cómo operamos?'},{w:'Eva',t:'Genero la orden ahora mismo. En 48hs acreditado en la cartera.'}] },
+      { client:'Silvana Roth', id:'CLI-02100', ch:'WSP', time:'Hace 22 min', status:'resolved', typing:false,
+        msgs:[{w:'Cliente',t:'¿Conviene rescatar el fondo ahora?'},{w:'Eva',t:'Con la baja de tasas proyectada para el miércoles, esperaría. El fondo tiene momentum positivo.'}] },
+    ]
+  },
+  {
+    id:'ares', name:'Ares', role:'Mora & Riesgo Temprano',
+    color:'#F59E0B', grad:'linear-gradient(135deg,#271500,#120900)',
+    score:87, convos:231,
+    tip:{ conv:231, score:87, nps:'89', cartera:'$31M' },
+    metrics:[
+      {l:'Mora recuperada',     v:'$31M',  d:'+19%',  pos:true},
+      {l:'Tasa de recupero',    v:'78.4%', d:'+5%',   pos:true},
+      {l:'Acuerdos activos',    v:'2,140', d:'−3%',   pos:false},
+      {l:'Mora temprana (30d)', v:'1.2%',  d:'−0.4%', pos:true},
+    ],
+    drA:231, drW:47, drR:634,
+    convList:[
+      { client:'Andrés Castillo', id:'CLI-00558', ch:'TEL', time:'Ahora', status:'active', typing:true,
+        msgs:[{w:'Cliente',t:'Este mes estoy muy complicado para pagar...'},{w:'Ares',t:'Entiendo Andrés. Dividimos en 3 cuotas sin interés — es la opción más cómoda para tu situación.'},{w:'Cliente',t:'¿Cuándo me llegan los links de pago?'},{w:'Ares',t:'En los próximos 10 minutos por WhatsApp. Primera cuota con vencimiento el lunes.'},{w:'Cliente',t:'Perfecto.'},{w:'Ares',t:'El plan quedó registrado Andrés. Sin cargos adicionales ni impacto en Veraz mientras cumplas las cuotas.'},{w:'Cliente',t:'Muchas gracias, no esperaba esta flexibilidad.'},{w:'Ares',t:'Para eso estamos. Cualquier consulta sobre las cuotas, me escribís directo.'}] },
+      { client:'Verónica Ríos', id:'CLI-01403', ch:'WSP', time:'Hace 7 min', status:'waiting', typing:false,
+        msgs:[{w:'Ares',t:'Verónica, tu deuda vence en 5 días. Generé un plan de pago personalizado. ¿Te lo envío?'},{w:'Cliente',t:'Sí mandámelo'},{w:'Ares',t:'Enviado. Plan en 4 cuotas de $3.200 sin punitorios. ¿Lo revisaste?'},{w:'Cliente',t:'Sí lo vi. ¿Puedo pagar la primera hoy?'},{w:'Ares',t:'Sí, el link está activo. Pagando hoy queda formalizado el acuerdo completo.'}] },
+      { client:'Constructora DeltaBuild', id:'EMP-00891', ch:'VID', time:'Hace 18 min', status:'resolved', typing:false,
+        msgs:[{w:'Cliente',t:'Necesitamos renegociar el crédito hipotecario.'},{w:'Ares',t:'Acordamos extensión a 72 meses con tasa bonificada. Documentación lista para firma digital.'}] },
+    ]
+  },
+  {
+    id:'lara', name:'Lara', role:'Captación de Nuevos Clientes',
+    videoPos:'center 25%',
+    color:'#F43F5E', grad:'linear-gradient(135deg,#280010,#130008)',
+    score:85, convos:109,
+    tip:{ conv:109, score:85, nps:'91', cartera:'1,204 clientes' },
+    metrics:[
+      {l:'Nuevos clientes mes', v:'1,204', d:'+34%', pos:true},
+      {l:'Tasa conversión',     v:'43.8%', d:'+8%',  pos:true},
+      {l:'CAC promedio',        v:'USD 4.2',d:'−18%', pos:true},
+      {l:'LTV proyectado',      v:'$128K', d:'+12%', pos:true},
+    ],
+    drA:109, drW:22, drR:287,
+    convList:[
+      { client:'Florencia Nadal', id:'PROS-00341', ch:'WSP', time:'Hace 2 min', status:'active', typing:true,
+        msgs:[{w:'Florencia',t:'Me llegó un mensaje sobre una cuenta sin costo. ¿Cómo funciona?'},{w:'Lara',t:'Hola Florencia! Sin mantenimiento, sin comisiones. Visa, transferencias ilimitadas y 3% cashback. ¿Abrimos ahora en 3 minutos?'},{w:'Cliente',t:'¿Qué necesitan para abrirla?'},{w:'Lara',t:'Solo DNI y selfie. 100% digital. ¿Empezamos?'},{w:'Cliente',t:'Dale, empecemos.'},{w:'Lara',t:'Perfecto. Te envío el link al WhatsApp ahora mismo.'},{w:'Cliente',t:'Ya me llegó, gracias!'}] },
+      { client:'Matías Quiroga', id:'PROS-00789', ch:'VID', time:'Hace 10 min', status:'active', typing:false,
+        msgs:[{w:'Lara',t:'Matías, tengo un pack premium con seguro de vida incluido sin cargo los primeros 12 meses.'},{w:'Cliente',t:'Interesante. ¿Me mandás los detalles?'},{w:'Lara',t:'Enviado. Cubre $5M, asistencia al viajero y accidentes personales.'},{w:'Cliente',t:'¿Qué pasa después de los 12 meses?'},{w:'Lara',t:'Se renueva a $890/mes. Cancelable en cualquier momento sin penalidad.'},{w:'Cliente',t:'Ok, lo activo.'},{w:'Lara',t:'Perfecto Matías. El pack está activado. La documentación llega por email.'}] },
+      { client:'Nómade SRL', id:'PROS-01021', ch:'MAIL', time:'Hace 35 min', status:'resolved', typing:false,
+        msgs:[{w:'Cliente',t:'Queríamos consultar por cuenta corporativa.'},{w:'Lara',t:'Ya les abrí la cuenta y asigné ejecutivo dedicado. Bienvenidos a Singular.'}] },
+    ]
+  },
+];
+
+// ═══════════════════════════════════════════════
+//  CANVAS BACKGROUND
+// ═══════════════════════════════════════════════
+const canvas = document.getElementById('bgCanvas');
+const ctx = canvas.getContext('2d');
+let W = 0, H = 0;
+
+function resizeCanvas(){ W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+const PTCLS = Array.from({length:110}, () => ({
+  x: Math.random() * window.innerWidth, y: Math.random() * window.innerHeight,
+  r: Math.random() * 1.1 + 0.2, vx:(Math.random()-.5)*.16, vy:(Math.random()-.5)*.16, a:Math.random()*.45+.1
+}));
+
+function drawBg(){
+  ctx.clearRect(0,0,W,H);
+  const light = document.body.classList.contains('light');
+  const pColor = light ? '0,120,170' : '0,212,255';
+  const dotA   = light ? .06 : .07;
+
+  // center glow
+  const g = ctx.createRadialGradient(W/2,H/2,0,W/2,H/2,W*.55);
+  g.addColorStop(0, light ? 'rgba(0,100,160,0.04)' : 'rgba(0,80,130,0.07)');
+  g.addColorStop(1,'transparent');
+  ctx.fillStyle = g; ctx.fillRect(0,0,W,H);
+
+  // grid dots
+  for(let gx=0;gx<W;gx+=58) for(let gy=0;gy<H;gy+=58){
+    ctx.beginPath(); ctx.arc(gx,gy,.55,0,Math.PI*2);
+    ctx.fillStyle=`rgba(${pColor},${dotA})`; ctx.fill();
+  }
+
+  // particles
+  PTCLS.forEach(p=>{
+    p.x+=p.vx; p.y+=p.vy;
+    if(p.x<0)p.x=W; if(p.x>W)p.x=0; if(p.y<0)p.y=H; if(p.y>H)p.y=0;
+    ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.fillStyle=`rgba(${pColor},${p.a * (light?.5:1)})`; ctx.fill();
+  });
+}
+
+// ═══════════════════════════════════════════════
+//  CONNECTIONS (SVG)
+// ═══════════════════════════════════════════════
+const svg = document.getElementById('connSvg');
+const CONN_PAIRS = [[0,1],[1,2],[2,3],[3,4],[4,0],[0,2],[1,3]];
+const connEls = [];
+const packetEls = [];
+
+function initConn(){
+  svg.innerHTML=''; connEls.length=0; packetEls.length=0;
+  CONN_PAIRS.forEach(([a,b],i)=>{
+    const line = document.createElementNS('http://www.w3.org/2000/svg','line');
+    const isMain = i<5;
+    line.setAttribute('stroke-width', isMain?'1':'.5');
+    svg.appendChild(line);
+    connEls.push({line,a,b,main:isMain});
+
+    if(isMain){
+      const c = document.createElementNS('http://www.w3.org/2000/svg','circle');
+      c.setAttribute('r','2.5');
+      svg.appendChild(c);
+      packetEls.push({el:c,a,b,t:Math.random(),speed:.0006+Math.random()*.001});
+    }
+  });
+}
+
+function updateConn(){
+  const light = document.body.classList.contains('light');
+  const lc = light ? 'rgba(0,120,170,.18)' : 'rgba(0,212,255,.13)';
+  const lcdim = light ? 'rgba(0,120,170,.08)' : 'rgba(0,212,255,.06)';
+
+  connEls.forEach(({line,a,b,main})=>{
+    const pa = AGENTS[a], pb = AGENTS[b];
+    const da = draggables.find(d=>d.id===pa.id);
+    const db = draggables.find(d=>d.id===pb.id);
+    if(!da||!db) return;
+    line.setAttribute('x1',da.pos.x); line.setAttribute('y1',da.pos.y);
+    line.setAttribute('x2',db.pos.x); line.setAttribute('y2',db.pos.y);
+    line.setAttribute('stroke', main?lc:lcdim);
+  });
+
+  packetEls.forEach(pkt=>{
+    pkt.t += pkt.speed; if(pkt.t>1)pkt.t=0;
+    const pa = draggables.find(d=>d.id===AGENTS[pkt.a].id);
+    const pb = draggables.find(d=>d.id===AGENTS[pkt.b].id);
+    if(!pa||!pb) return;
+    const px = pa.pos.x+(pb.pos.x-pa.pos.x)*pkt.t;
+    const py = pa.pos.y+(pb.pos.y-pa.pos.y)*pkt.t;
+    pkt.el.setAttribute('cx',px); pkt.el.setAttribute('cy',py);
+    const agent = AGENTS[pkt.a];
+    pkt.el.setAttribute('fill', agent.color);
+    pkt.el.style.filter=`drop-shadow(0 0 3px ${agent.color})`;
+  });
+}
+
+// ═══════════════════════════════════════════════
+//  DRAGGABLE SYSTEM (agents + widgets unified)
+// ═══════════════════════════════════════════════
+const draggables = []; // { id, el, pos, naturalPos, type, data }
+let activeDrag = null;
+let dragStart = {x:0,y:0};
+let wasDragged = false;
+const CLICK_THRESH = 9;
+const REPULSE_R = 240;
+const MAX_PUSH = 75;
+
+const layer = document.getElementById('draggablesLayer');
+
+function makeDraggable(el, item){
+  el.addEventListener('mousedown', e=>{
+    if(e.button!==0) return;
+    activeDrag = item;
+    dragStart = {x:e.clientX, y:e.clientY};
+    wasDragged = false;
+    item.offsetX = e.clientX - item.pos.x;
+    item.offsetY = e.clientY - item.pos.y;
+    el.classList.add('dragging');
+    e.preventDefault(); e.stopPropagation();
+  });
+}
+
+window.addEventListener('mousemove', e=>{
+  if(!activeDrag) return;
+  const dx = e.clientX-dragStart.x, dy = e.clientY-dragStart.y;
+  if(Math.hypot(dx,dy) > CLICK_THRESH) wasDragged = true;
+  activeDrag.pos.x = e.clientX - activeDrag.offsetX;
+  activeDrag.pos.y = e.clientY - activeDrag.offsetY;
+  if(wasDragged) hideDragHint();
+});
+
+window.addEventListener('mouseup', e=>{
+  if(!activeDrag) return;
+  activeDrag.el.classList.remove('dragging');
+  if(!wasDragged && activeDrag.type === 'agent'){
+    openDetail(activeDrag.data);
+  } else if(wasDragged){
+    activeDrag.naturalPos.x = activeDrag.pos.x;
+    activeDrag.naturalPos.y = activeDrag.pos.y;
+  }
+  activeDrag = null;
+});
+
+function applyPhysics(){
+  draggables.forEach(item=>{
+    if(item === activeDrag){
+      item.el.style.left = item.pos.x+'px';
+      item.el.style.top  = item.pos.y+'px';
+      return;
+    }
+    let tx = item.naturalPos.x, ty = item.naturalPos.y;
+
+    if(activeDrag){
+      const dx = item.naturalPos.x - activeDrag.pos.x;
+      const dy = item.naturalPos.y - activeDrag.pos.y;
+      const dist = Math.hypot(dx,dy);
+      if(dist < REPULSE_R && dist > 1){
+        const t = 1 - dist/REPULSE_R;
+        const force = t*t*MAX_PUSH;
+        tx = item.naturalPos.x + (dx/dist)*force;
+        ty = item.naturalPos.y + (dy/dist)*force;
+      }
+    }
+
+    item.pos.x += (tx - item.pos.x) * .1;
+    item.pos.y += (ty - item.pos.y) * .1;
+    item.el.style.left = item.pos.x+'px';
+    item.el.style.top  = item.pos.y+'px';
+  });
+}
+
+// ─── Build agents ─────────────────────────────
+function pentagonPos(){
+  const cx=W/2, cy=H/2+8;
+  const r = Math.min(W,H)*.265;
+  return AGENTS.map((_,i)=>{
+    const a = (Math.PI*2*i/AGENTS.length) - Math.PI/2;
+    return { x: cx+r*Math.cos(a), y: cy+r*Math.sin(a) };
+  });
+}
+
+function buildAgents(){
+  const positions = pentagonPos();
+  AGENTS.forEach((agent,i)=>{
+    const pos = {...positions[i]};
+    const el = document.createElement('div');
+    el.className = 'agent-node';
+    el.style.left = pos.x+'px'; el.style.top = pos.y+'px';
+    el.style.setProperty('--acolor', agent.color);
+    el.style.animationDelay = (i*110)+'ms';
+    // Stagger float phase so agents don't move in sync
+    const floatDelay = -(i * 0.72).toFixed(2);
+    el.innerHTML = `
+      <div class="agent-float-inner" style="animation-delay:${floatDelay}s">
+        <div class="agent-outer">
+          <div class="ring-spin" style="border-color:${agent.color}20"></div>
+          <div class="ring-spin-b"></div>
+          <div class="agent-circle">
+            <div class="agent-ph" style="background:${agent.grad};color:${agent.color}">${agent.name[0]}</div>
+            <img class="agent-photo" src="avatars/${agent.id}.jpg" alt="${agent.name}"
+              style="display:none;position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:50%"
+              onload="this.style.display='block'" onerror="this.remove()">
+            <video class="agent-video" src="avatars/${agent.id}.mp4" muted loop playsinline autoplay
+              onerror="this.remove()"></video>
+          </div>
+          <div class="agent-score">${agent.score}</div>
+          <div class="agent-convos"><div class="convos-dot"></div>${agent.convos}</div>
+        </div>
+        <div class="agent-label">
+          <div class="agent-name">${agent.name}</div>
+          <div class="agent-role-txt">${agent.role}</div>
+        </div>
+        <div class="agent-tip" style="--acolor:${agent.color}">
+          <div class="ttrow"><span class="k">Conversaciones</span><span class="v">${agent.tip.conv}</span></div>
+          <div class="ttrow"><span class="k">Score</span><span class="v">${agent.tip.score}</span></div>
+          <div class="ttrow"><span class="k">NPS</span><span class="v">${agent.tip.nps}</span></div>
+          <div class="ttrow"><span class="k">Cartera</span><span class="v">${agent.tip.cartera}</span></div>
+        </div>
+      </div>
+    `;
+    layer.appendChild(el);
+
+    // Preload + fade-in suave cuando el video está listo
+    const nodeVid = el.querySelector('.agent-video');
+    if (nodeVid) {
+      nodeVid.style.opacity = '0';
+      nodeVid.preload = 'auto';
+      if (agent.videoPos) nodeVid.style.objectPosition = agent.videoPos;
+      nodeVid.addEventListener('canplay', () => {
+        nodeVid.style.transition = 'opacity 0.7s ease';
+        nodeVid.style.opacity = '1';
+      }, { once: true });
+    }
+
+    const item = { id:agent.id, el, pos:{...pos}, naturalPos:{...pos}, initPos:{...pos}, type:'agent', data:agent };
+    draggables.push(item);
+    makeDraggable(el, item);
+  });
+}
+
+// ─── Build commander ─────────────────────────
+function buildCommander(){
+  const cx = W/2, cy = H/2 + 8;
+  const pos = { x: cx, y: cy };
+
+  const el = document.createElement('div');
+  el.className = 'commander-node';
+  el.id = 'commanderNode';
+  el.style.left = pos.x + 'px';
+  el.style.top  = pos.y + 'px';
+
+  const GOALS = [
+    {label:'Nuevas cuentas',        pct:102},
+    {label:'Préstamos personales',  pct:103},
+    {label:'Préstamos comerciales', pct:105},
+    {label:'Seguros',               pct:98},
+    {label:'Aumento NPS',           pct:101},
+    {label:'Dism. mora temprana',   pct:106},
+    {label:'Dism. mora tardía',     pct:98},
+    {label:'Dism. fraude',          pct:100},
+    {label:'Resolución fraude',     pct:99},
+    {label:'Nuevos clientes',       pct:98},
+  ];
+  const avgPct = Math.round(GOALS.reduce((s,g)=>s+g.pct,0)/GOALS.length);
+
+  // half-circle arc for goals avg
+  const pct = avgPct / 100;
+  const R = 40, rInner = 34;
+  // Arc path for a half circle (180°), filled to pct
+  // Full semicircle circumference = π * R ≈ 125.66
+  const semi = Math.PI * R;
+  const filled = pct * semi;
+  const gap    = semi - filled;
+
+  const goalsHTML = GOALS.map(g => {
+    const barW  = Math.min(g.pct, 100);
+    const color = g.pct >= 100 ? '#00FF88' : g.pct >= 97 ? '#00D4FF' : '#C9A84C';
+    return `
+      <div class="goal-item">
+        <div class="goal-meta">
+          <span class="goal-label">${g.label}</span>
+          <span class="goal-pct" style="color:${color}">${g.pct}%</span>
+        </div>
+        <div class="goal-track">
+          <div class="goal-bar" data-w="${barW}" style="background:${color}"></div>
+        </div>
+      </div>`;
+  }).join('');
+
+  el.innerHTML = `
+    <div class="cmd-float-inner" style="animation-delay:-1.1s">
+      <div class="cmd-wrap" style="cursor:pointer" id="cmdAvatarBtn">
+        <svg class="cmd-arc" width="148" height="148" viewBox="0 0 148 148">
+          <circle cx="74" cy="74" r="68" fill="none"
+            stroke="rgba(201,168,76,0.1)" stroke-width="1.5" stroke-dasharray="4 6"/>
+        </svg>
+        <div class="cmd-circle">
+          <img class="cmd-photo" src="avatars/commander.jpg" alt="Comandante"
+            onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+          <div class="cmd-ph" style="display:none">JC</div>
+        </div>
+        <div class="cmd-badge">${avgPct}%</div>
+      </div>
+
+      <div class="cmd-label">
+        <div class="cmd-name">Julián Colombo</div>
+        <div class="cmd-title">COMANDANTE</div>
+      </div>
+    </div>
+
+    <div class="cmd-popup" id="cmdPopup">
+      <div class="cmd-popup-title">Cumplimiento de metas · Mayo 2026</div>
+      <div class="cmd-goals-grid">${goalsHTML}</div>
+      <div class="cmd-popup-avg">
+        <span class="cmd-popup-avg-label">Promedio general</span>
+        <span class="cmd-popup-avg-val">${avgPct}%</span>
+      </div>
+    </div>
+  `;
+
+  layer.appendChild(el);
+  const item = { id:'commander', el, pos:{...pos}, naturalPos:{...pos}, initPos:{...pos}, type:'commander', data:null };
+  draggables.push(item);
+  makeDraggable(el, item);
+
+  // ── Popup toggle on avatar click ──
+  const popup  = el.querySelector('#cmdPopup');
+  const avatar = el.querySelector('#cmdAvatarBtn');
+  let popupOpen = false;
+
+  avatar.addEventListener('click', e => {
+    if(wasDragged) return;
+    // During intro: trigger big bang instead of opening popup
+    if (!introComplete) { triggerBigBang(); return; }
+    popupOpen = !popupOpen;
+    popup.classList.toggle('open', popupOpen);
+
+    // Animate bars in when opening
+    if(popupOpen){
+      popup.querySelectorAll('.goal-bar').forEach((bar, i) => {
+        const w = bar.dataset.w;
+        bar.style.width = '0';
+        setTimeout(() => { bar.style.width = w + '%'; }, 60 + i * 40);
+      });
+    }
+
+    // Smart positioning: flip to left if near right edge
+    const rect = el.getBoundingClientRect();
+    if(rect.left + 160 + 400 > window.innerWidth){
+      popup.style.left  = 'auto';
+      popup.style.right = 'calc(100% + 20px)';
+      popup.style.transformOrigin = 'right center';
+    } else {
+      popup.style.left  = 'calc(100% + 20px)';
+      popup.style.right = 'auto';
+      popup.style.transformOrigin = 'left center';
+    }
+  });
+
+  // Close popup when clicking elsewhere
+  document.addEventListener('click', e => {
+    if(popupOpen && !el.contains(e.target)){
+      popupOpen = false;
+      popup.classList.remove('open');
+    }
+  });
+}
+
+// ─── Build map widget (Leaflet) ───────────────
+function buildMapWidget(){
+  const pos = { x: 170, y: H * 0.30 };
+
+  const el = document.createElement('div');
+  el.className = 'widget';
+  el.style.left = pos.x + 'px';
+  el.style.top  = pos.y + 'px';
+  el.style.width = '268px';
+  el.style.animationDelay = '550ms';
+
+  const CITIES = [
+    {name:'Buenos Aires', lat:-34.603, lon:-58.381, agent:'Nova',  color:'#00D4FF', count:187, size:14},
+    {name:'Rosario',      lat:-32.946, lon:-60.639, agent:'Apolo', color:'#8B5CF6', count:89,  size:11},
+    {name:'Córdoba',      lat:-31.420, lon:-64.188, agent:'Eva',   color:'#10B981', count:76,  size:11},
+    {name:'Mendoza',      lat:-32.889, lon:-68.845, agent:'Apolo', color:'#8B5CF6', count:54,  size:9},
+    {name:'Tucumán',      lat:-26.808, lon:-65.217, agent:'Ares',  color:'#F59E0B', count:43,  size:9},
+    {name:'Salta',        lat:-24.783, lon:-65.412, agent:'Ares',  color:'#F59E0B', count:31,  size:8},
+    {name:'Mar del Plata',lat:-38.005, lon:-57.542, agent:'Lara',  color:'#F43F5E', count:28,  size:8},
+    {name:'Bahía Blanca', lat:-38.719, lon:-62.272, agent:'Ares',  color:'#F59E0B', count:19,  size:7},
+    {name:'Neuquén',      lat:-38.951, lon:-68.059, agent:'Eva',   color:'#10B981', count:22,  size:8},
+    {name:'Posadas',      lat:-27.367, lon:-55.896, agent:'Lara',  color:'#F43F5E', count:17,  size:7},
+    {name:'Santa Fe',     lat:-31.633, lon:-60.700, agent:'Nova',  color:'#00D4FF', count:52,  size:8},
+  ];
+
+  // Unique map div ID (avoid conflicts on reinit)
+  const mapDivId = 'leafletMapDiv';
+
+  el.innerHTML = `
+    <div class="widget-header widget-drag-handle" id="mapHandle">
+      <span class="widget-title">Actividad en tiempo real</span>
+      <div class="live-badge" style="gap:5px">
+        <div class="live-dot" style="width:5px;height:5px"></div>
+        <span style="font-size:8px;letter-spacing:1.5px">EN VIVO</span>
+      </div>
+    </div>
+    <div id="${mapDivId}" style="height:218px;width:100%;"></div>
+  `;
+
+  layer.appendChild(el);
+
+  // Init Leaflet — offline: tiles pre-descargados localmente (zoom 3–7, Argentina)
+  const localTile = 'tiles/{z}/{x}/{y}.png';
+  const blankTile = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
+  const argBounds = L.latLngBounds([[-56, -75], [-20, -52]]);
+
+  const lmap = L.map(mapDivId, {
+    center: [-35.5, -63.5],
+    zoom: 5,
+    minZoom: 3,
+    maxZoom: 7,
+    zoomControl: true,
+    attributionControl: false,
+    zoomSnap: 0.5,
+    maxBounds: argBounds,
+    maxBoundsViscosity: 1.0,
+  });
+
+  const tileLayer = L.tileLayer(localTile, {
+    minZoom: 3, maxZoom: 7,
+    bounds: argBounds,
+    detectRetina: false,
+    errorTileUrl: blankTile,
+  }).addTo(lmap);
+
+  L.control.zoom({ position: 'bottomright' }).addTo(lmap);
+
+  // Custom markers
+  CITIES.forEach((c, i) => {
+    const delay = (i * 0.18).toFixed(2);
+    const dur   = (1.6 + i * 0.12).toFixed(2);
+    const icon = L.divIcon({
+      className: '',
+      html: `<div style="
+          position:relative; width:${c.size}px; height:${c.size}px;">
+        <div class="marker-pulse" style="
+          position:absolute; inset:-${Math.round(c.size*0.6)}px; border-radius:50%;
+          border:1.5px solid ${c.color}; opacity:0.5;
+          animation-duration:${dur}s; animation-delay:${delay}s;"></div>
+        <div style="
+          width:100%; height:100%; border-radius:50%;
+          background:${c.color};
+          box-shadow:0 0 ${c.size+2}px ${c.color}aa, 0 0 ${c.size*2}px ${c.color}44;">
+        </div>
+      </div>`,
+      iconSize:   [c.size, c.size],
+      iconAnchor: [c.size/2, c.size/2],
+    });
+
+    L.marker([c.lat, c.lon], {icon})
+      .addTo(lmap)
+      .bindTooltip(`
+        <div style="font-weight:600;color:${c.color};margin-bottom:4px">${c.name}</div>
+        <div style="font-size:10px;color:#aaa">Agente: <b style="color:#eee">${c.agent}</b></div>
+        <div style="font-size:10px;color:${c.color}">${c.count} conversaciones activas</div>
+      `, { className:'map-leaflet-tip', direction:'top', offset:[0,-c.size/2-2] });
+  });
+
+  // Offline: solo se cachean tiles en tema oscuro — no se intercambia al cambiar modo.
+
+  // Invalidate size after adding to DOM
+  setTimeout(()=> lmap.invalidateSize(), 150);
+
+  // Draggable only from header — stop Leaflet mousedown from bubbling to widget system
+  const item = { id:'w-map', el, pos:{...pos}, naturalPos:{...pos}, initPos:{...pos}, type:'widget', data:null };
+  draggables.push(item);
+
+  el.querySelector('#mapHandle').addEventListener('mousedown', e=>{
+    if(e.button!==0) return;
+    activeDrag = item;
+    dragStart  = {x:e.clientX, y:e.clientY};
+    wasDragged = false;
+    item.offsetX = e.clientX - item.pos.x;
+    item.offsetY = e.clientY - item.pos.y;
+    el.classList.add('dragging');
+    e.preventDefault(); e.stopPropagation();
+  });
+}
+
+// ─── Build widgets ────────────────────────────
+function widgetPos(){
+  return {
+    metas:     { x: W-165, y: H*0.28  },
+    cost:      { x: 170,   y: H*0.72  },
+    interv:    { x: W-165, y: H*0.72  },
+  };
+}
+
+function buildWidgets(){
+  const wp = widgetPos();
+
+  // ── METAS ──
+  const mPos = {...wp.metas};
+  const mEl = document.createElement('div');
+  mEl.className = 'widget';
+  mEl.style.left = mPos.x+'px'; mEl.style.top = mPos.y+'px';
+  mEl.style.animationDelay = '600ms';
+  const C = 226.2; // 2π*36
+  mEl.innerHTML = `
+    <div class="widget-header">
+      <span class="widget-title">Metas</span>
+      <span class="widget-period">Mayo 2026</span>
+    </div>
+    <div class="widget-body">
+      <div class="metas-top">
+        <div class="metas-donut">
+          <svg width="76" height="76" viewBox="0 0 80 80">
+            <circle cx="40" cy="40" r="36" fill="none" stroke="rgba(0,212,255,0.1)" stroke-width="7"/>
+            <circle cx="40" cy="40" r="36" fill="none" stroke="#00D4FF" stroke-width="7"
+              stroke-dasharray="${C}" stroke-dashoffset="0"
+              stroke-linecap="round" style="filter:drop-shadow(0 0 5px #00D4FF)"/>
+          </svg>
+          <div class="metas-donut-text">
+            <span class="metas-pct" style="color:var(--cyan)">101%</span>
+            <span class="metas-delta">↑ 3.37%</span>
+          </div>
+        </div>
+        <div class="metas-submetrics">
+          ${[['Activos','102%','#00D4FF'],['Pasivos','98%','#8B5CF6'],['Riesgo','99%','#10B981'],['NPS','101%','#F59E0B']].map(([k,v,c])=>`
+          <div class="smrow"><span class="smk">${k}</span><span class="smv">${v}</span></div>
+          <div class="sm-minibar">
+            <div class="smbar" style="width:${parseInt(v)}%;max-width:100%;background:${c};height:2px;border-radius:1px;opacity:.7"></div>
+          </div>`).join('')}
+        </div>
+      </div>
+      ${[['Comisiones','102%','#00FF88'],['Costos','105%','#F43F5E']].map(([k,v,c])=>`
+      <div class="smrow" style="margin-top:5px"><span class="smk">${k}</span><span class="smv" style="color:${c}">${v}</span></div>`).join('')}
+    </div>
+  `;
+  layer.appendChild(mEl);
+  const mItem = { id:'w-metas', el:mEl, pos:{...mPos}, naturalPos:{...mPos}, initPos:{...mPos}, type:'widget', data:null };
+  draggables.push(mItem);
+  makeDraggable(mEl, mItem);
+
+  // ── COSTRACKER ──
+  const cPos = {...wp.cost};
+  const cEl = document.createElement('div');
+  cEl.className = 'widget';
+  cEl.style.left = cPos.x+'px'; cEl.style.top = cPos.y+'px';
+  cEl.style.animationDelay = '700ms';
+  cEl.innerHTML = `
+    <div class="widget-header">
+      <span class="widget-title">Costracker</span>
+      <span class="widget-period">Mensual</span>
+    </div>
+    <div class="widget-body">
+      <div class="cost-top">
+        <div class="cost-big">
+          <div class="cbv" style="color:var(--cyan)">USD 0,07</div>
+          <div class="cbl">Costo / cliente</div>
+        </div>
+        <div class="cost-big">
+          <div class="cbv" style="color:var(--cyan)">USD 315</div>
+          <div class="cbl">Costo Singular</div>
+        </div>
+      </div>
+      <div class="cost-compliance">
+        <span class="compliance-label">Cumpl. presupuesto</span>
+        <span class="compliance-val">95%</span>
+      </div>
+      <div class="compliance-bar-bg"><div class="compliance-bar"></div></div>
+      <div class="cost-breakdown">
+        ${[['Entrenamiento','26%','#00D4FF',.26],['Tokens','40%','#8B5CF6',.40],['Procesamiento','20%','#10B981',.20],['Comunicaciones','14%','#F59E0B',.14]].map(([k,v,c,w])=>`
+        <div class="cbrow">
+          <span class="cbk">${k}</span>
+          <div class="cbb" style="background:${c};width:${w*100}%;opacity:.7;height:2px;border-radius:1px"></div>
+          <span class="cbpct">${v}</span>
+        </div>`).join('')}
+      </div>
+    </div>
+  `;
+  layer.appendChild(cEl);
+  const cItem = { id:'w-cost', el:cEl, pos:{...cPos}, naturalPos:{...cPos}, initPos:{...cPos}, type:'widget', data:null };
+  draggables.push(cItem);
+  makeDraggable(cEl, cItem);
+
+  // ── INTERVENCIONES HUMANAS ──
+  const iPos = {...wp.interv};
+  const iEl = document.createElement('div');
+  iEl.className = 'widget';
+  iEl.style.left = iPos.x+'px'; iEl.style.top = iPos.y+'px';
+  iEl.style.animationDelay = '800ms';
+
+  const hours = [8,9,10,11,12,13,14,15,16,17,18];
+  const barData = [2,4,1,3,5,2,6,3,4,7,3];
+  const maxBar = Math.max(...barData);
+  const barColors = ['#00D4FF','#8B5CF6','#10B981','#F59E0B','#F43F5E'];
+
+  iEl.innerHTML = `
+    <div class="widget-header">
+      <span class="widget-title">Intervenciones Humanas</span>
+      <span class="widget-period">Hoy</span>
+    </div>
+    <div class="widget-body">
+      <div class="interv-counts">
+        <div class="interv-big">
+          <div class="ibv">64</div>
+          <div class="ibl">Este mes</div>
+        </div>
+        <div class="interv-big">
+          <div class="ibv" style="color:var(--cyan)" id="intervHoy">6</div>
+          <div class="ibl">Hoy</div>
+        </div>
+      </div>
+      <div class="interv-chart">
+        ${barData.map((v,i)=>`
+        <div class="ic-bar" style="height:${(v/maxBar)*100}%;background:${barColors[i%barColors.length]};opacity:${v===maxBar?1:.55}"></div>
+        `).join('')}
+      </div>
+      <div class="interv-time-row">
+        <span>8:00</span><span>12:00</span><span>18:00</span>
+      </div>
+    </div>
+  `;
+  layer.appendChild(iEl);
+  const iItem = { id:'w-interv', el:iEl, pos:{...iPos}, naturalPos:{...iPos}, initPos:{...iPos}, type:'widget', data:null };
+  draggables.push(iItem);
+  makeDraggable(iEl, iItem);
+}
+
+// ═══════════════════════════════════════════════
+//  DETAIL VIEW
+// ═══════════════════════════════════════════════
+// ═══════════════════════════════════════════════
+//  MODAL
+// ═══════════════════════════════════════════════
+let liveInterval = null;
+let currentAgent = null;
+let agentStopped = false;
+
+function openDetail(agent){
+  currentAgent = agent;
+  agentStopped = false;
+
+  // Modal accent color
+  document.getElementById('modalPanel').style.setProperty('--acolor', agent.color);
+
+  // Left panel
+  document.getElementById('mHeroGlow').style.background = agent.color;
+  const ac = document.getElementById('mAvatarCircle');
+  ac.style.borderColor = agent.color;
+  ac.style.boxShadow = `0 0 32px ${agent.color}40`;
+  document.getElementById('mRingA').style.borderColor = `${agent.color}20`;
+  const ph = document.getElementById('mAvatarPh');
+  ph.textContent = agent.name[0];
+  ph.style.background = agent.grad;
+  ph.style.color = agent.color;
+
+  // ── Limpiar media previa ──
+  ac.querySelectorAll('.m-photo,.m-video').forEach(n=>n.remove());
+  const modalLeft = document.querySelector('.modal-left');
+  modalLeft.querySelectorAll('.modal-left-bg-media,.modal-left-overlay').forEach(n=>n.remove());
+  modalLeft.classList.remove('has-bg');
+
+  // ── Fallback circular (para agentes sin media) ──
+  const mImg = document.createElement('img');
+  mImg.className = 'm-photo';
+  mImg.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top;border-radius:50%;display:none;z-index:1';
+  mImg.onload  = () => { mImg.style.display='block'; ph.style.opacity='0'; };
+  mImg.onerror = () => mImg.remove();
+  mImg.src = `avatars/${agent.id}.jpg`;
+  ac.appendChild(mImg);
+
+  // ── Background full-panel: gradiente overlay ──
+  const bgOverlay = document.createElement('div');
+  bgOverlay.className = 'modal-left-overlay';
+
+  // ── Background full-panel: video ──
+  const bgVid = document.createElement('video');
+  bgVid.className = 'modal-left-bg-media';
+  bgVid.muted = true; bgVid.loop = true; bgVid.playsInline = true;
+  bgVid.preload = 'auto';
+  bgVid.style.opacity = '0';
+
+  const activateBg = () => {
+    modalLeft.classList.add('has-bg');
+    bgVid.style.transition = 'opacity 0.55s ease';
+    bgVid.style.opacity = '1';
+  };
+
+  if (agent.videoPos) bgVid.style.objectPosition = agent.videoPos;
+  bgVid.addEventListener('canplay', activateBg, { once: true });
+  bgVid.onerror = () => {
+    bgVid.remove();
+    // fallback: imagen como fondo
+    const bgImg = document.createElement('img');
+    bgImg.className = 'modal-left-bg-media';
+    bgImg.style.opacity = '0';
+    bgImg.onload  = () => {
+      activateBg();
+      bgImg.style.transition = 'opacity 0.55s ease';
+      bgImg.style.opacity = '1';
+    };
+    bgImg.onerror = () => { bgImg.remove(); bgOverlay.remove(); };
+    bgImg.src = `avatars/${agent.id}.jpg`;
+    modalLeft.prepend(bgImg);
+  };
+  bgVid.src = `avatars/${agent.id}.mp4`;
+  bgVid.play().catch(()=>{});
+
+  modalLeft.prepend(bgOverlay);
+  modalLeft.prepend(bgVid);
+
+  document.getElementById('mName').textContent = agent.name;
+  document.getElementById('mName').style.color = agent.color;
+  document.getElementById('mName').style.textShadow = `0 0 16px ${agent.color}70`;
+  document.getElementById('mRole').textContent = agent.role;
+
+  // Waveform
+  document.getElementById('mWave').innerHTML = Array.from({length:28},(_,i)=>{
+    const h = Math.random()*80+20;
+    return `<div class="wbar" style="height:${h}%;background:${agent.color};animation-delay:${(i*.05).toFixed(2)}s;animation-duration:${(.85+Math.random()*.75).toFixed(2)}s"></div>`;
+  }).join('');
+
+  // Metrics
+  document.getElementById('mMetrics').innerHTML = agent.metrics.map(m=>`
+    <div class="hm">
+      <div class="hmv" style="color:${agent.color}">${m.v}</div>
+      <div class="hml">${m.l}</div>
+      <div class="hmd ${m.pos?'pos':'neg'}">${m.d} vs mes ant.</div>
+    </div>
+  `).join('');
+
+  // Stats badges
+  document.getElementById('mStatA').textContent = `${agent.drA} activas`;
+  document.getElementById('mStatW').textContent = `${agent.drW} en espera`;
+  document.getElementById('mStatR').textContent = `${agent.drR} resueltas`;
+
+  // Emergency btn reset
+  const eb = document.getElementById('emergencyBtn');
+  eb.classList.remove('stopped');
+  eb.innerHTML = `<svg width="11" height="11" viewBox="0 0 11 11" fill="none"><rect x="1.5" y="1.5" width="8" height="8" rx="1" stroke="currentColor" stroke-width="1.3"/></svg> Freno de emergencia`;
+
+  // Build accordion
+  buildAccordion(agent);
+
+  document.body.classList.add('modal-open');
+  if(liveInterval) clearInterval(liveInterval);
+  liveInterval = setInterval(()=>{ if(!agentStopped) liveTick(agent); }, 4800);
+}
+
+function closeModal(){
+  document.body.classList.remove('modal-open');
+  if(liveInterval){ clearInterval(liveInterval); liveInterval=null; }
+  // Exit intervention mode if active
+  activeInterventionIdx = null;
+  document.querySelector('.modal-right').classList.remove('intervening');
+  document.getElementById('intrvInput').value = '';
+  const ml = document.querySelector('.modal-left');
+  ml.classList.remove('has-bg', 'agent-paused');
+  ml.querySelectorAll('.modal-left-bg-media,.modal-left-overlay').forEach(n=>n.remove());
+}
+
+document.getElementById('modalClose').addEventListener('click', closeModal);
+document.getElementById('modalBackdrop').addEventListener('click', closeModal);
+
+// ─── CONVERSATION DATA GENERATION ────────────
+const EXTRA_CLIENTS = [
+  ['Sofía Herrera','CLI-03341'],['Martín Pérez','CLI-04892'],['Ana García','CLI-05123'],
+  ['Carlos Ruiz','CLI-06234'],['Laura Sánchez','CLI-07345'],['Jorge Flores','CLI-08456'],
+  ['Valentina López','CLI-09567'],['Rodrigo Castro','CLI-10678'],['Elena Morales','CLI-11789'],
+  ['Gustavo Díaz','CLI-12890'],['Patricia Méndez','CLI-13901'],['Ricardo Gómez','CLI-14012'],
+  ['Camila Torres','CLI-15123'],['Diego Fernández','CLI-16234'],['Natalia Ibáñez','CLI-17345'],
+  ['Sebastián Vega','CLI-18456'],['Luciana Ríos','CLI-19567'],['Andrés Suárez','CLI-20678'],
+  ['Jimena Ortiz','CLI-21789'],['Pablo Ramírez','CLI-22890'],['Cecilia Luna','CLI-23901'],
+  ['Tomás Acosta','CLI-24012'],['Gabriela Peña','CLI-25123'],['Maximiliano Silva','CLI-26234'],
+];
+
+const EXTRA_MSGS = {
+  nova: [
+    [{w:'Cliente',t:'Mi tarjeta aparece bloqueada en la app.'},{w:'Nova',t:'Ya la reactivé. Puede usarla nuevamente.'},{w:'Cliente',t:'¿Por qué se bloqueó?'},{w:'Nova',t:'Detectamos 3 intentos fallidos de PIN. Medida de seguridad automática.'},{w:'Cliente',t:'Entendido, gracias.'}],
+    [{w:'Nova',t:'Hola, te llamamos por la renovación de tu seguro de vida.'},{w:'Cliente',t:'Sí, quiero renovarlo otro año.'},{w:'Nova',t:'Perfecto. Mismas condiciones, la prima baja un 4% por antigüedad.'},{w:'Cliente',t:'Excelente. Confirmado.'},{w:'Nova',t:'Listo. El nuevo certificado llega a tu email en 24hs.'}],
+    [{w:'Cliente',t:'¿Cuándo acreditan el depósito que hice ayer?'},{w:'Nova',t:'El acreditamiento es a las 18hs del mismo día hábil.'},{w:'Cliente',t:'Ya son las 19hs y no aparece.'},{w:'Nova',t:'Revisando... el depósito estaba en cola de procesamiento. Lo acredito manualmente ahora.'},{w:'Cliente',t:'Muchas gracias.'}],
+    [{w:'Cliente',t:'Necesito cambiar mi PIN de home banking.'},{w:'Nova',t:'Te envié el link de cambio de PIN a tu email registrado.'},{w:'Cliente',t:'¿Cuánto tarda en llegar?'},{w:'Nova',t:'Inmediato. Revisá también en spam por si acaso.'},{w:'Cliente',t:'Ya lo veo, gracias.'}],
+    [{w:'Cliente',t:'Me cobró doble en la cuota del préstamo.'},{w:'Nova',t:'Verificando el débito. Te informo en 2 minutos.'},{w:'Nova',t:'Confirmado el doble débito. Iniciando reversión del importe extra.'},{w:'Cliente',t:'¿En cuánto tiempo me lo devuelven?'},{w:'Nova',t:'En 48hs hábiles en tu cuenta. Recibirás comprobante por email.'}],
+  ],
+  apolo: [
+    [{w:'Apolo',t:'Nicolás, tenés línea de crédito preaprobada de $220K.'},{w:'Cliente',t:'¿A cuántas cuotas?'},{w:'Apolo',t:'Hasta 48 cuotas. TNA 42% fija en todas las opciones.'},{w:'Cliente',t:'¿Puedo tomarlo en 36?'},{w:'Apolo',t:'Sí, cuota de $9.100. ¿Genero la solicitud?'},{w:'Cliente',t:'Sí, adelante.'}],
+    [{w:'Cliente',t:'Quiero info sobre el plan de ahorro en cuotas.'},{w:'Apolo',t:'Con 24 cuotas fijas sin interés en categoría premium.'},{w:'Cliente',t:'¿Qué incluye la categoría premium?'},{w:'Apolo',t:'Seguro de cuotas, cashback 2% y acceso a sala VIP en aeropuertos.'},{w:'Cliente',t:'Me interesa. ¿Cómo lo activo?'}],
+    [{w:'Apolo',t:'Tu scoring subió 42 puntos. Mejoramos tu límite.'},{w:'Cliente',t:'¡Excelente! ¿Ya está disponible?'},{w:'Apolo',t:'Sí, disponible ahora mismo. Subió de $180K a $280K.'},{w:'Cliente',t:'Perfecto, muchas gracias.'},{w:'Apolo',t:'Con el nuevo límite también mejoraste la categoría de beneficios.'}],
+    [{w:'Cliente',t:'¿Puedo refinanciar mi auto con el banco?'},{w:'Apolo',t:'Sí, tenemos línea automotriz desde TNA 38% fija.'},{w:'Cliente',t:'¿Necesitan la documentación del vehículo?'},{w:'Apolo',t:'Solo título y 3 últimas facturas de servicio. Todo digital.'},{w:'Cliente',t:'Perfecto, lo mando hoy.'}],
+    [{w:'Cliente',t:'Quiero cerrar el plazo fijo y reinvertir.'},{w:'Apolo',t:'Con las tasas de hoy, te conviene renovar a 60 días.'},{w:'Cliente',t:'¿Cuánto rinde a 60 días?'},{w:'Apolo',t:'TNA 78%. Para tu capital de $500K son aprox $64.800 de interés.'},{w:'Cliente',t:'Listo, renuevo a 60 días.'}],
+  ],
+  eva: [
+    [{w:'Cliente',t:'¿Cómo fue el mercado hoy?'},{w:'Eva',t:'Merval +1.8%, Cedears mixtos. Portafolio creció 0.6%.'},{w:'Cliente',t:'¿Conviene comprar más acciones ahora?'},{w:'Eva',t:'El momentum es positivo pero el dólar financiero presiona. Esperaría el jueves post-BCRA.'},{w:'Cliente',t:'Bien, esperamos al jueves.'}],
+    [{w:'Eva',t:'Oportunidad en Letes a 90 días, TNA 52%.'},{w:'Cliente',t:'¿Cuánto mínimo para suscribir?'},{w:'Eva',t:'$50.000. Vencimiento el 15 de septiembre.'},{w:'Cliente',t:'Suscribimos $200.000.'},{w:'Eva',t:'Orden procesada. Acreditación en 48hs hábiles.'}],
+    [{w:'Cliente',t:'Quiero dolarizar parte de mis ahorros.'},{w:'Eva',t:'Recomiendo Cedears defensivos: BRK.B o JNJ. ¿Analizo?'},{w:'Cliente',t:'¿Cuánto ponés en cada uno?'},{w:'Eva',t:'60% BRK.B, 40% JNJ. Bajo riesgo, exposición dólar MEP.'},{w:'Cliente',t:'Bien. Hacemos eso.'}],
+    [{w:'Cliente',t:'Mi fondo perdió esta semana, ¿qué hago?'},{w:'Eva',t:'Caída temporal del 0.9%. A 90 días sigue positivo.'},{w:'Cliente',t:'¿Recomendás rescatar?'},{w:'Eva',t:'No. El fondo tiene horizonte de 6 meses. Rescatar ahora cristaliza la pérdida.'},{w:'Cliente',t:'Entendido, mantengo.'}],
+    [{w:'Eva',t:'La ON de Pampa vence mañana. ¿Reinvertimos?'},{w:'Cliente',t:'Sí, reinvertí todo al mismo instrumento.'},{w:'Eva',t:'Hecho. Renovamos USD 25.000 a la ON Pampa 2026. TNA 7.8%.'},{w:'Cliente',t:'Excelente. Gracias Eva.'}],
+  ],
+  ares: [
+    [{w:'Ares',t:'Tu cuota venció el día 5. ¿Podemos arreglarlo?'},{w:'Cliente',t:'Me olvidé, ¿puedo pagar ahora?'},{w:'Ares',t:'Sí. Te mando el link de pago ahora. Sin punitorios si pagás hoy.'},{w:'Cliente',t:'Ya pagué.'},{w:'Ares',t:'Recibido. Deuda en estado normal. Sin impacto en historial crediticio.'}],
+    [{w:'Cliente',t:'Recibí un aviso de mora pero ya pagué.'},{w:'Ares',t:'Verifico el impacto y actualizo el estado en 24hs.'},{w:'Ares',t:'Confirmado el pago del día 8. Actualizando estado ahora.'},{w:'Cliente',t:'¿Cuándo se refleja en el sistema?'},{w:'Ares',t:'En las próximas 2 horas. El aviso de mora queda sin efecto.'}],
+    [{w:'Ares',t:'Detectamos atraso de 15 días. ¿Acordamos refinanciación?'},{w:'Cliente',t:'Sí necesito eso.'},{w:'Ares',t:'Plan en 6 cuotas sin punitorios. Primera cuota en 30 días.'},{w:'Cliente',t:'¿Cuánto es cada cuota?'},{w:'Ares',t:'$4.200. ¿Confirmamos el plan?'},{w:'Cliente',t:'Sí, confirmado.'}],
+    [{w:'Cliente',t:'¿La mora me afecta el Veraz?'},{w:'Ares',t:'Solo impacta si supera 60 días. Estás a tiempo.'},{w:'Cliente',t:'¿Puedo pagar en cuotas para evitarlo?'},{w:'Ares',t:'Sí. Tres cuotas iguales, primera hoy. ¿Armamos el plan?'},{w:'Cliente',t:'Sí, armemos.'}],
+    [{w:'Ares',t:'Generé un plan especial: 6 cuotas sin punitorios.'},{w:'Cliente',t:'Perfecto, acepto.'},{w:'Ares',t:'El plan está activo. Primer vencimiento el 20 de este mes.'},{w:'Cliente',t:'¿Me llega el calendario de pagos?'},{w:'Ares',t:'Sí, por SMS y email en los próximos minutos.'}],
+  ],
+  lara: [
+    [{w:'Lara',t:'Hola Julia, ¿todavía te interesa la cuenta digital?'},{w:'Cliente',t:'Sí, ¿cómo arrancamos?'},{w:'Lara',t:'Solo DNI y selfie. 100% desde el celular. ¿Empezamos?'},{w:'Cliente',t:'¿Cuánto tarda?'},{w:'Lara',t:'Menos de 3 minutos. Mandame el link ahora.'},{w:'Cliente',t:'Dale.'}],
+    [{w:'Cliente',t:'¿La cuenta tiene costo si no la uso?'},{w:'Lara',t:'Cero costo de mantenimiento, siempre.'},{w:'Cliente',t:'¿Y la tarjeta también es sin costo?'},{w:'Lara',t:'Sí. Débito sin cargo anual. Visa internacional.'},{w:'Cliente',t:'Perfecto, me la llevo.'}],
+    [{w:'Lara',t:'Tu solicitud fue preaprobada en tiempo récord.'},{w:'Cliente',t:'¡Qué rápido! Gracias.'},{w:'Cliente',t:'¿Cuándo llega la tarjeta física?'},{w:'Lara',t:'En 48hs a tu domicilio. La virtual está disponible ya mismo.'},{w:'Cliente',t:'Genial.'}],
+    [{w:'Cliente',t:'¿Puedo abrir una cuenta para mi hijo de 16?'},{w:'Lara',t:'Sí, con cuenta junior. Te mando el formulario.'},{w:'Cliente',t:'¿Necesita venir el chico al banco?'},{w:'Lara',t:'No. Todo online con el DNI del menor y tu autorización como tutor.'},{w:'Cliente',t:'Perfecto. Lo llenamos hoy.'}],
+    [{w:'Lara',t:'Completaste el onboarding. Tu tarjeta llega en 48hs.'},{w:'Cliente',t:'Perfecto, muchas gracias.'},{w:'Lara',t:'¿Querés activar el cashback del primer mes? 5% extra.'},{w:'Cliente',t:'¡Sí! ¿Cómo lo activo?'},{w:'Lara',t:'Ya lo activé desde acá. Empieza a contar desde hoy.'}],
+  ],
+};
+
+const TIMES = ['Hace 3 min','Hace 6 min','Hace 11 min','Hace 17 min','Hace 23 min','Hace 31 min','Hace 42 min','Hace 55 min','Hace 1h 08m','Hace 1h 24m','Hace 1h 47m','Hace 2h 03m','Hace 2h 30m','Hace 3h 12m'];
+const CHS   = ['WSP','TEL','VID','MAIL','WSP','WSP','TEL'];
+const STATS = ['active','active','active','waiting','waiting','resolved'];
+
+function generateConvos(agent){
+  const extras = [];
+  const msgs = EXTRA_MSGS[agent.id] || EXTRA_MSGS.nova;
+  for(let i = 0; i < EXTRA_CLIENTS.length; i++){
+    const [client, id] = EXTRA_CLIENTS[i];
+    const status   = STATS[i % STATS.length];
+    const ch       = CHS[i % CHS.length];
+    const time     = TIMES[i % TIMES.length];
+    const convo    = msgs[i % msgs.length];
+    const isTyping = status === 'active' && i % 4 === 0;
+    extras.push({ client, id, ch, time, status, msgs:[...convo], typing:isTyping });
+  }
+  return extras;
+}
+
+function prepareConvoHistory(conv){
+  if(conv._historyPrepared) return conv;
+  const allMsgs = conv.msgs || [];
+  const visibleCount = Math.min(allMsgs.length, 1 + Math.floor(Math.random() * 4));
+  conv.pendingMsgs = allMsgs.slice(visibleCount);
+  conv.msgs = allMsgs.slice(0, visibleCount);
+  conv._historyPrepared = true;
+  return conv;
+}
+
+// ─── ACCORDION + PAGINATION ───────────────────
+const PAGE_SIZE = 6;
+let convPage = 1;
+let convAllItems = [];
+let convAgent = null;
+
+function buildAccordion(agent){
+  convAgent = agent;
+  // Deep-clone convList so prepareConvoHistory never mutates the original data
+  const freshConvList = agent.convList.map(c => ({...c, msgs:[...c.msgs], _historyPrepared:false}));
+  convAllItems = [...freshConvList, ...generateConvos(agent)].map(prepareConvoHistory);
+  convPage = 1;
+  renderConvPage();
+}
+
+function renderConvPage(){
+  const acc  = document.getElementById('convAccordion');
+  const agent = convAgent;
+  acc.innerHTML = '';
+
+  const start = (convPage - 1) * PAGE_SIZE;
+  const page  = convAllItems.slice(start, start + PAGE_SIZE);
+  const total = convAllItems.length;
+  const pages = Math.ceil(total / PAGE_SIZE);
+
+  page.forEach((c, i)=>{
+    const globalIdx = start + i;
+    const item = document.createElement('div');
+    item.className = 'ci';
+    item.id = `ci-${globalIdx}`;
+    item.style.setProperty('--acolor', agent.color);
+    item.style.animationDelay = (i*45)+'ms';
+
+    const sc = {active:'active', waiting:'waiting', resolved:'resolved'}[c.status];
+    const sl = {active:'En curso', waiting:'En espera', resolved:'Resuelto'}[c.status];
+
+    const msgsHtml = c.msgs.map(m=>`
+      <div class="cmsg ${m.w===agent.name?'agent':''}">
+        <span class="cmsg-who">${m.w}</span>
+        <span class="cmsg-txt">${m.t}</span>
+      </div>`).join('');
+
+    const typingHtml = c.typing && c.status==='active' ? `
+      <div class="typing-ind">
+        <span class="cmsg-who" style="color:${agent.color}">${agent.name}</span>
+        <div class="tdots">
+          <span style="background:${agent.color}"></span>
+          <span style="background:${agent.color}"></span>
+          <span style="background:${agent.color}"></span>
+        </div>
+      </div>` : '';
+
+    item.innerHTML = `
+      <div class="ci-header" onclick="toggleConv(${globalIdx})">
+        <div class="ci-sdot ${sc}"></div>
+        <div class="ci-info">
+          <span class="ci-client">${c.client}</span>
+          <div class="ci-sub">
+            <span class="ci-id">${c.id}</span>
+            <span class="ci-time">${c.time}</span>
+          </div>
+        </div>
+        <span class="ci-channel">${c.ch}</span>
+        <span class="ci-pill ${sc}">${sl}</span>
+        <svg class="ci-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <path d="M3 5l4 4 4-4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="ci-body" id="ci-body-${globalIdx}">
+        <div class="ci-conversation" id="ci-msgs-${globalIdx}">
+          ${msgsHtml}
+          ${typingHtml}
+        </div>
+      </div>
+      <div class="ci-intervene-row">
+        <button class="intervene-btn" id="ci-btn-${globalIdx}" onclick="intervene(${globalIdx},event)">
+          <svg width="9" height="9" viewBox="0 0 9 9" fill="none">
+            <path d="M4.5 1v7M1 4.5h7" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+          </svg>
+          Intervenir
+        </button>
+      </div>
+    `;
+    acc.appendChild(item);
+  });
+
+  // Update pager
+  document.getElementById('pagerPage').textContent  = `${convPage} / ${pages}`;
+  document.getElementById('pagerTotal').textContent = `${agent.drA + agent.drW} conversaciones activas`;
+  document.getElementById('pagerPrev').disabled = convPage <= 1;
+  document.getElementById('pagerNext').disabled = convPage >= pages;
+}
+
+document.getElementById('pagerPrev').addEventListener('click', ()=>{
+  if(convPage > 1){ convPage--; renderConvPage(); document.getElementById('convAccordion').scrollTop=0; }
+});
+document.getElementById('pagerNext').addEventListener('click', ()=>{
+  const pages = Math.ceil(convAllItems.length / PAGE_SIZE);
+  if(convPage < pages){ convPage++; renderConvPage(); document.getElementById('convAccordion').scrollTop=0; }
+});
+
+function toggleConv(i){
+  const item = document.getElementById(`ci-${i}`);
+  const wasOpen = item.classList.contains('expanded');
+  document.querySelectorAll('.ci.expanded').forEach(el=>el.classList.remove('expanded'));
+  if(!wasOpen){
+    item.classList.add('expanded');
+    // Scroll accordion so the full expanded item (including Intervenir button) is visible
+    setTimeout(() => {
+      item.scrollIntoView({ block:'nearest', behavior:'smooth' });
+    }, 400); // after max-height transition
+  }
+}
+
+// ─── INTERVENTION MODE ───────────────────────
+let activeInterventionIdx = null;
+
+function intervene(i, e){
+  e.stopPropagation();
+  activeInterventionIdx = i;
+  const conv  = convAllItems[i];
+  const agent = convAgent;
+
+  // ── Populate header ──
+  document.getElementById('intrvClientName').textContent = conv.client;
+  document.getElementById('intrvClientMeta').textContent = `${conv.id} · ${conv.time}`;
+  document.getElementById('intrvChannel').textContent    = conv.ch;
+
+  // ── Populate message history — clone the live conversation as-is ──
+  const msgBox  = document.getElementById('intrvMessages');
+  const liveBox = document.getElementById(`ci-msgs-${i}`);
+  msgBox.innerHTML = '';
+  if(liveBox){
+    Array.from(liveBox.children).forEach(child => {
+      if(child.classList.contains('typing-ind')) return; // skip typing indicator
+      const clone = child.cloneNode(true);
+      clone.classList.remove('new-msg'); // don't re-animate already-seen messages
+      msgBox.appendChild(clone);
+    });
+  } else {
+    // Fallback if accordion item isn't in DOM (shouldn't happen)
+    conv.msgs.forEach(m => {
+      const isAgt = m.w === agent.name;
+      const div = document.createElement('div');
+      div.className = `cmsg${isAgt ? ' agent' : ''}`;
+      div.innerHTML = `<span class="cmsg-who" style="${isAgt ? 'color:'+agent.color : ''}">${m.w}</span><span class="cmsg-txt">${m.t}</span>`;
+      msgBox.appendChild(div);
+    });
+  }
+  msgBox.scrollTop = msgBox.scrollHeight;
+
+  // ── Switch right panel ──
+  document.querySelector('.modal-right').classList.add('intervening');
+
+  // ── Pause left panel ──
+  const modalLeft = document.querySelector('.modal-left');
+  modalLeft.classList.add('agent-paused');
+  const bgVid = modalLeft.querySelector('video.modal-left-bg-media');
+  if (bgVid) bgVid.pause();
+
+  // ── Stop live tick ──
+  if (liveInterval) { clearInterval(liveInterval); liveInterval = null; }
+}
+
+function exitIntervention(){
+  activeInterventionIdx = null;
+  document.getElementById('intrvInput').value = '';
+  document.getElementById('intrvInput').style.height = 'auto';
+
+  // ── Restore right panel ──
+  document.querySelector('.modal-right').classList.remove('intervening');
+
+  // ── Restore left panel ──
+  const modalLeft = document.querySelector('.modal-left');
+  modalLeft.classList.remove('agent-paused');
+  const bgVid = modalLeft.querySelector('video.modal-left-bg-media');
+  if (bgVid) bgVid.play().catch(()=>{});
+
+  // ── Restart live tick ──
+  if (currentAgent && !agentStopped) {
+    liveInterval = setInterval(() => liveTick(currentAgent), 4800);
+  }
+}
+
+function sendOperatorMessage(){
+  const input = document.getElementById('intrvInput');
+  const txt   = input.value.trim();
+  if (!txt) return;
+
+  const msgBox = document.getElementById('intrvMessages');
+  const div = document.createElement('div');
+  div.className = 'cmsg operator new-msg';
+  div.innerHTML = `<span class="cmsg-who">Operador</span><span class="cmsg-txt">${txt}</span>`;
+  msgBox.appendChild(div);
+  msgBox.scrollTop = msgBox.scrollHeight;
+
+  input.value = '';
+  input.style.height = 'auto';
+  input.focus();
+}
+
+// Intervention event listeners
+document.getElementById('intrvSend').addEventListener('click', sendOperatorMessage);
+document.getElementById('intrvReactivate').addEventListener('click', exitIntervention);
+document.getElementById('intrvInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendOperatorMessage(); }
+});
+document.getElementById('intrvInput').addEventListener('input', function(){
+  this.style.height = 'auto';
+  this.style.height = Math.min(this.scrollHeight, 90) + 'px';
+});
+
+// ─── EMERGENCY BRAKE ─────────────────────────
+document.getElementById('emergencyBtn').addEventListener('click', ()=>{
+  agentStopped = !agentStopped;
+  const btn = document.getElementById('emergencyBtn');
+  if(agentStopped){
+    btn.classList.add('stopped');
+    btn.innerHTML = `<svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M3 5.5l2 2 3-3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="5.5" cy="5.5" r="4" stroke="currentColor" stroke-width="1.1"/></svg> Reactivar agente`;
+    document.querySelectorAll('#mWave .wbar').forEach(b=>b.style.animationPlayState='paused');
+    // All conversation dots go grey
+    document.querySelectorAll('.ci-sdot.active').forEach(d=>{
+      d.style.background=getComputedStyle(document.documentElement).getPropertyValue('--dim');
+      d.style.animation='none';
+    });
+  } else {
+    btn.classList.remove('stopped');
+    btn.innerHTML = `<svg width="11" height="11" viewBox="0 0 11 11" fill="none"><rect x="1.5" y="1.5" width="8" height="8" rx="1" stroke="currentColor" stroke-width="1.3"/></svg> Freno de emergencia`;
+    document.querySelectorAll('#mWave .wbar').forEach(b=>b.style.animationPlayState='running');
+    document.querySelectorAll('.ci-sdot').forEach(d=>{ d.style.background=''; d.style.animation=''; });
+  }
+});
+
+// ─── LIVE TICK ───────────────────────────────
+// Advances each conversation through its pre-written script in order.
+// Stops when the script is exhausted — no looping.
+function liveTick(agent){
+  const expanded = document.querySelector('.ci.expanded');
+  if(!expanded) return;
+  const idx = parseInt(expanded.id.replace('ci-',''));
+  if(isNaN(idx) || !convAllItems[idx] || convAllItems[idx].status !== 'active') return;
+
+  const box = document.getElementById(`ci-msgs-${idx}`);
+  const typing = box.querySelector('.typing-ind');
+  if(typing) typing.remove();
+
+  const conv = convAllItems[idx];
+  if(!conv.pendingMsgs || conv.pendingMsgs.length === 0) return;
+
+  const nextMsg = conv.pendingMsgs.shift();
+  conv.msgs.push(nextMsg);
+
+  const isAgent = nextMsg.w === agent.name;
+  const nm = document.createElement('div');
+  nm.className = `cmsg new-msg${isAgent ? ' agent' : ''}`;
+  nm.innerHTML = `<span class="cmsg-who" style="${isAgent ? 'color:'+agent.color : ''}">${nextMsg.w}</span><span class="cmsg-txt">${nextMsg.t}</span>`;
+  box.appendChild(nm);
+
+  expanded.classList.remove('flash');
+  void expanded.offsetWidth;
+  expanded.classList.add('flash');
+
+  // Si el próximo mensaje es del agente, mostrar indicador de escritura
+  if(conv.pendingMsgs.length > 0 && conv.pendingMsgs[0].w === agent.name){
+    setTimeout(() => {
+      const b = document.getElementById(`ci-msgs-${idx}`);
+      if(!b || !document.getElementById(`ci-${idx}`)?.classList.contains('expanded')) return;
+      if(b.querySelector('.typing-ind')) return;
+      const ti = document.createElement('div');
+      ti.className = 'typing-ind';
+      ti.innerHTML = `<span class="cmsg-who" style="color:${agent.color}">${agent.name}</span><div class="tdots"><span style="background:${agent.color}"></span><span style="background:${agent.color}"></span><span style="background:${agent.color}"></span></div>`;
+      b.appendChild(ti);
+    }, 500);
+  }
+
+  const ciBody = document.getElementById(`ci-body-${idx}`);
+  if(ciBody) ciBody.scrollTop = ciBody.scrollHeight;
+}
+
+// ═══════════════════════════════════════════════
+//  LIGHT / DARK TOGGLE
+// ═══════════════════════════════════════════════
+const modeBtn = document.getElementById('modeToggle');
+const modeIcon = document.getElementById('modeIcon');
+
+const sunSvg = `<path d="M8 1v1M8 14v1M1 8h1M14 8h1M3.05 3.05l.71.71M12.24 12.24l.71.71M3.05 12.95l.71-.71M12.24 3.76l.71-.71M8 5a3 3 0 1 0 0 6 3 3 0 0 0 0-6z" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>`;
+const moonSvg = `<path d="M13 10A5 5 0 0 1 6 3a6 6 0 1 0 7 7z" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>`;
+
+modeBtn.addEventListener('click', ()=>{
+  document.body.classList.toggle('light');
+  const isLight = document.body.classList.contains('light');
+  modeIcon.innerHTML = isLight ? moonSvg : sunSvg;
+  // Update widget score backgrounds
+  document.querySelectorAll('.agent-score').forEach(el=>{
+    el.style.background = 'var(--bg)';
+  });
+});
+
+// ═══════════════════════════════════════════════
+//  DRAG HINT
+// ═══════════════════════════════════════════════
+const hint = document.getElementById('dragHint');
+let hintGone = false;
+function hideDragHint(){ if(hintGone)return; hintGone=true; hint.style.opacity='0'; }
+
+// ═══════════════════════════════════════════════
+//  CLOCK + LIVE COUNTERS
+// ═══════════════════════════════════════════════
+function updateClock(){
+  const n = new Date();
+  const p2 = v=>String(v).padStart(2,'0');
+  document.getElementById('clock').textContent = `${p2(n.getHours())}:${p2(n.getMinutes())}:${p2(n.getSeconds())}`;
+  const D=['DOM','LUN','MAR','MIÉ','JUE','VIE','SÁB'];
+  const M=['ENE','FEB','MAR','ABR','MAY','JUN','JUL','AGO','SEP','OCT','NOV','DIC'];
+  document.getElementById('dateLabel').textContent = `${D[n.getDay()]} ${n.getDate()} ${M[n.getMonth()]} ${n.getFullYear()}`;
+}
+setInterval(updateClock,1000); updateClock();
+
+let interacciones = 47832;
+setInterval(()=>{
+  interacciones += Math.floor(Math.random()*3);
+  const el = document.getElementById('statInt');
+  if(el) el.textContent = interacciones.toLocaleString('es-AR');
+}, 3400);
+
+// ═══════════════════════════════════════════════
+//  INIT & LOOP
+// ═══════════════════════════════════════════════
+// ═══════════════════════════════════════════════
+//  BIG BANG INTRO
+// ═══════════════════════════════════════════════
+let introComplete = false;
+
+function setupIntro() {
+  // intro-active already added before init() — CSS hides agents/widgets instantly
+
+  // Hide topbar, bottombar, hint, resetBtn via inline style
+  const tb = document.querySelector('#homeView .topbar');
+  const bb = document.getElementById('bottomBar');
+  tb.style.opacity = '0'; tb.style.pointerEvents = 'none';
+  bb.style.opacity = '0'; bb.style.pointerEvents = 'none';
+  document.getElementById('dragHint').style.display = 'none';
+  document.getElementById('resetBtn').style.display = 'none';
+
+  // Set inline hidden state on agents/widgets (persists after intro-active is removed)
+  draggables.forEach(item => {
+    if (item.id === 'commander') return;
+    item.el.style.opacity = '0';
+    item.el.style.transform = 'translate(-50%,-50%) scale(0)';
+    item.el.style.pointerEvents = 'none';
+  });
+
+  // Commander into intro mode
+  const cmdItem = draggables.find(d => d.id === 'commander');
+  if (cmdItem) cmdItem.el.classList.add('intro-mode');
+
+  // Tagline with typing
+  const tagline = document.createElement('div');
+  tagline.id = 'introTagline';
+  tagline.innerHTML = '<span id="introText"></span><span id="introCursor"></span>';
+  document.body.appendChild(tagline);
+
+  const hintEl = document.createElement('div');
+  hintEl.id = 'introHint';
+  hintEl.textContent = '· click para activar ·';
+  hintEl.style.opacity = '0';
+  document.body.appendChild(hintEl);
+
+  const fullText = '[ SINGULAR · AGENT COMMAND ]';
+  const textEl  = document.getElementById('introText');
+  let i = 0;
+  const iv = setInterval(() => {
+    textEl.textContent = fullText.slice(0, ++i);
+    if (i >= fullText.length) {
+      clearInterval(iv);
+      setTimeout(() => { hintEl.style.opacity = '1'; }, 300);
+    }
+  }, 42);
+}
+
+function triggerBigBang() {
+  if (introComplete) return;
+  introComplete = true;
+
+  // Remove intro-active so CSS no longer overrides agents/widgets
+  // (they still have inline opacity:0/scale:0 from setupIntro)
+  document.body.classList.remove('intro-active');
+
+  // Fade out intro text
+  const tagline = document.getElementById('introTagline');
+  const hintEl  = document.getElementById('introHint');
+  if (tagline) { tagline.style.opacity = '0'; setTimeout(()=>tagline.remove(), 300); }
+  if (hintEl)  { hintEl.style.opacity  = '0'; setTimeout(()=>hintEl.remove(),  300); }
+
+  // 1. Flash
+  triggerFlash();
+
+  // 2. Two shockwaves from commander center
+  const cmdItem = draggables.find(d => d.id === 'commander');
+  const cx = cmdItem ? cmdItem.pos.x : W/2;
+  const cy = cmdItem ? cmdItem.pos.y : H/2+8;
+  setTimeout(() => triggerShockwave(cx, cy, false), 60);
+  setTimeout(() => triggerShockwave(cx, cy, true),  190);
+
+  // 3. Commander shrinks to normal size
+  if (cmdItem) setTimeout(() => cmdItem.el.classList.remove('intro-mode'), 60);
+
+  // 4. Agents fly out — spring, staggered
+  const agents = draggables.filter(d => d.type === 'agent');
+  agents.forEach((item, i) => {
+    setTimeout(() => {
+      item.el.style.transition    = 'transform 0.8s cubic-bezier(0.34,1.56,0.64,1), opacity 0.35s ease';
+      item.el.style.transform     = 'translate(-50%,-50%) scale(1)';
+      item.el.style.opacity       = '1';
+      item.el.style.pointerEvents = '';
+    }, 80 + i * 65);
+  });
+
+  // 5. Widgets — slightly later, lighter spring
+  const widgets = draggables.filter(d => d.type === 'widget');
+  widgets.forEach((item, i) => {
+    setTimeout(() => {
+      item.el.style.transition    = 'transform 0.75s cubic-bezier(0.34,1.4,0.64,1), opacity 0.4s ease';
+      item.el.style.transform     = 'translate(-50%,-50%) scale(1)';
+      item.el.style.opacity       = '1';
+      item.el.style.pointerEvents = '';
+    }, 310 + i * 75);
+  });
+
+  // 6. Topbar + bottombar fade in
+  setTimeout(() => {
+    const tb = document.querySelector('#homeView .topbar');
+    const bb = document.getElementById('bottomBar');
+    tb.style.transition = 'opacity 0.55s ease'; tb.style.opacity = '1'; tb.style.pointerEvents = '';
+    bb.style.transition = 'opacity 0.55s ease'; bb.style.opacity = '1'; bb.style.pointerEvents = '';
+    const rb = document.getElementById('resetBtn');
+    rb.style.display = ''; rb.style.opacity = '0';
+    setTimeout(() => { rb.style.transition = 'opacity 0.5s'; rb.style.opacity = ''; }, 50);
+    document.getElementById('dragHint').style.display = '';
+  }, 660);
+
+  // 7. Clear inline transitions so drag/physics take over normally
+  setTimeout(() => {
+    draggables.forEach(item => { item.el.style.transition = ''; });
+  }, 1350);
+}
+
+function triggerFlash() {
+  const flash = document.getElementById('flashOverlay');
+  flash.style.transition = 'none';
+  flash.style.opacity = '1';
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      flash.style.transition = 'opacity 0.35s ease-out';
+      flash.style.opacity = '0';
+    });
+  });
+}
+
+function triggerShockwave(cx, cy, secondary = false) {
+  const sw = document.createElement('div');
+  const size = secondary ? '1000px' : '800px';
+  const color = secondary ? 'rgba(0,212,255,0.4)' : 'rgba(201,168,76,0.7)';
+  const bw    = secondary ? '1px' : '2px';
+  const dur   = secondary ? '0.95s' : '0.75s';
+  sw.style.cssText = `
+    position:fixed;
+    width:0;height:0;
+    border-radius:50%;
+    left:${cx}px;top:${cy}px;
+    transform:translate(-50%,-50%);
+    border:${bw} solid ${color};
+    pointer-events:none;
+    z-index:200;
+    transition:none;
+  `;
+  document.body.appendChild(sw);
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    sw.style.transition = `width ${dur} ease-out, height ${dur} ease-out, opacity ${dur} ease-out`;
+    sw.style.width  = size;
+    sw.style.height = size;
+    sw.style.opacity = '0';
+  }));
+  setTimeout(() => sw.remove(), 1000);
+}
+
+// ── Reset layout ──────────────────────────────
+document.getElementById('resetBtn').addEventListener('click', ()=>{
+  draggables.forEach(item => {
+    item.naturalPos.x = item.initPos.x;
+    item.naturalPos.y = item.initPos.y;
+  });
+});
+
+function init(){
+  layer.innerHTML='';
+  draggables.length=0;
+  buildAgents();
+  buildCommander();
+  try { if(typeof L !== 'undefined') buildMapWidget(); } catch(e){ console.warn('Map widget error:', e); }
+  buildWidgets();
+  initConn();
+}
+
+function loop(){
+  drawBg();
+  applyPhysics();
+  updateConn();
+  requestAnimationFrame(loop);
+}
+
+document.body.classList.add('intro-active'); // hide elements before DOM paint
+init();
+setupIntro();
+loop();
+
+window.addEventListener('resize', ()=>{ resizeCanvas(); init(); initConn(); });
+
+</script>
+</body>
+</html>

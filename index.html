@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gonzalo Fasce — Product Designer</title>
+  <meta name="description" content="Product Designer especializado en sistemas de diseño, productos fintech e IA aplicada al diseño. Casos de estudio: MOB, Singular y Mis Resultados.">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Gonzalo Fasce — Product Designer">
+  <meta property="og:description" content="Diseño de producto, sistemas y estrategia. Casos de estudio en fintech, design systems e IA aplicada al diseño.">
+  <meta property="og:image" content="https://gonzalofasce.com/assets/og-image.webp">
+  <meta property="og:url" content="https://gonzalofasce.com">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Gonzalo Fasce — Product Designer">
+  <meta name="twitter:description" content="Diseño de producto, sistemas y estrategia. Casos de estudio en fintech, design systems e IA aplicada al diseño.">
+  <meta name="twitter:image" content="https://gonzalofasce.com/assets/og-image.webp">
+
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    /* ─── Variables ─────────────────────────────────────────── */
+    :root {
+      --color-bg:      #F8F6F2;
+      --color-ink:     #0D0D0D;
+      --color-muted:   #6B6B6B;
+      --color-accent:  #2F6EEB;
+      --color-rule:    #E2DED8;
+
+      --font: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      --font-mono: 'IBM Plex Mono', 'SF Mono', monospace;
+
+      --space-xs:  8px;
+      --space-sm:  16px;
+      --space-md:  32px;
+      --space-lg:  64px;
+      --space-xl:  96px;
+      --space-xxl: 140px;
+
+      --content-width: 900px;
+      --nav-height:    60px;
+    }
+
+    /* ─── Reset ─────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; -webkit-font-smoothing: antialiased; }
+
+    body {
+      font-family: var(--font);
+      background: var(--color-bg);
+      color: var(--color-ink);
+      line-height: 1.65;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* ─── Nav ───────────────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: var(--nav-height);
+      background: var(--color-bg);
+      z-index: 100;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.2s ease;
+    }
+
+    nav.scrolled {
+      border-bottom-color: var(--color-rule);
+    }
+
+    .nav-inner {
+      max-width: var(--content-width);
+      margin: 0 auto;
+      padding: 0 24px;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-logo {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--color-ink);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--color-muted);
+      transition: color 0.15s ease, border-color 0.15s ease;
+      border-bottom: 1px solid transparent;
+      padding-bottom: 1px;
+    }
+
+    .nav-links a:hover {
+      color: var(--color-ink);
+    }
+
+    .nav-links .nav-cv {
+      font-family: var(--font-mono);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--color-ink);
+      letter-spacing: 0.01em;
+      border-bottom: 1px solid var(--color-ink);
+      padding-bottom: 1px;
+      transition: color 0.15s ease, border-color 0.15s ease;
+    }
+
+    .nav-links .nav-cv:hover {
+      color: var(--color-accent);
+      border-color: var(--color-accent);
+    }
+
+    /* ─── Main content ──────────────────────────────────────── */
+    main {
+      max-width: var(--content-width);
+      margin: 0 auto;
+      padding: 0 24px;
+      padding-top: var(--nav-height);
+    }
+
+    /* ─── Hero ──────────────────────────────────────────────── */
+    .hero {
+      min-height: calc(100vh - var(--nav-height));
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      position: relative;
+      width: 90vw;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: var(--space-xxl) var(--space-lg);
+      margin-bottom: var(--space-xxl);
+    }
+
+    .hero-name {
+      font-size: clamp(58px, 9vw, 88px);
+      font-weight: 700;
+      line-height: 1.0;
+      letter-spacing: -0.03em;
+      color: var(--color-ink);
+      margin-bottom: var(--space-md);
+    }
+
+    .cursor {
+      display: inline-block;
+      width: 3px;
+      height: 0.82em;
+      background: var(--color-ink);
+      margin-left: 3px;
+      vertical-align: middle;
+      opacity: 1;
+    }
+
+    .cursor.blink-end {
+      animation: blink 0.75s step-end 6 forwards;
+    }
+
+    .cursor.cursor-hidden {
+      opacity: 0;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    @keyframes blink {
+      0%, 49% { opacity: 1; }
+      50%, 100% { opacity: 0; }
+    }
+
+    .hero-body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-md);
+      max-width: 600px;
+    }
+
+    .hero-role {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--color-muted);
+      line-height: 1.5;
+      letter-spacing: 0.02em;
+    }
+
+    .hero-meta {
+      display: none;
+    }
+
+    /* ─── Scroll arrow ──────────────────────────────────────── */
+    .scroll-arrow {
+      position: absolute;
+      bottom: var(--space-lg);
+      left: 50%;
+      transform: translateX(-50%);
+      color: var(--color-muted);
+      opacity: 0.6;
+      animation: arrowBounce 2.2s ease-in-out infinite;
+    }
+
+    @keyframes arrowBounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); opacity: 0.6; }
+      50% { transform: translateX(-50%) translateY(7px); opacity: 1; }
+    }
+
+    /* ─── Divider ───────────────────────────────────────────── */
+    hr {
+      border: none;
+      border-top: 1px solid var(--color-rule);
+      margin: var(--space-xl) 0;
+    }
+
+    /* ─── Section label ─────────────────────────────────────── */
+    .section-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: var(--space-md);
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+      text-transform: uppercase;
+    }
+
+    .section-label .num {
+      color: var(--color-accent);
+    }
+
+    .section-label .dot {
+      color: var(--color-rule);
+    }
+
+    .section-label .name {
+      color: var(--color-muted);
+    }
+
+    /* ─── Cases grid ────────────────────────────────────────── */
+    .cases {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+      opacity: 0;
+      transform: translateY(12px);
+      animation: fadeUp 0.5s ease-out 0.3s forwards;
+    }
+
+    .case-card {
+      border: 1px solid var(--color-rule);
+      padding: var(--space-md);
+      display: block;
+      transition: border-color 0.2s ease;
+      position: relative;
+    }
+
+    .case-card:hover {
+      border-color: var(--color-ink);
+    }
+
+    .case-card:hover .case-arrow {
+      transform: translateX(4px);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .card-num {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--color-accent);
+    }
+
+    .card-dot {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--color-rule);
+    }
+
+    .card-tag {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 400;
+      letter-spacing: 0.01em;
+      text-transform: uppercase;
+      color: var(--color-muted);
+    }
+
+    .card-title {
+      font-size: 22px;
+      font-weight: 700;
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+      color: var(--color-ink);
+      margin-bottom: 10px;
+    }
+
+    .card-desc {
+      font-size: 15px;
+      font-weight: 400;
+      color: var(--color-muted);
+      line-height: 1.6;
+      max-width: 540px;
+    }
+
+    .card-footer {
+      margin-top: var(--space-sm);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .case-link {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--color-accent);
+      letter-spacing: 0.02em;
+    }
+
+    .case-arrow {
+      font-size: 13px;
+      color: var(--color-accent);
+      transition: transform 0.2s ease;
+      display: inline-block;
+    }
+
+    /* ─── Footer ────────────────────────────────────────────── */
+    footer {
+      max-width: var(--content-width);
+      margin: 0 auto;
+      padding: var(--space-xl) 24px var(--space-lg);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .footer-meta {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--color-muted);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: var(--space-md);
+      list-style: none;
+    }
+
+    .footer-links a {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--color-muted);
+      transition: color 0.15s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--color-ink);
+    }
+
+    /* ─── Animations ────────────────────────────────────────── */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+    }
+
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .fade-in, .hero { opacity: 1 !important; transform: none !important; animation: none !important; }
+    }
+
+    /* ─── Responsive ────────────────────────────────────────── */
+    @media (max-width: 600px) {
+      main {
+        padding-top: calc(var(--nav-height) + var(--space-lg));
+      }
+
+      .nav-links .hide-mobile {
+        display: none;
+      }
+
+      main {
+        padding-top: var(--nav-height);
+      }
+
+      .hero {
+        width: 100%;
+        left: 0;
+        transform: none;
+        padding: var(--space-lg) 0;
+        margin-bottom: var(--space-lg);
+        min-height: calc(100svh - var(--nav-height));
+      }
+
+      .hero-name {
+        font-size: clamp(38px, 11vw, 56px);
+        margin-bottom: var(--space-sm);
+      }
+
+      .hero-body {
+        gap: var(--space-sm);
+      }
+
+      .case-card {
+        padding: var(--space-sm);
+      }
+
+      footer {
+        flex-direction: column;
+        gap: var(--space-sm);
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Nav -->
+  <nav id="nav">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">Gonzalo Fasce</a>
+      <ul class="nav-links">
+        <li class="hide-mobile"><a href="casos/mob.html">MOB</a></li>
+        <li class="hide-mobile"><a href="casos/singular.html">Singular</a></li>
+        <li class="hide-mobile"><a href="casos/mis-resultados.html">Mis Resultados</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="cv.html" class="nav-cv">CV</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Main -->
+  <main>
+
+    <!-- Hero -->
+    <section class="hero">
+      <h1 class="hero-name" aria-label="Gonzalo Fasce"><span id="typewriter" aria-hidden="true"></span><span class="cursor" id="cursor"></span></h1>
+      <div class="hero-body">
+        <p class="hero-role"><span id="typewriter-role" aria-hidden="true"></span><span class="cursor" id="cursor-role"></span><span class="sr-only">Product Designer · Buenos Aires</span></p>
+      </div>
+      <div class="scroll-arrow" aria-hidden="true">
+        <svg width="20" height="12" viewBox="0 0 20 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M1 1L10 10L19 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+    </section>
+
+    <hr class="fade-in">
+
+    <!-- Cases -->
+    <div class="fade-in">
+      <div class="section-label">
+        <span class="num">00</span>
+        <span class="dot">·</span>
+        <span class="name">Casos de estudio</span>
+      </div>
+    </div>
+
+    <div class="cases fade-in">
+
+      <!-- Caso 1 -->
+      <a href="casos/mob.html" class="case-card">
+        <div class="card-header">
+          <span class="card-num">01</span>
+          <span class="card-dot">·</span>
+          <span class="card-tag">Sistema de diseño · Enterprise</span>
+        </div>
+        <h2 class="card-title">MOB: Design System</h2>
+        <p class="card-desc">Cómo construí el sistema de diseño de N5 Now desde cero — sin que nadie lo hubiera pedido — y lo convertí en el estándar oficial de la compañía.</p>
+        <div class="card-footer">
+          <span class="case-link">Ver caso</span>
+          <span class="case-arrow">→</span>
+        </div>
+      </a>
+
+      <!-- Caso 2 -->
+      <a href="casos/singular.html" class="case-card">
+        <div class="card-header">
+          <span class="card-num">02</span>
+          <span class="card-dot">·</span>
+          <span class="card-tag">IA · Visual + UX</span>
+        </div>
+        <h2 class="card-title">Singular: de cero a dos decks en una semana</h2>
+        <p class="card-desc">Cómo usé cinco herramientas de IA generativa distintas para explorar seis direcciones visuales en paralelo — y cambiar el tipo de conversación con el stakeholder.</p>
+        <div class="card-footer">
+          <span class="case-link">Ver caso</span>
+          <span class="case-arrow">→</span>
+        </div>
+      </a>
+
+      <!-- Caso 3 -->
+      <a href="casos/mis-resultados.html" class="case-card">
+        <div class="card-header">
+          <span class="card-num">03</span>
+          <span class="card-dot">·</span>
+          <span class="card-tag">UX complejo · Fintech · Estrategia</span>
+        </div>
+        <h2 class="card-title">Mis Resultados: del parche al producto</h2>
+        <p class="card-desc">Un módulo para gestionar performance comercial en bancos. El reto real no era la interfaz — era entender la dimensión verdadera del problema y decidir qué no construir todavía.</p>
+        <div class="card-footer">
+          <span class="case-link">Ver caso</span>
+          <span class="case-arrow">→</span>
+        </div>
+      </a>
+
+    </div>
+
+    <hr class="fade-in" style="margin-top: var(--space-xxl);">
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="fade-in">
+    <span class="footer-meta">Buenos Aires · 2026</span>
+    <ul class="footer-links">
+      <li><a href="https://linkedin.com/in/gonzafasce" target="_blank" rel="noopener">LinkedIn</a></li>
+      <li><a href="mailto:geefedesign@gmail.com">Mail</a></li>
+      <li><a href="cv-gonza-fasce.pdf" download>CV</a></li>
+    </ul>
+  </footer>
+
+  <script>
+    // Typewriter effect on hero name
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const typewriter = document.getElementById('typewriter');
+    const cursorEl = document.getElementById('cursor');
+    const typewriterRole = document.getElementById('typewriter-role');
+    const cursorRoleEl = document.getElementById('cursor-role');
+    const heroText = 'Gonzalo Fasce';
+    const roleText = 'Product Designer · Buenos Aires';
+
+    if (prefersReducedMotion) {
+      typewriter.textContent = heroText;
+      typewriterRole.textContent = roleText;
+      cursorEl.classList.add('cursor-hidden');
+      cursorRoleEl.classList.add('blink-end');
+    } else {
+      cursorRoleEl.classList.add('cursor-hidden');
+
+      function typeRole() {
+        let charIndex = 0;
+        cursorRoleEl.classList.remove('cursor-hidden');
+        function typeChar() {
+          if (charIndex < roleText.length) {
+            typewriterRole.textContent += roleText[charIndex];
+            charIndex++;
+            setTimeout(typeChar, 35 + Math.random() * 35);
+          } else {
+            cursorRoleEl.classList.add('blink-end');
+          }
+        }
+        typeChar();
+      }
+
+      let charIndex = 0;
+      function typeChar() {
+        if (charIndex < heroText.length) {
+          typewriter.textContent += heroText[charIndex];
+          charIndex++;
+          setTimeout(typeChar, 50 + Math.random() * 50);
+        } else {
+          cursorEl.classList.add('cursor-hidden');
+          setTimeout(typeRole, 250);
+        }
+      }
+      setTimeout(typeChar, 200);
+    }
+
+    // Nav border on scroll
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 10);
+    }, { passive: true });
+
+    // Fade-in on scroll (respects reduced-motion)
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (prefersReduced) {
+      document.querySelectorAll('.fade-in').forEach(el => el.classList.add('visible'));
+    } else {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.05, rootMargin: '0px 0px -30px 0px' });
+
+      document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<style>
+  :root {
+    --color-bg:      #F8F6F2;
+    --color-ink:     #0D0D0D;
+    --color-muted:   #6B6B6B;
+    --color-accent:  #2F6EEB;
+    --color-rule:    #E2DED8;
+    --font: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    --font-mono: 'IBM Plex Mono', 'SF Mono', monospace;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body {
+    width: 1200px;
+    height: 630px;
+    background: var(--color-bg);
+    font-family: var(--font);
+    overflow: hidden;
+  }
+  .card {
+    width: 1200px;
+    height: 630px;
+    padding: 70px 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .label {
+    font-family: var(--font-mono);
+    font-size: 22px;
+    color: var(--color-muted);
+    letter-spacing: 0.06em;
+    margin-bottom: 28px;
+  }
+  .accent {
+    width: 40px;
+    height: 40px;
+    background: var(--color-accent);
+    margin-bottom: 36px;
+  }
+  .name {
+    font-family: var(--font);
+    font-size: 96px;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.0;
+    color: var(--color-ink);
+    margin-bottom: 28px;
+  }
+  .role {
+    font-family: var(--font-mono);
+    font-size: 32px;
+    color: var(--color-muted);
+    margin-bottom: 60px;
+  }
+  .footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 2px solid var(--color-rule);
+    padding-top: 24px;
+  }
+  .footer-left {
+    font-family: var(--font-mono);
+    font-size: 22px;
+    color: var(--color-muted);
+  }
+  .footer-right {
+    font-family: var(--font-mono);
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--color-ink);
+  }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="label">PRODUCT DESIGNER · PORTFOLIO</div>
+    <div class="accent"></div>
+    <div class="name">Gonzalo Fasce</div>
+    <div class="role">Diseño de producto, sistemas y estrategia</div>
+    <div class="footer">
+      <div class="footer-left">Buenos Aires, Argentina</div>
+      <div class="footer-right">gonzalofasce.com</div>
+    </div>
+  </div>
+</body>
+</html>
