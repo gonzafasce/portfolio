@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,19 +8,19 @@
   <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon/favicon-32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon/favicon-16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="../assets/favicon/apple-touch-icon.png">
-  <meta name="description" content="Caso de estudio: Mis Resultados, plataforma de incentivos bancarios en producción en Panamá, en implementación en Chile y próximamente en Brasil.">
+  <meta name="description" content="Case study: Mis Resultados, a banking incentives platform in production in Panama, in rollout in Chile, and coming soon to Brazil.">
 
   <!-- Open Graph -->
   <meta property="og:type" content="article">
-  <meta property="og:title" content="Mis Resultados — Caso de estudio | Gonzalo Fasce">
-  <meta property="og:description" content="Plataforma de incentivos bancarios: en producción en Panamá, en implementación en Chile y Brasil.">
+  <meta property="og:title" content="Mis Resultados — Case Study | Gonzalo Fasce">
+  <meta property="og:description" content="Banking incentives platform: in production in Panama, in rollout in Chile and Brazil.">
   <meta property="og:image" content="https://gonzalofasce.com/assets/og-image.webp">
-  <meta property="og:url" content="https://gonzalofasce.com/casos/mis-resultados.html">
+  <meta property="og:url" content="https://gonzalofasce.com/casos/mis-resultados-en.html">
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Mis Resultados — Caso de estudio | Gonzalo Fasce">
-  <meta name="twitter:description" content="Plataforma de incentivos bancarios: en producción en Panamá, en implementación en Chile y Brasil.">
+  <meta name="twitter:title" content="Mis Resultados — Case Study | Gonzalo Fasce">
+  <meta name="twitter:description" content="Banking incentives platform: in production in Panama, in rollout in Chile and Brazil.">
   <meta name="twitter:image" content="https://gonzalofasce.com/assets/og-image.webp">
 
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -357,41 +357,20 @@
 </head>
 <body>
 
-  <!--
-  ═══════════════════════════════════════════════════
-  IMÁGENES DE ESTE CASO — para reemplazar, cambiá el
-  atributo src del <img> correspondiente o reemplazá
-  el archivo en la carpeta assets/caso-3-misresultados/
-  ═══════════════════════════════════════════════════
-
-  [HERO]        ../assets/caso-3-misresultados/v0-home-resultados.png
-  [PROCESO 1]   ../assets/caso-3-misresultados/Ideación-feature_map-vendedor.jpg
-  [PROCESO 2]   ../assets/caso-3-misresultados/Ideación-feature_map-admin.jpg
-  [PROCESO 3]   ../assets/caso-3-misresultados/Ideación-wireframes.jpg
-  [PRODUCTO 1]  ../assets/caso-3-misresultados/v2-home.png
-  [PRODUCTO 2]  ../assets/caso-3-misresultados/v2-ranking.png
-  [PRODUCTO 3]  ../assets/caso-3-misresultados/v2-supervisor-mi_equipo.png
-  [COMPLEJIDAD] ../assets/caso-3-misresultados/concepto-admin2.png
-  [DECISION]    ../assets/caso-3-misresultados/v2-configurador-home.png
-
-  ═══════════════════════════════════════════════════
-  -->
-
-
   <!-- Nav -->
   <nav id="nav">
     <div class="nav-inner">
-      <a href="../index.html" class="nav-logo">Gonzalo Fasce</a>
+      <a href="../index-en.html" class="nav-logo">Gonzalo Fasce</a>
       <ul class="nav-links">
-        <li class="hide-mobile"><a href="mob.html">MOB</a></li>
-        <li class="hide-mobile"><a href="singular.html">Singular</a></li>
-        <li class="hide-mobile"><a href="mis-resultados.html" class="active">Mis Resultados</a></li>
-        <li><a href="../about.html">About</a></li>
-        <li><a href="../cv.html" class="nav-cv">CV</a></li>
+        <li class="hide-mobile"><a href="mob-en.html">MOB</a></li>
+        <li class="hide-mobile"><a href="singular-en.html">Singular</a></li>
+        <li class="hide-mobile"><a href="mis-resultados-en.html" class="active">Mis Resultados</a></li>
+        <li><a href="../about-en.html">About</a></li>
+        <li><a href="../cv-en.html" class="nav-cv">CV</a></li>
         <li class="lang-switcher">
-          <a href="mis-resultados.html" class="lang-link active">ES</a>
+          <a href="mis-resultados.html" class="lang-link">ES</a>
           <span class="lang-sep">·</span>
-          <a href="mis-resultados-en.html" class="lang-link">EN</a>
+          <a href="mis-resultados-en.html" class="lang-link active">EN</a>
         </li>
       </ul>
     </div>
@@ -405,145 +384,138 @@
         <div class="case-meta">
           <span class="num">03</span>
           <span class="dot">·</span>
-          <span>UX complejo · Fintech · Estrategia de producto</span>
+          <span>Complex UX · Fintech · Product strategy</span>
         </div>
-        <h1 class="case-title">Mis Resultados: del parche al producto</h1>
-        <p class="case-subtitle">Un módulo para gestionar performance comercial en bancos. El reto real no era la interfaz — era entender la dimensión verdadera del problema y decidir qué no construir todavía.</p>
+        <h1 class="case-title">Mis Resultados: from workaround to product</h1>
+        <p class="case-subtitle">A module for managing commercial performance in banks. The real challenge wasn't the interface — it was understanding the true scope of the problem and deciding what not to build yet.</p>
       </div>
       <div class="case-intro-image">
-        <!-- [HERO] ../assets/caso-3-misresultados/v0-home-resultados.png -->
-        <img src="../assets/hero/caso-3-misresultados.webp" alt="Mis Resultados — objetivos, reglas y resultados">
+        <img src="../assets/hero/caso-3-misresultados.webp" alt="Mis Resultados — goals, rules, and results">
       </div>
     </div>
 
 
-    <!-- 00 · El problema -->
+    <!-- 00 · The problem -->
     <div class="section fade-in">
       <div class="section-label">
-        <span class="num">00</span><span class="dot">·</span><span class="name">El problema</span>
+        <span class="num">00</span><span class="dot">·</span><span class="name">The problem</span>
       </div>
-      <p>Los bancos tienen equipos comerciales grandes, con metas, rankings e incentivos que cambian todos los meses. El problema es que gestionar todo eso es un caos — planillas de Excel, configuraciones manuales, información dispersa. Nadie tiene una visión clara de su propio desempeño en tiempo real.</p>
-      <p>La primera versión de esta plataforma existía, pero estaba diseñada para resolver los problemas puntuales de un banco específico. Sin módulo administrador, la configuración de objetivos y metas debía hacerse a mano cada mes — un costo enorme que asumía internamente el equipo de soporte. No era un producto, era un parche.</p>
+      <p>Banks have large commercial teams, with targets, rankings, and incentives that change every month. The problem is that managing all of that is chaos — Excel spreadsheets, manual configurations, scattered information. Nobody has a clear view of their own performance in real time.</p>
+      <p>The first version of this platform existed, but it had been designed to solve the specific problems of one bank. Without an admin module, configuring goals and targets had to be done manually every month — an enormous cost absorbed internally by the support team. It wasn't a product, it was a workaround.</p>
     </div>
 
     <hr class="fade-in">
 
-    <!-- 01 · El proceso -->
+    <!-- 01 · The process -->
     <div class="section fade-in">
       <div class="section-label">
-        <span class="num">01</span><span class="dot">·</span><span class="name">El proceso</span>
+        <span class="num">01</span><span class="dot">·</span><span class="name">The process</span>
       </div>
-      <p>Cuando me metí a fondo con el PO a analizar el scope real del proyecto, lo primero que quedó claro es que el problema era mucho más grande de lo que parecía. No se trataba de mejorar pantallas — se trataba de construir una plataforma que pudiera implementarse en cualquier banco, con reglas de negocio distintas, estructuras organizacionales distintas y modelos de incentivos distintos.</p>
-      <p>Eso cambió todo el enfoque.</p>
-      <p>El análisis nos llevó a definir <strong>tres perfiles de usuario con necesidades completamente diferentes</strong>: el <strong>Vendedor</strong>, que quiere saber cómo va respecto a sus objetivos; el <strong>Supervisor</strong>, que necesita ver el desempeño de su equipo; y el <strong>Administrador</strong>, que configura las reglas del sistema.</p>
+      <p>When I dove deep with the PO to analyze the real scope of the project, the first thing that became clear was that the problem was much bigger than it looked. This wasn't about improving screens — it was about building a platform that could be deployed in any bank, with different business rules, different organizational structures, and different incentive models.</p>
+      <p>That changed everything.</p>
+      <p>The analysis led us to define <strong>three user profiles with completely different needs</strong>: the <strong>Sales Rep</strong>, who wants to know how they're doing against their goals; the <strong>Supervisor</strong>, who needs to see their team's performance; and the <strong>Admin</strong>, who configures the system's rules.</p>
 
-      <!-- [PROCESO 1 + PROCESO 2] — contraste de complejidad -->
       <div class="img-grid-2">
         <div>
-          <img src="../assets/caso-3-misresultados/Ideación-feature_map-vendedor.webp" alt="Feature map del Vendedor">
-          <p class="img-caption">Feature map del Vendedor — acotado, directo.</p>
+          <img src="../assets/caso-3-misresultados/Ideación-feature_map-vendedor.webp" alt="Sales Rep feature map">
+          <p class="img-caption">Sales Rep feature map — contained, direct.</p>
         </div>
         <div>
-          <img src="../assets/caso-3-misresultados/Ideación-feature_map-admin.webp" alt="Feature map del Administrador">
-          <p class="img-caption">Feature map del Administrador — el contraste habla solo.</p>
+          <img src="../assets/caso-3-misresultados/Ideación-feature_map-admin.webp" alt="Admin feature map">
+          <p class="img-caption">Admin feature map — the contrast speaks for itself.</p>
         </div>
       </div>
 
-      <p>El módulo administrador resultó ser el corazón del problema. Sin él, el sistema no puede escalar: alguien siempre tiene que configurar algo a mano. Pero diseñarlo correctamente era enormemente complejo — y acá está la diferencia con cualquier sistema de incentivos tradicional.</p>
-      <p>Un sistema de loyalty para una tienda de ropa es relativamente directo: vendiste X, cumpliste la meta. En banca, las reglas son otra cosa. Si el objetivo de un ejecutivo es vender 15 tarjetas en el mes y vendió 15, pero 3 clientes cancelaron, su resultado real es 12. Y eso es el caso más simple. Si además 3 de esas tarjetas las vendió un ejecutivo de call center a clientes que figuran en su cartera, la cuenta puede ser media tarjeta, una entera o ninguna, dependiendo de la regla del banco.</p>
+      <p>The admin module turned out to be the heart of the problem. Without it, the system can't scale: someone always has to configure something by hand. But designing it correctly was enormously complex — and here's where this differs from any traditional incentive system.</p>
+      <p>A loyalty system for a clothing store is relatively straightforward: you sold X, you hit your target. In banking, the rules are something else. If an executive's goal is to sell 15 cards in the month and they sold 15, but 3 clients cancelled, their real result is 12. And that's the simplest case. If on top of that, 3 of those cards were sold by a call center agent to clients in their portfolio, the count could be half a card, a full one, or none at all — depending on the bank's rule.</p>
 
       <div class="callout">
-        <p>Cada banco tiene su propia versión de esa lógica. Cubrir todos los casos posibles sin que la interfaz del administrador se volviera inmanejable era el desafío real del producto.</p>
+        <p>Every bank has its own version of that logic. Covering all possible cases without the admin interface becoming unmanageable was the product's real challenge.</p>
       </div>
 
-      <!-- [PROCESO 3] -->
-      <img class="img-full" src="../assets/caso-3-misresultados/Ideación-wireframes.webp" alt="Wireframes de la v1 en Adobe XD">
-      <p class="img-caption">Wireframes de la v1 en Adobe XD — la arquitectura de información antes de las pantallas.</p>
+      <img class="img-full" src="../assets/caso-3-misresultados/Ideación-wireframes.webp" alt="v1 wireframes in Adobe XD">
+      <p class="img-caption">v1 wireframes in Adobe XD — information architecture before the screens.</p>
 
-      <p>Se vendió el proyecto para implementarlo en un banco grande de Perú. El scope era ambicioso, el tiempo ajustado, y las partes no encontraron la flexibilidad necesaria para avanzar. El proyecto quedó trunco.</p>
+      <p>The project was sold for implementation at a large bank in Peru. The scope was ambitious, the timeline tight, and the parties couldn't find the flexibility needed to move forward. The project stalled.</p>
     </div>
 
     <hr class="fade-in">
 
-    <!-- 02 · La complejidad -->
+    <!-- 02 · The complexity -->
     <div class="section fade-in">
       <div class="section-label">
-        <span class="num">02</span><span class="dot">·</span><span class="name">La complejidad</span>
+        <span class="num">02</span><span class="dot">·</span><span class="name">The complexity</span>
       </div>
-      <p>Para dimensionar lo que implicaba resolver el administrador correctamente: el panel de configuración de un solo objetivo requería manejar tramos de cumplimiento, candados de activación, aceleradores de pago, tarifarios diferenciados por producto y modelos de incentivos cruzados entre equipos. Todo eso conviviendo en una sola pantalla, sin que el usuario se perdiera.</p>
+      <p>To give a sense of what solving the admin correctly entailed: the configuration panel for a single goal required handling performance tiers, activation locks, payment accelerators, differentiated rate cards by product, and cross-team incentive models. All of that coexisting on a single screen, without the user getting lost.</p>
 
-      <!-- [COMPLEJIDAD] -->
-      <img class="img-full" src="../assets/caso-3-misresultados/concepto-admin2.webp" alt="Concepto del admin — sidebar con la estructura completa">
-      <p class="img-caption">El sidebar de configuración de un objetivo: Objetivos, Tramos, Candados, Aceleradores, Tarifarios, Modelos de Incentivos. Cada nodo es una pantalla.</p>
+      <img class="img-full" src="../assets/caso-3-misresultados/concepto-admin2.webp" alt="Admin concept — sidebar with the full structure">
+      <p class="img-caption">The goal configuration sidebar: Goals, Tiers, Locks, Accelerators, Rate Cards, Incentive Models. Each node is a screen.</p>
     </div>
 
     <hr class="fade-in">
 
-    <!-- 03 · La decisión -->
+    <!-- 03 · The decision -->
     <div class="section fade-in">
       <div class="section-label">
-        <span class="num">03</span><span class="dot">·</span><span class="name">La decisión</span>
+        <span class="num">03</span><span class="dot">·</span><span class="name">The decision</span>
       </div>
-      <p>Cuando arrancó la v2, la pregunta fue cómo avanzar sin repetir el mismo error. La respuesta fue una decisión estratégica simple: <strong>empezar por donde hay más valor inmediato y menos riesgo de complejidad infinita</strong>.</p>
-      <p>Se priorizó <strong>Mis Resultados</strong> — el visualizador de performance para vendedores y supervisores. El módulo que más impacto tiene en el día a día del usuario comercial. Y para el administrador, en esta primera instancia, se optó por templates de Excel que mapean la configuración directamente al sistema — un puente pragmático que permite operar sin bloquear todo el desarrollo en el problema más difícil.</p>
+      <p>When v2 started, the question was how to move forward without repeating the same mistake. The answer was a simple strategic decision: <strong>start where there's the most immediate value and the least risk of infinite complexity</strong>.</p>
+      <p>We prioritized <strong>Mis Resultados</strong> — the performance visualizer for sales reps and supervisors. The module with the highest day-to-day impact for the commercial user. And for the admin, in this first instance, we opted for Excel templates that map configuration directly to the system — a pragmatic bridge that allows operations without blocking all development on the hardest problem.</p>
 
-      <!-- [DECISION] -->
-      <img class="img-full" src="../assets/caso-3-misresultados/v2-configurador-home.webp" alt="Admin MVP — configurador via Excel">
-      <p class="img-caption">El configurador MVP: Excel como interfaz de administración. No es la solución final — es la solución correcta para este momento.</p>
+      <img class="img-full" src="../assets/caso-3-misresultados/v2-configurador-home.webp" alt="Admin MVP — Excel-based configurator">
+      <p class="img-caption">The MVP configurator: Excel as the admin interface. Not the final solution — the right solution for this moment.</p>
     </div>
 
     <!-- Metrics -->
     <div class="metrics-strip fade-in">
       <div class="metric">
         <span class="metric-value">3</span>
-        <span class="metric-label">países de implementación</span>
+        <span class="metric-label">countries of deployment</span>
       </div>
       <div class="metric">
         <span class="metric-value">3</span>
-        <span class="metric-label">perfiles de usuario</span>
+        <span class="metric-label">user profiles</span>
       </div>
       <div class="metric">
         <span class="metric-value">4</span>
-        <span class="metric-label">meses de v2 a piloto</span>
+        <span class="metric-label">months from v2 to pilot</span>
       </div>
       <div class="metric">
         <span class="metric-value">v3</span>
-        <span class="metric-label">iteraciones del producto</span>
+        <span class="metric-label">product iterations</span>
       </div>
     </div>
 
-    <!-- 04 · El producto -->
+    <!-- 04 · The product -->
     <div class="section fade-in">
       <div class="section-label">
-        <span class="num">04</span><span class="dot">·</span><span class="name">El producto</span>
+        <span class="num">04</span><span class="dot">·</span><span class="name">The product</span>
       </div>
-      <p>Una plataforma que permite a los equipos comerciales de un banco ver su performance en tiempo real — objetivos, resultados, rankings, estado de incentivos — sin depender de reportes manuales ni de alguien que actualice una planilla.</p>
+      <p>A platform that lets commercial bank teams see their performance in real time — goals, results, rankings, incentive status — without depending on manual reports or someone updating a spreadsheet.</p>
 
-      <!-- [PRODUCTO 1] — pantalla estrella -->
-      <img class="img-full" src="../assets/caso-3-misresultados/v2-home.webp" alt="v2 Home — el vendedor viendo sus objetivos">
-      <p class="img-caption">La pantalla principal del Vendedor: objetivos del mes, progreso en tiempo real, estado de incentivos.</p>
+      <img class="img-full" src="../assets/caso-3-misresultados/v2-home.webp" alt="v2 Home — the sales rep viewing their goals">
+      <p class="img-caption">The Sales Rep's main screen: monthly goals, real-time progress, incentive status.</p>
 
-      <!-- [PRODUCTO 2 + PRODUCTO 3] -->
       <div class="img-grid-2">
         <div>
-          <img src="../assets/caso-3-misresultados/v2-ranking.webp" alt="Vista de ranking">
-          <p class="img-caption">Ranking del equipo — otra dimensión del desempeño.</p>
+          <img src="../assets/caso-3-misresultados/v2-ranking.webp" alt="Ranking view">
+          <p class="img-caption">Team ranking — another dimension of performance.</p>
         </div>
         <div>
-          <img src="../assets/caso-3-misresultados/v2-supervisor-mi_equipo.webp" alt="Vista del Supervisor">
-          <p class="img-caption">Vista del Supervisor — el sistema cubre los tres perfiles.</p>
+          <img src="../assets/caso-3-misresultados/v2-supervisor-mi_equipo.webp" alt="Supervisor view">
+          <p class="img-caption">Supervisor view — the system covers all three profiles.</p>
         </div>
       </div>
 
-      <p>Lo más valioso de este caso no es el producto en sí, sino el proceso de entender dónde estaba realmente el problema. La v0 resolvía síntomas. La v1 encontró la dimensión real del desafío. La v2 tomó la decisión más difícil: acotar el scope con criterio, sin perder de vista hacia dónde tiene que ir el sistema. Hoy está en producción en Panamá, en implementación en Chile, y próximamente en Brasil.</p>
+      <p>The most valuable thing about this case isn't the product itself — it's the process of understanding where the problem really was. v0 solved symptoms. v1 found the real dimension of the challenge. v2 made the hardest decision: scope with judgment, without losing sight of where the system needs to go. Today it's in production in Panama, rolling out in Chile, and coming soon to Brazil.</p>
     </div>
 
     <hr class="fade-in">
 
     <!-- Case nav -->
     <div class="case-nav fade-in">
-      <a href="singular.html">← Singular</a>
-      <a href="../about.html">About →</a>
+      <a href="singular-en.html">← Singular</a>
+      <a href="../about-en.html">About →</a>
     </div>
 
   </main>
@@ -570,7 +542,6 @@
       document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
     }
 
-    // Hero image — delay reveal so multiply is active before image appears
     document.querySelectorAll('.case-intro-image img').forEach(img => {
       const reveal = () => setTimeout(() => img.classList.add('loaded'), 300);
       if (img.complete) reveal();

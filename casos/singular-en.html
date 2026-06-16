@@ -1,26 +1,26 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mis Resultados — Gonzalo Fasce</title>
+  <title>Singular — Gonzalo Fasce</title>
   <link rel="icon" type="image/x-icon" href="../assets/favicon/favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon/favicon-32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon/favicon-16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="../assets/favicon/apple-touch-icon.png">
-  <meta name="description" content="Caso de estudio: Mis Resultados, plataforma de incentivos bancarios en producción en Panamá, en implementación en Chile y próximamente en Brasil.">
+  <meta name="description" content="Case study: Singular, visual direction — Bloomberg-style for an AI financial platform — plus a concept demo for Fintech Americas.">
 
   <!-- Open Graph -->
   <meta property="og:type" content="article">
-  <meta property="og:title" content="Mis Resultados — Caso de estudio | Gonzalo Fasce">
-  <meta property="og:description" content="Plataforma de incentivos bancarios: en producción en Panamá, en implementación en Chile y Brasil.">
+  <meta property="og:title" content="Singular — Case Study | Gonzalo Fasce">
+  <meta property="og:description" content="AI + design in finance: maximum data density visual direction and a concept demo for Fintech Americas.">
   <meta property="og:image" content="https://gonzalofasce.com/assets/og-image.webp">
-  <meta property="og:url" content="https://gonzalofasce.com/casos/mis-resultados.html">
+  <meta property="og:url" content="https://gonzalofasce.com/casos/singular-en.html">
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Mis Resultados — Caso de estudio | Gonzalo Fasce">
-  <meta name="twitter:description" content="Plataforma de incentivos bancarios: en producción en Panamá, en implementación en Chile y Brasil.">
+  <meta name="twitter:title" content="Singular — Case Study | Gonzalo Fasce">
+  <meta name="twitter:description" content="AI + design in finance: maximum data density visual direction and a concept demo for Fintech Americas.">
   <meta name="twitter:image" content="https://gonzalofasce.com/assets/og-image.webp">
 
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -140,7 +140,11 @@
       gap: var(--space-sm); margin: var(--space-md) 0;
     }
     .img-grid-2 img { width: 100%; border: 1px solid var(--color-rule); }
-
+    .img-grid-3 {
+      display: grid; grid-template-columns: 1fr 1fr 1fr;
+      gap: var(--space-sm); margin: var(--space-md) 0;
+    }
+    .img-grid-3 img { width: 100%; border: 1px solid var(--color-rule); }
     .img-caption,
     .section .img-caption {
       font-family: var(--font-mono); font-size: 14px;
@@ -222,9 +226,7 @@
     .section-label .num { color: var(--color-accent); }
     .section-label .dot { color: var(--color-rule); }
     .section-label .name { color: var(--color-muted); }
-
     .section { margin-bottom: var(--space-xl); }
-
     .section p {
       font-size: 17px; font-weight: 400; color: var(--color-ink);
       line-height: 1.7; max-width: 640px; margin-bottom: var(--space-sm);
@@ -233,19 +235,47 @@
     .section strong { font-weight: 600; }
     .section em { font-style: italic; }
 
-    /* ─── Callout ───────────────────────────────────────── */
-    .callout {
-      border-left: 2px solid var(--color-accent);
-      padding: var(--space-sm) var(--space-md);
+    /* ─── Tools table ───────────────────────────────────── */
+    .tools-table {
+      width: 100%;
+      border-collapse: collapse;
       margin: var(--space-md) 0;
-      max-width: 640px;
+      font-size: 14px;
     }
-    .callout p {
-      font-size: 16px !important;
-      color: var(--color-ink) !important;
-      margin-bottom: 0 !important;
-      font-style: italic;
+    .tools-table th {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--color-muted);
+      text-align: left;
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--color-rule);
     }
+    .tools-table td {
+      padding: 12px;
+      border-bottom: 1px solid var(--color-rule);
+      color: var(--color-ink);
+      line-height: 1.5;
+      vertical-align: top;
+    }
+    .tools-table td:first-child {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--color-accent);
+      white-space: nowrap;
+    }
+    .tools-table tr:last-child td { border-bottom: none; }
+
+    /* ─── Variants grid ─────────────────────────────────── */
+    .variants-hero { width: 100%; border: 1px solid var(--color-rule); margin-bottom: var(--space-sm); }
+    .variant-label {
+      font-family: var(--font-mono); font-size: 12px; font-weight: 500;
+      color: var(--color-muted); margin-bottom: var(--space-md);
+    }
+    .variant-label span { color: var(--color-ink); }
 
 
     /* ─── Metrics strip ─────────────────────────────────── */
@@ -295,6 +325,7 @@
     .case-nav a {
       font-family: var(--font-mono); font-size: 13px; font-weight: 500;
       color: var(--color-muted); transition: color 0.15s ease;
+      display: flex; align-items: center; gap: 8px;
     }
     .case-nav a:hover { color: var(--color-ink); }
 
@@ -306,11 +337,12 @@
     @media (max-width: 600px) {
       main { padding-top: calc(var(--nav-height) + var(--space-md)); }
       .nav-links .hide-mobile { display: none; }
-      .img-grid-2 { grid-template-columns: 1fr; }
+      .img-grid-2, .img-grid-3 { grid-template-columns: 1fr; }
       .case-nav { flex-direction: column; gap: var(--space-sm); align-items: flex-start; }
       .section p { font-size: 16px; max-width: 100%; }
       .section h2 { font-size: 22px; }
       .metrics-strip { grid-template-columns: repeat(2, 1fr); gap: 1px; }
+      .case-table { font-size: 13px; }
       footer { flex-direction: column; gap: var(--space-sm); align-items: flex-start; }
     }
 
@@ -357,41 +389,20 @@
 </head>
 <body>
 
-  <!--
-  ═══════════════════════════════════════════════════
-  IMÁGENES DE ESTE CASO — para reemplazar, cambiá el
-  atributo src del <img> correspondiente o reemplazá
-  el archivo en la carpeta assets/caso-3-misresultados/
-  ═══════════════════════════════════════════════════
-
-  [HERO]        ../assets/caso-3-misresultados/v0-home-resultados.png
-  [PROCESO 1]   ../assets/caso-3-misresultados/Ideación-feature_map-vendedor.jpg
-  [PROCESO 2]   ../assets/caso-3-misresultados/Ideación-feature_map-admin.jpg
-  [PROCESO 3]   ../assets/caso-3-misresultados/Ideación-wireframes.jpg
-  [PRODUCTO 1]  ../assets/caso-3-misresultados/v2-home.png
-  [PRODUCTO 2]  ../assets/caso-3-misresultados/v2-ranking.png
-  [PRODUCTO 3]  ../assets/caso-3-misresultados/v2-supervisor-mi_equipo.png
-  [COMPLEJIDAD] ../assets/caso-3-misresultados/concepto-admin2.png
-  [DECISION]    ../assets/caso-3-misresultados/v2-configurador-home.png
-
-  ═══════════════════════════════════════════════════
-  -->
-
-
   <!-- Nav -->
   <nav id="nav">
     <div class="nav-inner">
-      <a href="../index.html" class="nav-logo">Gonzalo Fasce</a>
+      <a href="../index-en.html" class="nav-logo">Gonzalo Fasce</a>
       <ul class="nav-links">
-        <li class="hide-mobile"><a href="mob.html">MOB</a></li>
-        <li class="hide-mobile"><a href="singular.html">Singular</a></li>
-        <li class="hide-mobile"><a href="mis-resultados.html" class="active">Mis Resultados</a></li>
-        <li><a href="../about.html">About</a></li>
-        <li><a href="../cv.html" class="nav-cv">CV</a></li>
+        <li class="hide-mobile"><a href="mob-en.html">MOB</a></li>
+        <li class="hide-mobile"><a href="singular-en.html" class="active">Singular</a></li>
+        <li class="hide-mobile"><a href="mis-resultados-en.html">Mis Resultados</a></li>
+        <li><a href="../about-en.html">About</a></li>
+        <li><a href="../cv-en.html" class="nav-cv">CV</a></li>
         <li class="lang-switcher">
-          <a href="mis-resultados.html" class="lang-link active">ES</a>
+          <a href="singular.html" class="lang-link">ES</a>
           <span class="lang-sep">·</span>
-          <a href="mis-resultados-en.html" class="lang-link">EN</a>
+          <a href="singular-en.html" class="lang-link active">EN</a>
         </li>
       </ul>
     </div>
@@ -403,147 +414,166 @@
     <div class="case-intro fade-in">
       <div class="case-intro-text">
         <div class="case-meta">
-          <span class="num">03</span>
+          <span class="num">02</span>
           <span class="dot">·</span>
-          <span>UX complejo · Fintech · Estrategia de producto</span>
+          <span>AI · Visual exploration · Methodology</span>
         </div>
-        <h1 class="case-title">Mis Resultados: del parche al producto</h1>
-        <p class="case-subtitle">Un módulo para gestionar performance comercial en bancos. El reto real no era la interfaz — era entender la dimensión verdadera del problema y decidir qué no construir todavía.</p>
+        <h1 class="case-title">Singular: from zero to two decks in a week</h1>
+        <p class="case-subtitle">How I used five generative AI tools in parallel to explore six visual directions — and change the type of conversation with the stakeholder.</p>
       </div>
       <div class="case-intro-image">
-        <!-- [HERO] ../assets/caso-3-misresultados/v0-home-resultados.png -->
-        <img src="../assets/hero/caso-3-misresultados.webp" alt="Mis Resultados — objetivos, reglas y resultados">
+        <img src="../assets/hero/caso-2-singular.webp" alt="Singular — strategy and operations">
       </div>
     </div>
 
 
-    <!-- 00 · El problema -->
+    <!-- 00 · The problem -->
     <div class="section fade-in">
       <div class="section-label">
-        <span class="num">00</span><span class="dot">·</span><span class="name">El problema</span>
+        <span class="num">00</span><span class="dot">·</span><span class="name">The problem</span>
       </div>
-      <p>Los bancos tienen equipos comerciales grandes, con metas, rankings e incentivos que cambian todos los meses. El problema es que gestionar todo eso es un caos — planillas de Excel, configuraciones manuales, información dispersa. Nadie tiene una visión clara de su propio desempeño en tiempo real.</p>
-      <p>La primera versión de esta plataforma existía, pero estaba diseñada para resolver los problemas puntuales de un banco específico. Sin módulo administrador, la configuración de objetivos y metas debía hacerse a mano cada mes — un costo enorme que asumía internamente el equipo de soporte. No era un producto, era un parche.</p>
+      <p>The N5 CEO brings down a vision: <strong>Singular</strong>, a B2B customer engagement platform with AI for banks. There's technical architecture, there's a commercial hypothesis, there's strong intuition about the market position. What there isn't is a designed product, a visual narrative, or a concrete way to show the team and clients what this thing looks like.</p>
+      <p>The brief was clear: in one week, produce something that worked both for internal alignment and for selling. With no more context than that.</p>
+
+      <img class="img-full" src="../assets/caso-2-singular/deck-singular-apertura.webp" alt="Opening slide — A chatbot talking to the client, crossed out">
+      <p class="img-caption">The starting point: what Singular is <em>not</em>. The value prop is understood in a second.</p>
     </div>
 
     <hr class="fade-in">
 
-    <!-- 01 · El proceso -->
+    <!-- 01 · The process -->
     <div class="section fade-in">
       <div class="section-label">
-        <span class="num">01</span><span class="dot">·</span><span class="name">El proceso</span>
+        <span class="num">01</span><span class="dot">·</span><span class="name">The process</span>
       </div>
-      <p>Cuando me metí a fondo con el PO a analizar el scope real del proyecto, lo primero que quedó claro es que el problema era mucho más grande de lo que parecía. No se trataba de mejorar pantallas — se trataba de construir una plataforma que pudiera implementarse en cualquier banco, con reglas de negocio distintas, estructuras organizacionales distintas y modelos de incentivos distintos.</p>
-      <p>Eso cambió todo el enfoque.</p>
-      <p>El análisis nos llevó a definir <strong>tres perfiles de usuario con necesidades completamente diferentes</strong>: el <strong>Vendedor</strong>, que quiere saber cómo va respecto a sus objetivos; el <strong>Supervisor</strong>, que necesita ver el desempeño de su equipo; y el <strong>Administrador</strong>, que configura las reglas del sistema.</p>
+      <p>The first thing I did wasn't open Figma. It was understand the product — and the first design decision I made changed everything that came after: <strong>Singular isn't one product, it's two</strong>.</p>
+      <p>An <strong>operational panel</strong> for the bank's CRM Manager — high density, dark mode, real-time actions. And an <strong>executive panel</strong> for the C-level — read-only, top-down narrative, strategic synthesis. Treating them as one thing would have compromised both. Splitting them was the first deliverable of the week, and it was conceptual: I hadn't drawn anything yet.</p>
+      <p>From there, the work ran on two tracks in parallel.</p>
+      <p>The first was the <strong>UX deck</strong> — the experience architecture of the full system. How Singular works as a product, its three layers (the brain that decides, the voice that executes, the client who lives the outcome), user archetypes, channel logic.</p>
 
-      <!-- [PROCESO 1 + PROCESO 2] — contraste de complejidad -->
+      <img class="img-full" src="../assets/caso-2-singular/ilus-infografia-singular-solo.webp" alt="The three layers of Singular — Lápiz Style">
+      <p class="img-caption">The three layers of the system in Lápiz Style: the brain (HOPE), the voice (North Star), the client. Illustration generated with Midjourney from the system's canonical visual prompt.</p>
+
+      <img class="img-full" src="../assets/caso-2-singular/deck-singular--acto2.webp" alt="The bank defines the universe. North Star activates the right version.">
+      <p class="img-caption">"The bank defines the universe. North Star activates the right version." — Slide from the UX deck.</p>
+
+      <img class="img-full" src="../assets/caso-2-singular/ilus-capturadechat.webp" alt="WhatsApp conversation with Valentina — the product's voice">
+      <p class="img-caption">Valentina, North Star's voice. A WhatsApp conversation as a concrete materialization of the end client's experience.</p>
+
+      <p>The second track was the <strong>visual admin exploration</strong>. Instead of proposing one direction and defending it, I decided to map the full space: five different generative AI tools, same brief for all, six visual variants in parallel. Not to show I could produce a lot, but so the CEO could choose with real criteria instead of approving blindly.</p>
+    </div>
+
+    <hr class="fade-in">
+
+    <!-- 02 · The methodology -->
+    <div class="section fade-in">
+      <div class="section-label">
+        <span class="num">02</span><span class="dot">·</span><span class="name">The methodology</span>
+      </div>
+      <p>The insight that emerged in the process: <strong>each AI tool has a "default voice"</strong> that pulls toward a style. Lovable pulls toward clean fintech, v0 pulls toward Linear, Stitch pulls toward dense. Fighting that voice wastes time. Deliberately leveraging it — using each tool for what it does best — is what allowed exploring six directions in a day.</p>
+
+      <table class="tools-table">
+        <thead>
+          <tr>
+            <th>Variant</th>
+            <th>Visual direction</th>
+            <th>Tool</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>A</td><td>MOB Light — N5's own design system, light mode</td><td>Claude Design</td></tr>
+          <tr><td>B</td><td>MOB Dark — N5's own design system, dark mode</td><td>Claude Design</td></tr>
+          <tr><td>C</td><td>Liquid Glass — light physics, visionOS applied</td><td>Claude Code</td></tr>
+          <tr><td>D</td><td>Bloomberg Style — maximum data density</td><td>Lovable</td></tr>
+          <tr><td>E</td><td>Bugatti — total monochrome, extreme discipline</td><td>Stitch</td></tr>
+          <tr><td>F</td><td>Lápiz Dark — editorial cream in dark mode</td><td>v0</td></tr>
+        </tbody>
+      </table>
+
+      <p>For each variant, we documented which tool was used, what prompt it was given, what had to be corrected by hand, and how quickly we could iterate. That documentation is part of the deliverable.</p>
+
+      <!-- Variant D — grid hero -->
+      <img class="variants-hero" src="../assets/caso-2-singular/4-BloombergStyle_Lovable.webp" alt="Variant D — Bloomberg Style with Lovable">
+      <p class="variant-label">Variant D · <span>Bloomberg Style</span> — Lovable. Maximum data density, no aesthetic concessions. The direction closest to the real banking context.</p>
+
+      <!-- Variant A — featured -->
+      <img class="img-full" src="../assets/caso-2-singular/1-MOB-light_ClaudeDesign.webp" alt="Variant A — MOB Light with Claude Design">
+      <p class="img-caption">A · MOB Light — Claude Design. The in-house design system applied to the product. Full coherence with N5 Now.</p>
+
+      <!-- Variants B + C -->
       <div class="img-grid-2">
         <div>
-          <img src="../assets/caso-3-misresultados/Ideación-feature_map-vendedor.webp" alt="Feature map del Vendedor">
-          <p class="img-caption">Feature map del Vendedor — acotado, directo.</p>
+          <img src="../assets/caso-2-singular/2-MOB-dark_ClaudeDesign.webp" alt="Variant B — MOB Dark">
+          <p class="img-caption">B · MOB Dark — Claude Design</p>
         </div>
         <div>
-          <img src="../assets/caso-3-misresultados/Ideación-feature_map-admin.webp" alt="Feature map del Administrador">
-          <p class="img-caption">Feature map del Administrador — el contraste habla solo.</p>
+          <img src="../assets/caso-2-singular/3-LiquidGlass_ClaudeCode.webp" alt="Variant C — Liquid Glass">
+          <p class="img-caption">C · Liquid Glass — Claude Code</p>
         </div>
       </div>
 
-      <p>El módulo administrador resultó ser el corazón del problema. Sin él, el sistema no puede escalar: alguien siempre tiene que configurar algo a mano. Pero diseñarlo correctamente era enormemente complejo — y acá está la diferencia con cualquier sistema de incentivos tradicional.</p>
-      <p>Un sistema de loyalty para una tienda de ropa es relativamente directo: vendiste X, cumpliste la meta. En banca, las reglas son otra cosa. Si el objetivo de un ejecutivo es vender 15 tarjetas en el mes y vendió 15, pero 3 clientes cancelaron, su resultado real es 12. Y eso es el caso más simple. Si además 3 de esas tarjetas las vendió un ejecutivo de call center a clientes que figuran en su cartera, la cuenta puede ser media tarjeta, una entera o ninguna, dependiendo de la regla del banco.</p>
-
-      <div class="callout">
-        <p>Cada banco tiene su propia versión de esa lógica. Cubrir todos los casos posibles sin que la interfaz del administrador se volviera inmanejable era el desafío real del producto.</p>
+      <!-- Variants E + F -->
+      <div class="img-grid-2">
+        <div>
+          <img src="../assets/caso-2-singular/5-BUGATTI_stitch.webp" alt="Variant E — Bugatti Style with Stitch">
+          <p class="img-caption">E · Bugatti Style — Stitch</p>
+        </div>
+        <div>
+          <img src="../assets/caso-2-singular/6-LapizDark-v0.webp" alt="Variant F — Lápiz Dark with v0">
+          <p class="img-caption">F · Lápiz Dark — v0</p>
+        </div>
       </div>
-
-      <!-- [PROCESO 3] -->
-      <img class="img-full" src="../assets/caso-3-misresultados/Ideación-wireframes.webp" alt="Wireframes de la v1 en Adobe XD">
-      <p class="img-caption">Wireframes de la v1 en Adobe XD — la arquitectura de información antes de las pantallas.</p>
-
-      <p>Se vendió el proyecto para implementarlo en un banco grande de Perú. El scope era ambicioso, el tiempo ajustado, y las partes no encontraron la flexibilidad necesaria para avanzar. El proyecto quedó trunco.</p>
-    </div>
-
-    <hr class="fade-in">
-
-    <!-- 02 · La complejidad -->
-    <div class="section fade-in">
-      <div class="section-label">
-        <span class="num">02</span><span class="dot">·</span><span class="name">La complejidad</span>
-      </div>
-      <p>Para dimensionar lo que implicaba resolver el administrador correctamente: el panel de configuración de un solo objetivo requería manejar tramos de cumplimiento, candados de activación, aceleradores de pago, tarifarios diferenciados por producto y modelos de incentivos cruzados entre equipos. Todo eso conviviendo en una sola pantalla, sin que el usuario se perdiera.</p>
-
-      <!-- [COMPLEJIDAD] -->
-      <img class="img-full" src="../assets/caso-3-misresultados/concepto-admin2.webp" alt="Concepto del admin — sidebar con la estructura completa">
-      <p class="img-caption">El sidebar de configuración de un objetivo: Objetivos, Tramos, Candados, Aceleradores, Tarifarios, Modelos de Incentivos. Cada nodo es una pantalla.</p>
-    </div>
-
-    <hr class="fade-in">
-
-    <!-- 03 · La decisión -->
-    <div class="section fade-in">
-      <div class="section-label">
-        <span class="num">03</span><span class="dot">·</span><span class="name">La decisión</span>
-      </div>
-      <p>Cuando arrancó la v2, la pregunta fue cómo avanzar sin repetir el mismo error. La respuesta fue una decisión estratégica simple: <strong>empezar por donde hay más valor inmediato y menos riesgo de complejidad infinita</strong>.</p>
-      <p>Se priorizó <strong>Mis Resultados</strong> — el visualizador de performance para vendedores y supervisores. El módulo que más impacto tiene en el día a día del usuario comercial. Y para el administrador, en esta primera instancia, se optó por templates de Excel que mapean la configuración directamente al sistema — un puente pragmático que permite operar sin bloquear todo el desarrollo en el problema más difícil.</p>
-
-      <!-- [DECISION] -->
-      <img class="img-full" src="../assets/caso-3-misresultados/v2-configurador-home.webp" alt="Admin MVP — configurador via Excel">
-      <p class="img-caption">El configurador MVP: Excel como interfaz de administración. No es la solución final — es la solución correcta para este momento.</p>
     </div>
 
     <!-- Metrics -->
     <div class="metrics-strip fade-in">
       <div class="metric">
-        <span class="metric-value">3</span>
-        <span class="metric-label">países de implementación</span>
+        <span class="metric-value">7</span>
+        <span class="metric-label">days of work</span>
       </div>
       <div class="metric">
-        <span class="metric-value">3</span>
-        <span class="metric-label">perfiles de usuario</span>
+        <span class="metric-value">5</span>
+        <span class="metric-label">AI tools</span>
       </div>
       <div class="metric">
-        <span class="metric-value">4</span>
-        <span class="metric-label">meses de v2 a piloto</span>
+        <span class="metric-value">6</span>
+        <span class="metric-label">visual variants</span>
       </div>
       <div class="metric">
-        <span class="metric-value">v3</span>
-        <span class="metric-label">iteraciones del producto</span>
+        <span class="metric-value">2</span>
+        <span class="metric-label">decks delivered</span>
       </div>
     </div>
 
-    <!-- 04 · El producto -->
+    <!-- 03 · The result -->
     <div class="section fade-in">
       <div class="section-label">
-        <span class="num">04</span><span class="dot">·</span><span class="name">El producto</span>
+        <span class="num">03</span><span class="dot">·</span><span class="name">The result</span>
       </div>
-      <p>Una plataforma que permite a los equipos comerciales de un banco ver su performance en tiempo real — objetivos, resultados, rankings, estado de incentivos — sin depender de reportes manuales ni de alguien que actualice una planilla.</p>
+      <p>Two actionable decks at the end of the week. The UX one to align the team on what's being built. The visual one so the CEO could make a real decision on aesthetics and direction — with complete traceability of why each variant was considered and why it was ruled out.</p>
+      <p>The methodological thesis that guided everything: AI as co-pilot, not executor. Every design decision was mine. Every asset production went through at least one AI tool. The designer's role doesn't disappear — it becomes director, curator, and critic of output.</p>
+      <p>The CEO walked into the final meeting with a real decision to make — and he made it: <strong>Bloomberg Style</strong>, the maximum data density direction. The closest to the real banking context, and the hardest to defend without having explored it against the other five. That's what matters most to me about this case: not the volume of what was produced, but the type of conversation it enabled. Instead of <em>"I'm bringing you what I decided,"</em> the dynamic was <em>"I'm bringing you the space for you to decide."</em></p>
+      <p>And what was demonstrated — at least for me — is that speed used well isn't a shortcut. It's what lets you explore the problem instead of solving just one version of it.</p>
+    </div>
 
-      <!-- [PRODUCTO 1] — pantalla estrella -->
-      <img class="img-full" src="../assets/caso-3-misresultados/v2-home.webp" alt="v2 Home — el vendedor viendo sus objetivos">
-      <p class="img-caption">La pantalla principal del Vendedor: objetivos del mes, progreso en tiempo real, estado de incentivos.</p>
+    <hr class="fade-in">
 
-      <!-- [PRODUCTO 2 + PRODUCTO 3] -->
-      <div class="img-grid-2">
-        <div>
-          <img src="../assets/caso-3-misresultados/v2-ranking.webp" alt="Vista de ranking">
-          <p class="img-caption">Ranking del equipo — otra dimensión del desempeño.</p>
-        </div>
-        <div>
-          <img src="../assets/caso-3-misresultados/v2-supervisor-mi_equipo.webp" alt="Vista del Supervisor">
-          <p class="img-caption">Vista del Supervisor — el sistema cubre los tres perfiles.</p>
-        </div>
+    <!-- Live demo -->
+    <div class="section fade-in">
+      <div class="section-label">
+        <span class="num">04</span><span class="dot">·</span><span class="name">The demo</span>
       </div>
-
-      <p>Lo más valioso de este caso no es el producto en sí, sino el proceso de entender dónde estaba realmente el problema. La v0 resolvía síntomas. La v1 encontró la dimensión real del desafío. La v2 tomó la decisión más difícil: acotar el scope con criterio, sin perder de vista hacia dónde tiene que ir el sistema. Hoy está en producción en Panamá, en implementación en Chile, y próximamente en Brasil.</p>
+      <img class="img-full" src="../assets/caso-2-singular/demo-singular.webp" alt="Singular — concept demo Fintech Americas">
+      <p>Singular has a product in development. But when the CEO needs to deliver a keynote at <a href="https://www.fintechamericas.co/" target="_blank" style="color:var(--color-accent);border-bottom:1px solid var(--color-accent)">Fintech Americas</a>, slides aren't enough. The brief was to make a sharp turn: forget the product for a moment and think like a show. This demo isn't Singular — it's the concept car at the motor show. A functional piece so the room can see where the system is going before it exists.</p>
+      <a href="../demos/singular/index.html" target="_blank" style="display:inline-flex;align-items:center;gap:8px;margin-top:var(--space-sm);font-family:var(--font-mono);font-size:13px;font-weight:500;color:var(--color-ink);border-bottom:1px solid var(--color-ink);padding-bottom:2px;transition:color 0.15s,border-color 0.15s" onmouseover="this.style.color='var(--color-accent)';this.style.borderColor='var(--color-accent)'" onmouseout="this.style.color='var(--color-ink)';this.style.borderColor='var(--color-ink)'">View live demo →</a>
     </div>
 
     <hr class="fade-in">
 
     <!-- Case nav -->
     <div class="case-nav fade-in">
-      <a href="singular.html">← Singular</a>
-      <a href="../about.html">About →</a>
+      <a href="mob-en.html">← MOB</a>
+      <a href="mis-resultados-en.html">Mis Resultados →</a>
     </div>
 
   </main>
@@ -570,7 +600,6 @@
       document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
     }
 
-    // Hero image — delay reveal so multiply is active before image appears
     document.querySelectorAll('.case-intro-image img').forEach(img => {
       const reveal = () => setTimeout(() => img.classList.add('loaded'), 300);
       if (img.complete) reveal();

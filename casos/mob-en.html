@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,19 +8,19 @@
   <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon/favicon-32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon/favicon-16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="../assets/favicon/apple-touch-icon.png">
-  <meta name="description" content="Caso de estudio: MOB, el sistema de diseño que pasó de iniciativa no pedida a estándar oficial adoptado por los 3 equipos de producto de N5 Now.">
+  <meta name="description" content="Case study: MOB, the design system that went from an unsolicited initiative to the official standard adopted by all 3 product teams at N5 Now.">
 
   <!-- Open Graph -->
   <meta property="og:type" content="article">
-  <meta property="og:title" content="MOB — Caso de estudio | Gonzalo Fasce">
-  <meta property="og:description" content="De 4 equipos con criterios propios a un sistema de diseño único, adoptado por toda la compañía.">
+  <meta property="og:title" content="MOB — Case Study | Gonzalo Fasce">
+  <meta property="og:description" content="From 4 teams with their own criteria to a single design system adopted company-wide.">
   <meta property="og:image" content="https://gonzalofasce.com/assets/og-image.webp">
-  <meta property="og:url" content="https://gonzalofasce.com/casos/mob.html">
+  <meta property="og:url" content="https://gonzalofasce.com/casos/mob-en.html">
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="MOB — Caso de estudio | Gonzalo Fasce">
-  <meta name="twitter:description" content="De 4 equipos con criterios propios a un sistema de diseño único, adoptado por toda la compañía.">
+  <meta name="twitter:title" content="MOB — Case Study | Gonzalo Fasce">
+  <meta name="twitter:description" content="From 4 teams with their own criteria to a single design system adopted company-wide.">
   <meta name="twitter:image" content="https://gonzalofasce.com/assets/og-image.webp">
 
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -170,7 +170,6 @@
       padding-top: calc(var(--nav-height) + var(--space-xl));
     }
 
-
     /* ─── Case intro (2-col hero) ───────────────────────── */
     .case-intro {
       display: grid;
@@ -195,9 +194,7 @@
       opacity: 0;
       transition: opacity 0.8s ease;
     }
-    .case-intro-image img.loaded {
-      opacity: 1;
-    }
+    .case-intro-image img.loaded { opacity: 1; }
 
     @media (max-width: 700px) {
       .case-intro { grid-template-columns: 1fr; min-height: auto; width: 100%; margin-left: 0; }
@@ -250,9 +247,7 @@
     .section-label .dot { color: var(--color-rule); }
     .section-label .name { color: var(--color-muted); }
 
-    .section {
-      margin-bottom: var(--space-xl);
-    }
+    .section { margin-bottom: var(--space-xl); }
 
     .section h2 {
       font-size: 28px;
@@ -273,7 +268,6 @@
     }
 
     .section p:last-child { margin-bottom: 0; }
-
     .section strong { font-weight: 600; }
 
     /* ─── Images ────────────────────────────────────────── */
@@ -321,7 +315,6 @@
       font-style: italic;
     }
 
-
     /* ─── Metrics strip ─────────────────────────────────── */
     .metrics-strip {
       display: grid;
@@ -332,9 +325,7 @@
       text-align: center;
     }
 
-    .metric {
-      padding: 0 var(--space-md);
-    }
+    .metric { padding: 0 var(--space-md); }
 
     .metric-value {
       display: block;
@@ -411,7 +402,6 @@
       footer { flex-direction: column; gap: var(--space-sm); align-items: flex-start; }
     }
 
-    /* ─── Case intro (2-col hero) ───────────────────────── */
     .case-intro {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -427,9 +417,7 @@
       gap: var(--space-md);
     }
 
-    .case-intro-image {
-      position: relative;
-    }
+    .case-intro-image { position: relative; }
 
     .case-intro-image img {
       width: 100%;
@@ -437,9 +425,7 @@
       opacity: 0;
       transition: opacity 0.8s ease;
     }
-    .case-intro-image img.loaded {
-      opacity: 1;
-    }
+    .case-intro-image img.loaded { opacity: 1; }
 
     @media (max-width: 700px) {
       .case-intro {
@@ -461,48 +447,20 @@
 </head>
 <body>
 
-  <!--
-  ═══════════════════════════════════════════════════
-  IMÁGENES DE ESTE CASO — para reemplazar, cambiá el
-  atributo src del <img> correspondiente o reemplazá
-  el archivo en la carpeta assets/caso-1-mob/
-  ═══════════════════════════════════════════════════
-
-  [HERO]         ../assets/caso-1-mob/filosofia-1.jpg
-  [PROBLEMA 1]   ../assets/caso-1-mob/antes-campaigns.png
-  [PROBLEMA 2]   ../assets/caso-1-mob/antes-carteras.png
-  [PROBLEMA 3]   ../assets/caso-1-mob/antes-fmc.png
-  [PROCESO 1]    ../assets/caso-1-mob/filosofia-2.jpg
-  [PROCESO 2]    ../assets/caso-1-mob/figma-variables.png
-  [FILOSOFIA]    ../assets/caso-1-mob/filosofia-3.jpg
-  [RESULTADO 1]  ../assets/caso-1-mob/despues-campaigns.png
-  [RESULTADO 2]  ../assets/caso-1-mob/despues-carteras.png
-  [RESULTADO 3]  ../assets/caso-1-mob/despues-fmc.png
-  [MOBILE 1]     ../assets/caso-1-mob/crm-mobile1.png
-  [MOBILE 2]     ../assets/caso-1-mob/crm-mobile2.png
-  [MOBILE 3]     ../assets/caso-1-mob/crm-mobile3.png
-  [ESCALA 1]     ../assets/caso-1-mob/branding-itau.png
-  [ESCALA 2]     ../assets/caso-1-mob/branding-bv.png
-  [TOKENS]       ../assets/caso-1-mob/paleta-itau.png
-
-  ═══════════════════════════════════════════════════
-  -->
-
-
   <!-- Nav -->
   <nav id="nav">
     <div class="nav-inner">
-      <a href="../index.html" class="nav-logo">Gonzalo Fasce</a>
+      <a href="../index-en.html" class="nav-logo">Gonzalo Fasce</a>
       <ul class="nav-links">
-        <li class="hide-mobile"><a href="mob.html" class="active">MOB</a></li>
-        <li class="hide-mobile"><a href="singular.html">Singular</a></li>
-        <li class="hide-mobile"><a href="mis-resultados.html">Mis Resultados</a></li>
-        <li><a href="../about.html">About</a></li>
-        <li><a href="../cv.html" class="nav-cv">CV</a></li>
+        <li class="hide-mobile"><a href="mob-en.html" class="active">MOB</a></li>
+        <li class="hide-mobile"><a href="singular-en.html">Singular</a></li>
+        <li class="hide-mobile"><a href="mis-resultados-en.html">Mis Resultados</a></li>
+        <li><a href="../about-en.html">About</a></li>
+        <li><a href="../cv-en.html" class="nav-cv">CV</a></li>
         <li class="lang-switcher">
-          <a href="mob.html" class="lang-link active">ES</a>
+          <a href="mob.html" class="lang-link">ES</a>
           <span class="lang-sep">·</span>
-          <a href="mob-en.html" class="lang-link">EN</a>
+          <a href="mob-en.html" class="lang-link active">EN</a>
         </li>
       </ul>
     </div>
@@ -517,159 +475,155 @@
         <div class="case-meta">
           <span class="num">01</span>
           <span class="dot">·</span>
-          <span>Sistema de diseño · Enterprise · N5 Now</span>
+          <span>Design System · Enterprise · N5 Now</span>
         </div>
         <h1 class="case-title">MOB: Design System</h1>
-        <p class="case-subtitle">Cómo construí el sistema de diseño de N5 Now desde cero — sin que nadie lo hubiera pedido — y lo convertí en el estándar oficial de la compañía.</p>
+        <p class="case-subtitle">How I built N5 Now's design system from scratch — without anyone asking for it — and turned it into the company's official standard.</p>
       </div>
       <div class="case-intro-image">
-        <!-- [HERO] ../assets/caso-1-mob/filosofia-1.jpg -->
-        <img src="../assets/hero/caso-1-mob.webp" alt="MOB — sistema de diseño">
+        <img src="../assets/hero/caso-1-mob.webp" alt="MOB — design system">
       </div>
     </div>
 
     <hr class="fade-in">
 
-    <!-- El problema -->
+    <!-- The problem -->
     <div class="section fade-in">
       <div class="section-label">
-        <span class="num">00</span><span class="dot">·</span><span class="name">El problema</span>
+        <span class="num">00</span><span class="dot">·</span><span class="name">The problem</span>
       </div>
-      <p>Cuando entré a N5 Now, el diseño era básicamente un caos descentralizado. Cada equipo hacía lo suyo. Un mismo componente podía verse y comportarse diferente dependiendo del módulo que abrías. No había criterio compartido, no había sistema, no había nadie que lo estuviera reclamando.</p>
-      <p>Yo había entrado para hacer diseño web, gráfico y audiovisual. Pero cuando me propusieron pasarme al área de UX — que en ese momento no existía — me pareció exactamente el tipo de problema que me interesaba atacar.</p>
+      <p>When I joined N5 Now, design was basically decentralized chaos. Every team did its own thing. The same component could look and behave differently depending on which module you opened. There was no shared standard, no system, and nobody demanding one.</p>
+      <p>I had been brought in to do web, graphic, and audiovisual design. But when they proposed I move to the UX area — which didn't exist yet — it seemed like exactly the kind of problem I wanted to tackle.</p>
 
       <div class="img-grid-3">
-        <img src="../assets/caso-1-mob/antes-campaigns.webp" alt="Campañas antes de MOB">
-        <img src="../assets/caso-1-mob/antes-carteras.webp" alt="Carteras antes de MOB">
-        <img src="../assets/caso-1-mob/antes-fmc.webp" alt="FMC antes de MOB">
+        <img src="../assets/caso-1-mob/antes-campaigns.webp" alt="Campaigns before MOB">
+        <img src="../assets/caso-1-mob/antes-carteras.webp" alt="Portfolios before MOB">
+        <img src="../assets/caso-1-mob/antes-fmc.webp" alt="FMC before MOB">
       </div>
-      <p class="img-caption">Campañas, Carteras y FMC antes del sistema. Tres módulos, tres criterios distintos.</p>
+      <p class="img-caption">Campaigns, Portfolios, and FMC before the system. Three modules, three different standards.</p>
     </div>
 
     <hr class="fade-in">
 
-    <!-- El proceso -->
+    <!-- The process -->
     <div class="section fade-in">
       <div class="section-label">
-        <span class="num">01</span><span class="dot">·</span><span class="name">El proceso</span>
+        <span class="num">01</span><span class="dot">·</span><span class="name">The process</span>
       </div>
-      <p>No arranqué con una gran propuesta ni una presentación para convencer a nadie. Arranqué a ordenar lo que había. Con un desarrollador frontend empezamos a construir el sistema en paralelo, casi en secreto. Le pusimos <strong>MOB</strong> — <em>Methodology to Organise and Build</em> — pero entre nosotros lo llamábamos "la mafia", porque eso era: algo que crecía desde las sombras sin que nadie lo hubiera pedido oficialmente.</p>
-      <p>La base fue Material Design, adaptado sobre MUI. Primero lo desarrollamos en Adobe XD, después lo migramos a Figma en el momento justo. Esa migración fue clave para que el sistema pudiera crecer y ser adoptado por el equipo de diseño.</p>
+      <p>I didn't start with a big proposal or a presentation to convince anyone. I started by tidying up what already existed. Together with a frontend developer, we began building the system in parallel — almost in secret. We called it <strong>MOB</strong> — <em>Methodology to Organise and Build</em> — but between us we called it "the mafia," because that's what it was: something growing from the shadows without anyone officially asking for it.</p>
+      <p>The foundation was Material Design, adapted on top of MUI. We first developed it in Adobe XD, then migrated to Figma at just the right moment. That migration was key to letting the system grow and be adopted by the design team.</p>
 
-      <img class="img-full" src="../assets/caso-1-mob/filosofia-2.webp" alt="Slide MOB en presentación de filosofía">
-      <p class="img-caption">"Nuestro Sistema de Diseño: MOB" — slide de la presentación de filosofía al equipo.</p>
+      <img class="img-full" src="../assets/caso-1-mob/filosofia-2.webp" alt="MOB slide in philosophy presentation">
+      <p class="img-caption">"Our Design System: MOB" — slide from the philosophy presentation to the team.</p>
 
-      <p>Lo más difícil fue la evangelización. Los líderes no creían que esto era necesario — increíble pero real. Estuve meses convenciendo equipos, mostrando valor con cada módulo nuevo, mientras la estructura de la compañía cambiaba constantemente. No fue lineal para nada.</p>
-      <p>Pero de a poco fue tomando forma. Primero los componentes, después los patrones y los comportamientos, después la documentación dentro de Figma. Hasta que este año cerré el ciclo con una presentación de filosofía: <strong>Los 8 Mandamientos del Diseño de Producto en N5</strong>. Ya no era solo un sistema de componentes — era una forma de pensar el diseño que podía ser compartida con producto, tecnología y negocio.</p>
+      <p>The hardest part was evangelism. Team leads didn't believe this was necessary — hard to believe but true. I spent months convincing teams, proving value with each new module, while the company's structure kept changing constantly. It was far from linear.</p>
+      <p>But gradually it took shape. First the components, then the patterns and behaviors, then the documentation inside Figma. Until this year I closed the loop with a philosophy presentation: <strong>The 8 Commandments of Product Design at N5</strong>. It was no longer just a component system — it was a way of thinking about design that could be shared with product, technology, and business.</p>
 
-      <img class="img-full" src="../assets/caso-1-mob/figma-variables.webp" alt="Variables de Figma — N5 vs Itaú">
-      <p class="img-caption">Variables de color en Figma: la misma pantalla con tokens de N5 y de Itaú Chile. La flexibilidad del sistema, visible.</p>
+      <img class="img-full" src="../assets/caso-1-mob/figma-variables.webp" alt="Figma variables — N5 vs Itaú">
+      <p class="img-caption">Color variables in Figma: the same screen with N5 and Itaú Chile tokens. The system's flexibility, made visible.</p>
     </div>
 
     <hr class="fade-in">
 
-    <!-- La solución -->
+    <!-- The philosophy -->
     <div class="section fade-in">
       <div class="section-label">
-        <span class="num">02</span><span class="dot">·</span><span class="name">La filosofía</span>
+        <span class="num">02</span><span class="dot">·</span><span class="name">The philosophy</span>
       </div>
-      <p>MOB es un sistema de diseño completo para una plataforma financiera enterprise. Componentes, patrones, principios de interacción, documentación. Pero lo que más me importa no es el inventario — es la lógica detrás.</p>
-      <p>La premisa central: los clientes pueden personalizar la identidad visual, pero sin tocar el esqueleto que sostiene el producto. <em>La marca del cliente se ve. La esencia de N5 se siente.</em></p>
-      <p>Los 8 mandamientos definen desde cómo usar el sistema hasta cómo tomar decisiones de diseño. No son solo reglas — son una cultura de trabajo que se extiende más allá del equipo de diseño.</p>
+      <p>MOB is a complete design system for an enterprise financial platform. Components, patterns, interaction principles, documentation. But what matters most to me isn't the inventory — it's the logic behind it.</p>
+      <p>The central premise: clients can customize the visual identity, but without touching the skeleton that holds the product together. <em>The client's brand is visible. N5's essence is felt.</em></p>
+      <p>The 8 commandments define everything from how to use the system to how to make design decisions. They're not just rules — they're a work culture that extends beyond the design team.</p>
 
-      <img class="img-full" src="../assets/caso-1-mob/filosofia-3.webp" alt="El Padrino — Mandamiento 1">
-      <p class="img-caption">Mandamiento 1. MOB son las siglas de Methodology to Organise and Build. También son otra cosa.</p>
+      <img class="img-full" src="../assets/caso-1-mob/filosofia-3.webp" alt="The Godfather — Commandment 1">
+      <p class="img-caption">Commandment 1. MOB stands for Methodology to Organise and Build. It also stands for something else.</p>
     </div>
 
     <!-- Metrics -->
     <div class="metrics-strip fade-in">
       <div class="metric">
         <span class="metric-value">37</span>
-        <span class="metric-label">componentes</span>
+        <span class="metric-label">components</span>
       </div>
       <div class="metric">
         <span class="metric-value">7</span>
-        <span class="metric-label">módulos del CRM</span>
+        <span class="metric-label">CRM modules</span>
       </div>
       <div class="metric">
         <span class="metric-value">6</span>
-        <span class="metric-label">clientes bancarios</span>
+        <span class="metric-label">banking clients</span>
       </div>
       <div class="metric">
         <span class="metric-value">5</span>
-        <span class="metric-label">años de evolución</span>
+        <span class="metric-label">years of evolution</span>
       </div>
     </div>
 
-    <!-- El resultado -->
+    <!-- The result -->
     <div class="section fade-in">
       <div class="section-label">
-        <span class="num">03</span><span class="dot">·</span><span class="name">El resultado</span>
+        <span class="num">03</span><span class="dot">·</span><span class="name">The result</span>
       </div>
-      <p>MOB pasó de ser una iniciativa que nadie había pedido a convertirse en el estándar oficial de diseño de N5 Now. El antes: 4 equipos con librerías y criterios propios, un producto distinto por cliente. El después: un único sistema adoptado por los 3 equipos de producto, con la identidad del cliente aplicada encima vía tokens — sin tocar el producto.</p>
+      <p>MOB went from an unsolicited initiative to N5 Now's official design standard. Before: 4 teams with their own libraries and criteria, a different product per client. After: a single system adopted by all 3 product teams, with client identity applied on top via tokens — without touching the product.</p>
 
-      <p>El impacto más concreto: el CRM mobile se diseñó en 3 días y se implementó en 2 semanas. La QA visual se redujo radicalmente — los componentes se reutilizan íntegramente y a veces alcanza con "agregá un botón primary acá". La customización por cliente pasó de trabajo manual componente a componente a minutos: los tokens se aplican en una variable, no en el código.</p>
+      <p>The most concrete impact: the mobile CRM was designed in 3 days and implemented in 2 weeks. Visual QA was dramatically reduced — components are reused wholesale and sometimes all it takes is "add a primary button here." Client customization went from manual component-by-component work to minutes: tokens are applied to a variable, not in the code.</p>
 
       <div class="img-grid-3">
-        <img src="../assets/caso-1-mob/despues-campaigns.webp" alt="Campañas después de MOB">
-        <img src="../assets/caso-1-mob/despues-carteras.webp" alt="Carteras después de MOB">
-        <img src="../assets/caso-1-mob/despues-fmc.webp" alt="FMC después de MOB">
+        <img src="../assets/caso-1-mob/despues-campaigns.webp" alt="Campaigns after MOB">
+        <img src="../assets/caso-1-mob/despues-carteras.webp" alt="Portfolios after MOB">
+        <img src="../assets/caso-1-mob/despues-fmc.webp" alt="FMC after MOB">
       </div>
-      <p class="img-caption">Los mismos tres módulos, después del sistema. Campañas, Carteras y FMC — un único criterio visual.</p>
+      <p class="img-caption">The same three modules, after the system. Campaigns, Portfolios, and FMC — one unified visual standard.</p>
 
       <div class="img-grid-3 img-grid-phones">
-        <img src="../assets/caso-1-mob/crm-mobile1.webp" alt="CRM mobile — registro de reunión 1">
-        <img src="../assets/caso-1-mob/crm-mobile2.webp" alt="CRM mobile — registro de reunión 2">
-        <img src="../assets/caso-1-mob/crm-mobile3.webp" alt="CRM mobile — registro de reunión 3">
+        <img src="../assets/caso-1-mob/crm-mobile1.webp" alt="CRM mobile — client visit log 1">
+        <img src="../assets/caso-1-mob/crm-mobile2.webp" alt="CRM mobile — client visit log 2">
+        <img src="../assets/caso-1-mob/crm-mobile3.webp" alt="CRM mobile — client visit log 3">
       </div>
-      <p class="img-caption">El sistema escala a mobile. Feature de registro de visitas a clientes — crítica para banca privada. FMC — Ficha Mi Cliente.</p>
+      <p class="img-caption">The system scales to mobile. Client visit logging feature — critical for private banking. FMC — My Client Profile.</p>
 
-      <p>Lo más importante fue lo que cambió en cómo la organización vio al diseño. De ser algo que "hacía las pantallas", pasó a ser algo que construía estructuras. Al cierre de año, el equipo completo — CEO y jefes de área incluidos — reconoció públicamente ese cambio. Eso no es menor.</p>
+      <p>The most important shift was how the organization came to see design. From something that "made screens," it became something that built structures. At year-end, the entire team — CEO and department heads included — publicly acknowledged that change. That's not a small thing.</p>
     </div>
 
     <hr class="fade-in">
 
-    <!-- Escala -->
+    <!-- Multi-client scale -->
     <div class="section fade-in">
       <div class="section-label">
-        <span class="num">04</span><span class="dot">·</span><span class="name">Escala multicliente</span>
+        <span class="num">04</span><span class="dot">·</span><span class="name">Multi-client scale</span>
       </div>
-      <p>La prueba más concreta de que el sistema funciona: la misma pantalla con identidades distintas. Los tokens de color del cliente se aplican sobre el esqueleto de MOB sin tocar el código de producto.</p>
+      <p>The most concrete proof that the system works: the same screen with different identities. The client's color tokens are applied over MOB's skeleton without touching the product code.</p>
 
       <div class="img-grid">
         <div>
-          <img src="../assets/caso-1-mob/branding-itau.webp" alt="Branding Itaú Chile">
-          <p class="img-caption">Identidad Itaú Chile.</p>
+          <img src="../assets/caso-1-mob/branding-itau.webp" alt="Itaú Chile branding">
+          <p class="img-caption">Itaú Chile identity.</p>
         </div>
         <div>
-          <img src="../assets/caso-1-mob/branding-bv.webp" alt="Branding BV Brasil">
-          <p class="img-caption">Identidad BV Brasil.</p>
+          <img src="../assets/caso-1-mob/branding-bv.webp" alt="BV Brasil branding">
+          <p class="img-caption">BV Brasil identity.</p>
         </div>
       </div>
 
-      <img class="img-full" src="../assets/caso-1-mob/paleta-itau.webp" alt="Paleta de tokens Itaú">
-      <p class="img-caption">Tokens de color del cliente mapeados al sistema. La personalización opera a nivel de variable, no de componente.</p>
+      <img class="img-full" src="../assets/caso-1-mob/paleta-itau.webp" alt="Itaú token palette">
+      <p class="img-caption">Client color tokens mapped to the system. Customization operates at the variable level, not the component level.</p>
     </div>
 
     <hr class="fade-in">
 
     <!-- Case nav -->
     <div class="case-nav fade-in">
-      <a href="../index.html">← Volver al inicio</a>
-      <a href="singular.html">Singular →</a>
+      <a href="../index-en.html">← Back to home</a>
+      <a href="singular-en.html">Singular →</a>
     </div>
 
   </main>
 
   <script>
-
-    // ─── Nav scroll ─────────────────────────────────────────
     const nav = document.getElementById('nav');
     window.addEventListener('scroll', () => {
       nav.classList.toggle('scrolled', window.scrollY > 10);
     }, { passive: true });
 
-    // ─── Fade-in ─────────────────────────────────────────────
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReduced) {
       document.querySelectorAll('.fade-in').forEach(el => el.classList.add('visible'));
@@ -685,13 +639,11 @@
       document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
     }
 
-    // Hero image — delay reveal so multiply is active before image appears
     document.querySelectorAll('.case-intro-image img').forEach(img => {
       const reveal = () => setTimeout(() => img.classList.add('loaded'), 300);
       if (img.complete) reveal();
       else img.addEventListener('load', reveal);
     });
-
   </script>
 
 </body>

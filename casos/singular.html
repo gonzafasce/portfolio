@@ -92,6 +92,40 @@
     }
     .nav-links .nav-cv:hover { color: var(--color-accent); border-color: var(--color-accent); }
 
+    /* ─── Lang switcher ─────────────────────────────────── */
+    .lang-switcher {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      border-left: 1px solid var(--color-rule);
+      padding-left: var(--space-md);
+      margin-left: 4px;
+    }
+
+    .lang-link {
+      font-family: var(--font-mono);
+      font-weight: 400;
+      color: var(--color-muted);
+      letter-spacing: 0.06em;
+      border-bottom: none !important;
+      padding-bottom: 0 !important;
+      transition: color 0.15s ease;
+    }
+
+    .lang-link:hover { color: var(--color-ink); }
+
+    .lang-link.active {
+      color: var(--color-ink);
+      pointer-events: none;
+      cursor: default;
+    }
+
+    .lang-sep {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--color-rule);
+    }
+
     /* ─── Main ──────────────────────────────────────────── */
     main {
       max-width: calc(var(--content-width) + 48px);
@@ -388,6 +422,11 @@
         <li class="hide-mobile"><a href="mis-resultados.html">Mis Resultados</a></li>
         <li><a href="../about.html">About</a></li>
         <li><a href="../cv.html" class="nav-cv">CV</a></li>
+        <li class="lang-switcher">
+          <a href="singular.html" class="lang-link active">ES</a>
+          <span class="lang-sep">·</span>
+          <a href="singular-en.html" class="lang-link">EN</a>
+        </li>
       </ul>
     </div>
   </nav>
